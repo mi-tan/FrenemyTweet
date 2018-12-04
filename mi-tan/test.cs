@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class test : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Test()
+    {
         int hoge = 1;
-
-	}
+        // コミットテスト用の変更
+    }
 }

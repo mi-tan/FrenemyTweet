@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CategoryData : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField]
+    private string[] dictionary;
+
+    public string[] ReturnDictionary()
+    {
+        for (int i = 0; i < dictionary.Length; i++) {
+            Debug.Log("dic = "+dictionary[i]);
+        }
+        return dictionary;
+    }
 }

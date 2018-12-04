@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CategoryData : MonoBehaviour {
+[System.Serializable]
+[CreateAssetMenu(menuName ="ScriptableObject/Data/Category")]
+public class CategoryData : ScriptableObject {
+
+    [SerializeField]
+    private string categoryName;
 
     [SerializeField]
     private string[] dictionary;

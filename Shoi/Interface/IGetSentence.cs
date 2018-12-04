@@ -6,7 +6,6 @@ using UnityEngine;
 /// 文章取得インターフェース
 /// </summary>
 public interface IGetSentence {
-    
-    
 
+    void GetSentence();
 }

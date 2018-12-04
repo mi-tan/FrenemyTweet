@@ -7,14 +7,27 @@ using UnityEngine;
 /// </summary>
 public class TwitterSentence : MonoBehaviour, IGetSentence
 {
+    [SerializeField]
+    private GameObject obj;
+    private IAnalysis iAnalysis;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    /// <summary>
+    /// ツイッターから取得した文字
+    /// </summary>
+    private string[] twitterChar = {"一行目", "二行目", "三行目", "四行目" , "五行目" , "六行目" };
+
+    private void Start()
+    {
+        iAnalysis = obj.GetComponent<IAnalysis>();
+        GetSentence();
+    }
+
+    
+
+    public void GetSentence()
+    {
+
+        //Debug.Log("twitterから取得したものをIAnalysisへ受け渡す");
+        iAnalysis.Analysis(twitterChar);
+    }
 }

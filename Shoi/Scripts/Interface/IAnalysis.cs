@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 文章取得インターフェース
+/// 分析インターフェース
 /// </summary>
-public interface IGetSentence {
+public interface AnalysisInterface {
 
-    void Test();
+
 
 }

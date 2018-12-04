@@ -7,16 +7,14 @@ using UnityEngine;
 /// </summary>
 public class TwitterSentence : MonoBehaviour, IGetSentence
 {
-    [SerializeField]
-    private AnalysisSentence iAnalysis;
 
-    private void Start()
-    {
-        Test();
-    }
-
-    public void Test()
-    {
-        iAnalysis.Analysis();
-    }
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 }

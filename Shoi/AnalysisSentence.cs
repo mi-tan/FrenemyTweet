@@ -8,15 +8,9 @@ using System.Text.RegularExpressions;
 /// </summary>
 public class AnalysisSentence : MonoBehaviour, IAnalysis
 {
+
     [SerializeField]
-    private CategoryData obj;
-
-    /// <summary>
-    /// 文字を認識するための辞書
-    /// </summary>
-    //private string[] dictionary;
-
-    private CategoryData categoryData = null;
+    private CategoryData[] categoryData;
 
     private string[] dictionaly = new string[100];
 
@@ -25,12 +19,8 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
     /// </summary>
     public void Analysis(string[] str)
     {
-
-        if (categoryData == null)
-            categoryData = obj.GetComponent<CategoryData>();
-
         // 辞書を取得
-        dictionaly = categoryData.ReturnDictionary();
+        dictionaly = categoryData[0].ReturnDictionary();
 
         int[] count = new int[dictionaly.Length];
 

@@ -49,8 +49,6 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
 
 
         // AnalysisContainerにいろいろ入れる
-
-
         return testContainer;
     }
 }

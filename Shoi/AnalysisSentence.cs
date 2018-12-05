@@ -17,11 +17,14 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
     /// <summary>
     /// 分析メソッド
     /// </summary>
-    public void Analysis(string[] str)
+    public AnalysisContainer Analysis(string[] str)
     {
+        AnalysisContainer testContainer = new AnalysisContainer();
+
         // 辞書を取得
         dictionaly = categoryData[0].ReturnDictionary();
 
+        // 辞書にある文字数分配列を確保
         int[] count = new int[dictionaly.Length];
 
         for (int i = 0; i < dictionaly.Length; i++)
@@ -30,8 +33,10 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
             {
                 // 指定した文字が存在するかどうか取得する
                 MatchCollection matche = Regex.Matches(str[j], dictionaly[i]);
+
                 foreach (Match m in matche)
                 {
+                    Debug.Log(m　+　"へ格納");
                     count[i]++;
                 }
             }
@@ -41,5 +46,11 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
         {
             Debug.Log(dictionaly[i] + " は" + count[i] + "個ありました");
         }
+
+
+        // AnalysisContainerにいろいろ入れる
+
+
+        return testContainer;
     }
 }

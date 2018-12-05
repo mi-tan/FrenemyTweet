@@ -7,5 +7,5 @@ using UnityEngine;
 /// </summary>
 public interface IGetSentence {
 
-    void GetSentence();
+    AnalysisContainer GetSentence();
 }

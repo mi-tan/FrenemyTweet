@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 分析結果を保持するクラス
+/// </summary>
 public class AnalysisContainer {
 
-    /// <summary>
-    /// 分析結果を保持する構造体
-    /// </summary>
-    struct AnalysisInfo
-    {
-        List<string> letters;
-    }
+    string test = "空";
+
 }

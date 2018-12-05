@@ -14,7 +14,7 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     /// <summary>
     /// ツイッターから取得した文字
     /// </summary>
-    private string[] twitterChar = {"一行目", "二行目", "三行目", "四行目" , "五行目" , "六行目" };
+    private string[] twitterChar = {"twitter" };
 
     private void Start()
     {
@@ -22,12 +22,8 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
         GetSentence();
     }
 
-    
-
-    public void GetSentence()
+    public AnalysisContainer GetSentence()
     {
-
-        //Debug.Log("twitterから取得したものをIAnalysisへ受け渡す");
-        iAnalysis.Analysis(twitterChar);
+        return iAnalysis.Analysis(twitterChar);
     }
 }

@@ -7,6 +7,6 @@ using UnityEngine;
 /// </summary>
 public class AnalysisContainer {
 
-    string test = "空";
+    public string testString = "空";
 
 }

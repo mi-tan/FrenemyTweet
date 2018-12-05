@@ -10,11 +10,19 @@ namespace Test
     /// </summary>
     public class CallAnalysis : MonoBehaviour
     {
-        
+        [SerializeField]
+        private GameObject objSentence;
 
-        void Start()
+        private IGetSentence iGetSentence;
+        AnalysisContainer analysisContainer;
+
+        private void Start()
         {
-            
+            if (iGetSentence == null)
+                iGetSentence = objSentence.GetComponent<IGetSentence>();
+
+            analysisContainer = iGetSentence.GetSentence();
+            Debug.Log(analysisContainer.testString);
         }
     }
 }

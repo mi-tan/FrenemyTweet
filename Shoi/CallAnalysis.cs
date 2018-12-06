@@ -29,13 +29,6 @@ namespace Test
                          " 数　：" + analysisContainer.categoryRetList[i].thisNameNum);
             }
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                //analysisContainer
-            }
-        }
     }
 }
 

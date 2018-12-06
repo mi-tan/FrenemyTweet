@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class AnalysisContainer {
 
-    public string testString = "空";
     /// <summary>
     /// カテゴリを分析した結果を格納するリスト
     /// </summary>

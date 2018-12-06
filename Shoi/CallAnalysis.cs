@@ -22,7 +22,19 @@ namespace Test
                 iGetSentence = objSentence.GetComponent<IGetSentence>();
 
             analysisContainer = iGetSentence.GetSentence();
-            Debug.Log(analysisContainer.testString);
+
+            for (int i = 0; i < analysisContainer.categoryRetList.Count; i++)
+            {
+                Debug.Log("名前：" + analysisContainer.categoryRetList[i].categoryName +
+                         " 数　：" + analysisContainer.categoryRetList[i].thisNameNum);
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                //analysisContainer
+            }
         }
     }
 }

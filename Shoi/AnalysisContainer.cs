@@ -19,5 +19,4 @@ public class AnalysisContainer {
         public string categoryName;
         public int thisNameNum;
     }
-
 }

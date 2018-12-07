@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの移動を行うクラス
+/// </summary>
 public class PlayerMove : MonoBehaviour {
 
+    private PlayerManager playerManager;
     private Animator playerAnimator;
 
     /// <summary>
@@ -18,15 +22,36 @@ public class PlayerMove : MonoBehaviour {
     /// <summary>
     /// 向く速度
     /// </summary>
-    const float FACE_SPEED = 1100f;
+    const float FACE_SPEED = 1200f;
+    /// <summary>
+    /// 入力の遊び値
+    /// </summary>
+    const float INPUT_IDLE_VALUE = 0.3f;
 
-    private Quaternion quaternion;
+    /// <summary>
+    /// 走るパラメータ
+    /// </summary>
+    const string PARAMETER_RUN = "Run";
 
+    /// <summary>
+    /// 移動角度
+    /// </summary>
+    Quaternion moveQuaternion;
+
+
+    void Awake()
+    {
+        // コンポーネントを取得
+        playerManager = GetComponent<PlayerManager>();
+        playerAnimator = GetComponent<Animator>();
+
+        // 移動角度を初期化
+        moveQuaternion = transform.rotation;
+    }
 
     // Use this for initialization
     void Start () {
-        // コンポーネントを取得
-        playerAnimator = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -36,33 +61,41 @@ public class PlayerMove : MonoBehaviour {
         float moveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);
         float moveVertical = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);
 
-        // 移動方向に向く
-        UpdateFace();
-
         // 移動入力されていたら
-        if (moveHorizontal != 0 || moveVertical != 0)
+        if (moveHorizontal > INPUT_IDLE_VALUE || moveHorizontal < -INPUT_IDLE_VALUE ||
+            moveVertical > INPUT_IDLE_VALUE || moveVertical < -INPUT_IDLE_VALUE)
         {
             // 走るアニメーションを再生
-            playerAnimator.SetBool("run", true);
+            playerAnimator.SetBool(PARAMETER_RUN, true);
 
-            // 移動方向を計算
+            // 移動角度を計算
             Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
-            quaternion = Quaternion.LookRotation(moveDirection);
+            moveQuaternion = Quaternion.LookRotation(moveDirection);
         }
         else
         {
             // 走るアニメーションを停止
-            playerAnimator.SetBool("run", false);
+            playerAnimator.SetBool(PARAMETER_RUN, false);
         }
+
+        // 移動角度に向く
+        UpdateFace(moveQuaternion);
     }
 
-    void UpdateFace()
+    /// <summary>
+    /// 移動角度に向く
+    /// </summary>
+    /// <param name="moveQuaternion">移動角度</param>
+    void UpdateFace(Quaternion moveQuaternion)
     {
-        // 移動方向に向いていたら、この先の処理を行わない
-        if(transform.rotation == quaternion) { return; }
+        // プレイヤーの状態が行動可能ではなかったら、この先の処理を行わない
+        if (playerManager.GetPlayerState() != PlayerManager.PlayerState.ACTABLE) { return; }
 
-        // 移動方向に徐々に向く
+        // 移動角度に向いていたら、この先の処理を行わない
+        if (transform.rotation == moveQuaternion) { return; }
+
+        // 移動角度に徐々に向く
         float step = FACE_SPEED * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, quaternion, step);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, moveQuaternion, step);
     }
 }

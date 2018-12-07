@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CategoryData : MonoBehaviour {
+[System.Serializable]
+[CreateAssetMenu(menuName ="ScriptableObject/Data/Category")]
+public class CategoryData : ScriptableObject {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField]
+    private string categoryName;
+
+    [SerializeField]
+    public string[] dictionary;
+
+    public string getCategoryName
+    {
+        get { return categoryName; }
+        //private set { categoryName = value; }
+    }
+
+    public string[] ReturnDictionary()
+    {
+        return dictionary;
+    }
 }

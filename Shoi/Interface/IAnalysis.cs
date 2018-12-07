@@ -5,8 +5,10 @@ using UnityEngine;
 /// <summary>
 /// 分析インターフェース
 /// </summary>
-public interface AnalysisInterface {
-
-
-
+public interface IAnalysis
+{
+    /// <summary>
+    /// 分析メソッド
+    /// </summary>
+    AnalysisContainer Analysis(string[] sentence);
 }

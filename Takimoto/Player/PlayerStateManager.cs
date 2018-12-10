@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーを管理するクラス
+/// プレイヤーの状態を管理するクラス
 /// </summary>
-public class PlayerManager : MonoBehaviour {
-
+public class PlayerStateManager : MonoBehaviour
+{
     /// <summary>
-    /// プレイヤーの状態一覧
+    /// プレイヤーの状態
     /// </summary>
     public enum PlayerState
     {
@@ -17,26 +17,29 @@ public class PlayerManager : MonoBehaviour {
         /// </summary>
         ACTABLE,
         /// <summary>
-        /// 通常攻撃中
+        /// 攻撃中
         /// </summary>
         ATTACK,
     }
     /// <summary>
-    /// プレイヤーの状態
+    /// 現在のプレイヤーの状態
     /// </summary>
     private PlayerState playerState;
     /// <summary>
-    /// プレイヤーの状態を取得
+    /// 現在のプレイヤーの状態を取得
     /// </summary>
-    /// <returns>プレイヤーの状態</returns>
+    /// <returns>現在のプレイヤーの状態</returns>
     public PlayerState GetPlayerState()
     {
         return playerState;
     }
+    /// <summary>
+    /// 現在のプレイヤーの状態を変更
+    /// </summary>
+    /// <param name="playerState">プレイヤーの状態</param>
+    /// <returns></returns>
     public void SetPlayerState(PlayerState playerState)
     {
         this.playerState = playerState;
     }
-
-    
 }

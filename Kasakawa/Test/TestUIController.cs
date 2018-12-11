@@ -9,7 +9,6 @@ namespace Test
 {
     public class TestUIController : MonoBehaviour
     {
-
         [Inject]
         [SerializeField]
         TestGameController testGameController;
@@ -35,7 +34,7 @@ namespace Test
             Observable.Timer(System.TimeSpan.FromSeconds(startTextTime))
                 .Subscribe(_ => DisableStartText())
                 .AddTo(gameObject);
-
+            
             ShowPlayerPosition(Vector3.zero);
 
             // プレイヤーの座標が変化した場合、UIを更新する

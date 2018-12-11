@@ -10,7 +10,13 @@ public class CategoryData : ScriptableObject {
     private string categoryName;
 
     [SerializeField]
-    private string[] dictionary;
+    public string[] dictionary;
+
+    public string getCategoryName
+    {
+        get { return categoryName; }
+        //private set { categoryName = value; }
+    }
 
     public string[] ReturnDictionary()
     {

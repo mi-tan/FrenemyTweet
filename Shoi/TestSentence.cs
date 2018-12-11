@@ -10,7 +10,7 @@ namespace Test
     public class TestSentence : MonoBehaviour, IGetSentence
     {
         [SerializeField]
-        private GameObject obj;
+        private GameObject objAnalysis;
         /// <summary>
         /// ツイッターから取得した文字
         /// </summary>
@@ -19,15 +19,12 @@ namespace Test
 
         private IAnalysis iAnalysis;
 
-        private void Start()
-        {
-            if (iAnalysis == null)
-                iAnalysis = obj.GetComponent<IAnalysis>();
-        }
-
 
         public AnalysisContainer GetSentence()
         {
+            if (iAnalysis == null)
+                iAnalysis = objAnalysis.GetComponent<IAnalysis>();
+
             return iAnalysis.Analysis(testChar);
         }
     }

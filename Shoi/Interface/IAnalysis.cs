@@ -10,5 +10,5 @@ public interface IAnalysis
     /// <summary>
     /// 分析メソッド
     /// </summary>
-    AnalysisContainer Analysis(string[] sentence);
+    AnalysisContainer Analysis(List<string> sentence);
 }

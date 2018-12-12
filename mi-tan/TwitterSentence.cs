@@ -1,29 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Twitterから文章を取得するクラス
 /// </summary>
 public class TwitterSentence : MonoBehaviour, IGetSentence
 {
+
+    [SerializeField]
+    private GameObject inputPINField;
     [SerializeField]
     private GameObject obj;
     private IAnalysis iAnalysis;
 
+    private TwitterComponentHandler twitterHandler;
+
     /// <summary>
     /// ツイッターから取得した文字
     /// </summary>
-    private string[] twitterChar = {"twitter" };
+    private List<string> tweetList = new List<string>();
 
-    private void Start()
+    //private void Start()
+    //{
+    //    iAnalysis = obj.GetComponent<IAnalysis>();
+    //    GetSentence();
+    //}
+    public void OnClickAuthPINButon()
     {
-        iAnalysis = obj.GetComponent<IAnalysis>();
-        GetSentence();
+        StartCoroutine(CallAuthPINButon());
     }
+
+    private IEnumerator CallAuthPINButon()
+    {
+
+        if (twitterHandler == null)
+            twitterHandler = GetComponent<TwitterComponentHandler>();
+
+        string myPIN = inputPINField.GetComponent<InputField>().text;
+
+        twitterHandler.AuthPINButon(myPIN);
+        while (!twitterHandler.getIsSentence)
+            yield return new WaitForSeconds(0.01f);
+
+        // ツイッターの文章を取得
+        tweetList = twitterHandler.getSentenceList;
+        yield return null;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("Push!!!");
+            for (int i = 0; i < tweetList.Count; i++)
+            {
+                Debug.Log("要素数["+i+"]："+tweetList[i]);
+            }
+        }
+    }
+
 
     public AnalysisContainer GetSentence()
     {
-        return iAnalysis.Analysis(twitterChar);
+        return iAnalysis.Analysis(tweetList);
     }
 }

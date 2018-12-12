@@ -15,7 +15,7 @@ namespace Test
         /// ツイッターから取得した文字
         /// </summary>
         [SerializeField]
-        private string[] testChar = { "一行目", "ばか", "馬鹿アホ", "四行目", "あほあほあほあほ", "六行目" };
+        private List<string> testList = new List<string>();
 
         private IAnalysis iAnalysis;
 
@@ -25,7 +25,7 @@ namespace Test
             if (iAnalysis == null)
                 iAnalysis = objAnalysis.GetComponent<IAnalysis>();
 
-            return iAnalysis.Analysis(testChar);
+            return iAnalysis.Analysis(testList);
         }
     }
 }

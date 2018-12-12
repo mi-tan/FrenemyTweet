@@ -7,13 +7,14 @@ using SimpleJSON;
 
 public class TwitterComponentHandler : MonoBehaviour {
 
-    public GameObject inputPINField;
     public GameObject inputTweetField;
     public GameObject TimeLineGet;
+    [SerializeField]
+    private int displaySentencNum;
 
     private const string CONSUMER_KEY = "uAWdP7574vZXG95E3YxCxdePq";
     private const string CONSUMER_SECRET = "NIMvj4ImnUfZKFXtDB4GEdYSIA4K6NOHwDG6cZCOf6O0XGfMYm";
-    private string user_id = "TwitterUserID";
+    //private string user_id = "TwitterUserID";
 
     Twitter.RequestTokenResponse m_RequestTokenResponse;
     Twitter.AccessTokenResponse m_AccessTokenResponse;
@@ -27,44 +28,43 @@ public class TwitterComponentHandler : MonoBehaviour {
 
     const string PLAYER_PREFS_TWITTER_TWEETED_IDS = "TwitterTweetedIDs";
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // 文字取得が終了したかどうかのフラグ
+    private bool isGetSentence = false;
+    public bool getIsSentence { get { return isGetSentence; } }
 
+    // 取得した文字を格納するリスト
+    private List<string> sentenceList = new List<string>();
+    public List<string> getSentenceList { get { return sentenceList; } }
+
+    // タイムラインを取得
     public void OnClickTimeLine()
     {
-        StartCoroutine(Twitter.API.GetUserTimeline(m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
+        isGetSentence = false;
+        StartCoroutine(Twitter.API.GetUserTimeline(displaySentencNum, m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
               new Twitter.GetUserTimelineCallback(this.OnGetUserTimeline)));
     }
 
+    // ピンコードを取得
     public void OnClickGetPINButon()
     {
         StartCoroutine(Twitter.API.GetRequestToken(CONSUMER_KEY, CONSUMER_SECRET,
             new Twitter.RequestTokenCallback(this.OnRequestTokenCallback)));
     }
 
-    public void OnClickAuthPINButon()
+    // ピンコードを認証
+    public void AuthPINButon(string myPIN)
     {
-        string myPIN = inputPINField.GetComponent<InputField>().text;
-
         StartCoroutine(Twitter.API.GetAccessToken(CONSUMER_KEY, CONSUMER_SECRET, m_RequestTokenResponse.Token, myPIN,
             new Twitter.AccessTokenCallback(this.OnAccessTokenCallback)));
     }
 
+    // ツイート
     public void OnClickTweetButon()
     {
         string myTweet = inputTweetField.GetComponent<InputField>().text;
 
         StartCoroutine(Twitter.API.PostTweet(myTweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
             new Twitter.PostTweetCallback(this.OnPostTweet)));
-
-
     }
 
     void OnRequestTokenCallback(bool success, Twitter.RequestTokenResponse response)
@@ -108,7 +108,7 @@ public class TwitterComponentHandler : MonoBehaviour {
             PlayerPrefs.SetString(PLAYER_PREFS_TWITTER_USER_TOKEN, response.Token);
             PlayerPrefs.SetString(PLAYER_PREFS_TWITTER_USER_TOKEN_SECRET, response.TokenSecret);
             //PlayerPrefs.SetString(PLAYER_PREFS_TWITTER_TIMELINE, response.TweetContents);
-
+            OnClickTimeLine();
         }
         else
         {
@@ -145,9 +145,10 @@ public class TwitterComponentHandler : MonoBehaviour {
             while (jsonEnum.MoveNext())
             {
                 //Debug.Log(jsonEnum.MoveNext());
-                Debug.Log(((JSONNode)jsonEnum.Current)["text"]);
+                //Debug.Log(((JSONNode)jsonEnum.Current)["text"]);
+                sentenceList.Add(((JSONNode)jsonEnum.Current)["text"]);
             }
-            
         }
+        isGetSentence = true;
     }
 }

@@ -24,7 +24,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     const float INPUT_IDLE_VALUE = 0.3f;
     /// <summary>
-    /// 移動角度に向く速度
+    /// 移動方向に向く速度
     /// </summary>
     const float FACE_SPEED = 1200f;
     /// <summary>
@@ -33,7 +33,7 @@ public class PlayerMove : MonoBehaviour
     const float MOVE_SPEED = 5f;
 
     /// <summary>
-    /// 移動角度
+    /// 移動方向
     /// </summary>
     private Quaternion moveQuaternion;
 
@@ -44,7 +44,7 @@ public class PlayerMove : MonoBehaviour
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationController = GetComponent<PlayerAnimationController>();
 
-        // 移動角度を初期化
+        // 移動方向を初期化
         moveQuaternion = transform.rotation;
     }
 
@@ -61,8 +61,8 @@ public class PlayerMove : MonoBehaviour
         float moveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);
         float moveVertical = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);
 
-        // 移動角度に向く
-        UpdateFace(moveQuaternion);
+        // 移動方向に向く
+        FaceMove(moveQuaternion);
 
         // 移動入力されていたら
         if (Mathf.Abs(moveHorizontal) > INPUT_IDLE_VALUE ||
@@ -72,15 +72,20 @@ public class PlayerMove : MonoBehaviour
             playerAnimationController.Animate(
                 PlayerAnimationController.PARAMETER_BOOL_RUN, true);
 
-            // 移動角度を計算
-            Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
-            moveQuaternion = Quaternion.LookRotation(moveDirection);
+            // 現在のプレイヤーの状態が行動可能だったら
+            if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
+            {
+                // 移動方向を計算
+                Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
+                moveQuaternion = Quaternion.LookRotation(moveDirection);
 
-            // 現在のプレイヤーの状態が行動可能ではなかったら、この先の処理を行わない
-            if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE) { return; }
-
-            // 位置を移動
-            transform.position += transform.forward * MOVE_SPEED * Time.deltaTime;
+                // 位置を移動
+                transform.position += transform.forward * MOVE_SPEED * Time.deltaTime;
+            }
+            else
+            {
+                moveQuaternion = transform.rotation;
+            }
         }
         else
         {
@@ -91,18 +96,18 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動角度に向く
+    /// 移動方向に向く
     /// </summary>
-    /// <param name="moveQuaternion">移動角度</param>
-    void UpdateFace(Quaternion moveQuaternion)
+    /// <param name="moveQuaternion">移動方向</param>
+    void FaceMove(Quaternion moveQuaternion)
     {
         // 現在のプレイヤーの状態が行動可能ではなかったら、この先の処理を行わない
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE) { return; }
 
-        // 移動角度に向いていたら、この先の処理を行わない
+        // 移動方向に向いていたら、この先の処理を行わない
         if (transform.rotation == moveQuaternion) { return; }
 
-        // 移動角度に徐々に向く
+        // 移動方向に徐々に向く
         float step = FACE_SPEED * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation, moveQuaternion, step);

@@ -22,8 +22,5 @@ public class CameraCenter : MonoBehaviour
         newPosition.y = player.transform.position.y + offset.y;
         newPosition.z = player.transform.position.z + offset.z;
         transform.position = newPosition;
-
-        //transform.position = Vector3.Lerp(
-        //    transform.position, newPosition, 7f * Time.deltaTime);
     }
 }

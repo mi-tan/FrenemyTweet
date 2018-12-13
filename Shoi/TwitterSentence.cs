@@ -11,11 +11,11 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
 
     [SerializeField]
     private GameObject inputPINField;
-    [SerializeField]
-    private GameObject obj;
+    //[SerializeField]
+    //private GameObject obj;
     private IAnalysis iAnalysis;
 
-    private TwitterComponentHandler twitterHandler;
+    private TwitterComponent twitterHandler;
 
     /// <summary>
     /// ツイッターから取得した文字
@@ -36,7 +36,7 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     {
 
         if (twitterHandler == null)
-            twitterHandler = GetComponent<TwitterComponentHandler>();
+            twitterHandler = GetComponent<TwitterComponent>();
 
         string myPIN = inputPINField.GetComponent<InputField>().text;
 

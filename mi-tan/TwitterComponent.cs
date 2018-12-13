@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 using SimpleJSON;
 
-public class TwitterComponentHandler : MonoBehaviour {
+public class TwitterComponent : MonoBehaviour {
 
-    public GameObject inputTweetField;
-    public GameObject TimeLineGet;
-    [SerializeField]
-    private int displaySentencNum;
+    //public GameObject inputTweetField;
+    //public GameObject TimeLineGet;
+    [SerializeField,Tooltip("取得するツイートの数")]
+    private int getTweetNum;
 
     private const string CONSUMER_KEY = "uAWdP7574vZXG95E3YxCxdePq";
     private const string CONSUMER_SECRET = "NIMvj4ImnUfZKFXtDB4GEdYSIA4K6NOHwDG6cZCOf6O0XGfMYm";
@@ -40,7 +40,7 @@ public class TwitterComponentHandler : MonoBehaviour {
     public void OnClickTimeLine()
     {
         isGetSentence = false;
-        StartCoroutine(Twitter.API.GetUserTimeline(displaySentencNum, m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
+        StartCoroutine(Twitter.API.GetUserTimeline(getTweetNum, m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
               new Twitter.GetUserTimelineCallback(this.OnGetUserTimeline)));
     }
 
@@ -59,13 +59,13 @@ public class TwitterComponentHandler : MonoBehaviour {
     }
 
     // ツイート
-    public void OnClickTweetButon()
-    {
-        string myTweet = inputTweetField.GetComponent<InputField>().text;
+    //public void OnClickTweetButon()
+    //{
+    //    string myTweet = inputTweetField.GetComponent<InputField>().text;
 
-        StartCoroutine(Twitter.API.PostTweet(myTweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
-            new Twitter.PostTweetCallback(this.OnPostTweet)));
-    }
+    //    StartCoroutine(Twitter.API.PostTweet(myTweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
+    //        new Twitter.PostTweetCallback(this.OnPostTweet)));
+    //}
 
     void OnRequestTokenCallback(bool success, Twitter.RequestTokenResponse response)
     {
@@ -140,7 +140,7 @@ public class TwitterComponentHandler : MonoBehaviour {
         if (success)
         {
             var json = JSON.Parse(response);
-            // イナミュレーターをとってくるよ
+            // イナミュレーターを取得
             var jsonEnum = json.GetEnumerator();
             while (jsonEnum.MoveNext())
             {

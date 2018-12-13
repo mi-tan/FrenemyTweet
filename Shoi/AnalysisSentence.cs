@@ -17,7 +17,7 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
     /// <summary>
     /// 分析メソッド
     /// </summary>
-    public AnalysisContainer Analysis(string[] str)
+    public AnalysisContainer Analysis(List<string> str)
     {
         AnalysisContainer testContainer = new AnalysisContainer();
         AnalysisContainer.CategoryRet categoryRet = new AnalysisContainer.CategoryRet();
@@ -36,7 +36,7 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
 
             for (int i = 0; i < dictionaly.Length; i++)
             {
-                for (int j = 0; j < str.Length; j++)
+                for (int j = 0; j < str.Count; j++)
                 {
                     // 指定した文字が存在するかどうか取得する
                     MatchCollection matche = Regex.Matches(str[j], dictionaly[i]);

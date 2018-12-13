@@ -13,8 +13,8 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     private GameObject inputPINField;
     //[SerializeField]
     //private GameObject obj;
-    private IAnalysis iAnalysis;
 
+    private IAnalysis iAnalysis;
     private TwitterComponent twitterHandler;
 
     /// <summary>
@@ -53,17 +53,21 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("Push!!!");
-            for (int i = 0; i < tweetList.Count; i++)
-            {
-                Debug.Log("要素数["+i+"]："+tweetList[i]);
-            }
+            GetSentence();
+            //Debug.Log("Push!!!");
+            //for (int i = 0; i < tweetList.Count; i++)
+            //{
+            //    Debug.Log("要素数["+i+"]："+tweetList[i]);
+            //}
         }
     }
 
 
     public AnalysisContainer GetSentence()
     {
+        if (iAnalysis == null)
+            iAnalysis = GetComponent<IAnalysis>();
+
         return iAnalysis.Analysis(tweetList);
     }
 }

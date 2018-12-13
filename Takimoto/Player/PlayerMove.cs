@@ -5,19 +5,10 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーの移動を行うクラス
 /// </summary>
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : MonoBehaviour, IMove
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationController playerAnimationController;
-
-    /// <summary>
-    /// 移動水平入力
-    /// </summary>
-    const string INPUT_MOVE_HORIZONTAL = "MoveHorizontal";
-    /// <summary>
-    /// 移動垂直入力
-    /// </summary>
-    const string INPUT_MOVE_VERTICAL = "MoveVertical";
 
     /// <summary>
     /// 入力の遊び値
@@ -48,25 +39,22 @@ public class PlayerMove : MonoBehaviour
         moveQuaternion = transform.rotation;
     }
 
-    // Use this for initialization
-    void Start ()
+    /// <summary>
+    /// 移動
+    /// </summary>
+    /// <param name="inputMoveHorizontal">移動水平入力</param>
+    /// <param name="inputMoveVertical">移動垂直入力</param>
+    public void Move(float inputMoveHorizontal, float inputMoveVertical)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // 移動入力を取得
-        float moveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);
-        float moveVertical = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
         // 移動方向に向く
         FaceMove(moveQuaternion);
 
         // 移動入力されていたら
-        if (Mathf.Abs(moveHorizontal) > INPUT_IDLE_VALUE ||
-            Mathf.Abs(moveVertical) > INPUT_IDLE_VALUE)
+        if (Mathf.Abs(inputMoveHorizontal) > INPUT_IDLE_VALUE ||
+            Mathf.Abs(inputMoveVertical) > INPUT_IDLE_VALUE)
         {
             // 走るアニメーションを再生
             playerAnimationController.Animate(
@@ -76,7 +64,7 @@ public class PlayerMove : MonoBehaviour
             if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
             {
                 // 移動方向を計算
-                Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
+                Vector3 moveDirection = moveForward;
                 moveQuaternion = Quaternion.LookRotation(moveDirection);
 
                 // 位置を移動

@@ -11,11 +11,6 @@ public class PlayerAttack : MonoBehaviour
     private PlayerAnimationController playerAnimationController;
 
     /// <summary>
-    /// 通常攻撃入力
-    /// </summary>
-    const string INPUT_ATTACK = "Attack";
-
-    /// <summary>
     /// 入力中か
     /// </summary>
     private bool isInput = false;
@@ -41,11 +36,11 @@ public class PlayerAttack : MonoBehaviour
     /// <summary>
     /// 攻撃中か
     /// </summary>
-    public bool isAttack = false;
+    private bool isAttack = false;
     /// <summary>
     /// 移動中か
     /// </summary>
-    public bool isMove = false;
+    private bool isMove = false;
     /// <summary>
     /// 移動位置
     /// </summary>
@@ -167,8 +162,12 @@ public class PlayerAttack : MonoBehaviour
         float moveHorizontal = Input.GetAxisRaw("MoveHorizontal");
         float moveVertical = Input.GetAxisRaw("MoveVertical");
 
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 moveForward = cameraForward * moveVertical + Camera.main.transform.right * moveHorizontal;
+
         // 攻撃角度を計算
-        Vector3 attackDirection = new Vector3(moveHorizontal, 0, moveVertical);
+        Vector3 attackDirection = moveForward;
+
         // 移動入力がされていなかったら
         if (attackDirection != Vector3.zero)
         {
@@ -178,6 +177,8 @@ public class PlayerAttack : MonoBehaviour
         {
             attackQuaternion = transform.rotation;
         }
+
+        //attackQuaternion = Quaternion.LookRotation(cameraForward);
 
         isMove = false;
         // 移動パラメータを更新
@@ -254,6 +255,8 @@ public class PlayerAttack : MonoBehaviour
         float step = FACE_SPEED * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation, attackQuaternion, step);
+
+        //transform.rotation = attackQuaternion;
     }
 
     private IEnumerator AttackDelay()

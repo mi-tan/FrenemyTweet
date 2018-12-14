@@ -46,7 +46,8 @@ namespace Test
 
             foreach (var sceneName in subSceneNames)
             {
-                SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                //SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                SceneController.AddSceneAsync(sceneName);
             }
 
             // 時間をカウントする

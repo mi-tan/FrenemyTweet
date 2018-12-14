@@ -67,6 +67,17 @@ public class CameraController : MonoBehaviour
         float rotationHorizontal = Input.GetAxisRaw("RotationHorizontal");
         float rotationVertical = Input.GetAxisRaw("RotationVertical");
 
+        if(transform.eulerAngles.x < -40)
+        {
+            if (mouseY < 0) { mouseY = 0; }
+            if (rotationVertical < 0) { rotationVertical = 0; }
+        }
+        //if(transform.eulerAngles.x < -80)
+        //{
+        //    if (mouseY < 0) { mouseY = 0; }
+        //    if (rotationVertical < 0) { rotationVertical = 0; }
+        //}
+
         transform.RotateAround(
             targetPos + targetPlayer.transform.up * cameraY,
             Vector3.up,

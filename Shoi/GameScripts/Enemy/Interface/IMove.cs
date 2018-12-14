@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 移動するインターフェース
 /// </summary>
-public interface IMove {
+public interface IEnemyMove {
 
 
     void Move(float x, float z);

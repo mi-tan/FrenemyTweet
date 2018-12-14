@@ -44,7 +44,7 @@ public class PlayerMove : MonoBehaviour, IMove
     /// </summary>
     /// <param name="inputMoveHorizontal">移動水平入力</param>
     /// <param name="inputMoveVertical">移動垂直入力</param>
-    public void Move(float inputMoveHorizontal, float inputMoveVertical)
+    public void UpdateMove(float inputMoveHorizontal, float inputMoveVertical)
     {
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;

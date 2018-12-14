@@ -36,9 +36,8 @@ public class PlayerInput : MonoBehaviour
         float inputAttack = Input.GetAxisRaw(INPUT_ATTACK);
 
         // 移動
-        iMove.Move(inputMoveHorizontal, inputMoveVertical);
-
-        if(Input.GetMouseButtonDown(0))
-        iPlayerAttack.Attack();
+        iMove.UpdateMove(inputMoveHorizontal, inputMoveVertical);
+        // 攻撃
+        iPlayerAttack.UpdateAttack(inputAttack);
     }
 }

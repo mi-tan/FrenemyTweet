@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IMove
 {
-    void Move(float inputMoveHorizontal, float inputMoveVertical);
+    void UpdateMove(float inputMoveHorizontal, float inputMoveVertical);
 }

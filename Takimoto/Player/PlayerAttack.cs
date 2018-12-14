@@ -123,7 +123,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        if (Input.GetAxisRaw(INPUT_ATTACK) >= 1)
+        if (Input.GetAxisRaw("Attack") >= 1)
         {
             if (isInput) { return; }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMove
+public interface IPlayerMove
 {
     void UpdateMove(float inputMoveHorizontal, float inputMoveVertical);
 }

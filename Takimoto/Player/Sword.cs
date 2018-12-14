@@ -234,8 +234,6 @@ class Sword : MeleeWeapon
         float step = FACE_SPEED * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation, attackQuaternion, step);
-
-        //transform.rotation = attackQuaternion;
     }
 
     private IEnumerator AttackDelay()

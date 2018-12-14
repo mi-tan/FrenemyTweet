@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    private IMove iMove;
+    private IPlayerMove iPlayerMove;
     private IPlayerAttack iPlayerAttack;
 
     /// <summary>
@@ -24,7 +24,7 @@ public class PlayerInput : MonoBehaviour
     void Awake()
     {
         // コンポーネントを取得
-        iMove = GetComponent<IMove>();
+        iPlayerMove = GetComponent<IPlayerMove>();
         iPlayerAttack = GetComponent<IPlayerAttack>();
     }
 
@@ -36,7 +36,7 @@ public class PlayerInput : MonoBehaviour
         float inputAttack = Input.GetAxisRaw(INPUT_ATTACK);
 
         // 移動
-        iMove.UpdateMove(inputMoveHorizontal, inputMoveVertical);
+        iPlayerMove.UpdateMove(inputMoveHorizontal, inputMoveVertical);
         // 攻撃
         iPlayerAttack.UpdateAttack(inputAttack);
     }

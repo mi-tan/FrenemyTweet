@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーの移動を行うクラス
 /// </summary>
-public class PlayerMove : MonoBehaviour, IMove
+public class PlayerMove : MonoBehaviour, IPlayerMove
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationController playerAnimationController;

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+/// <summary>
+/// シーン遷移の管理クラス
+/// </summary>
 public class SceneController{
 
     /// <summary>

@@ -37,7 +37,7 @@ public class MainGameManager : MonoBehaviour {
         //    SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
         //}
 
-        // 時間をカウントする
+        // 時間をカウントする(毎フレーム)
         (this).UpdateAsObservable()
         .Subscribe(_ => { TimeCount += Time.deltaTime; });
     }

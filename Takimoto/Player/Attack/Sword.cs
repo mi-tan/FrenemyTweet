@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーの通常攻撃を行うクラス
+/// 剣
 /// </summary>
-public class PlayerAttack : MonoBehaviour
+class Sword : MeleeWeapon
 {
     private PlayerStateManager playerStateManager;
-    private PlayerAnimationController playerAnimationController;
+    private PlayerAnimationManager playerAnimationManager;
 
     /// <summary>
     /// 入力中か
@@ -72,7 +72,7 @@ public class PlayerAttack : MonoBehaviour
         /// </summary>
         public float moveSpeed;
     }
-    public MoveParameters[] moveParameters;
+    public MoveParameters[] moveParameters = new MoveParameters[4];
     private MoveParameters moveParameter;
 
 
@@ -80,18 +80,14 @@ public class PlayerAttack : MonoBehaviour
     {
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
-        playerAnimationController = GetComponent<PlayerAnimationController>();
+        playerAnimationManager = GetComponent<PlayerAnimationManager>();
+
+        // 初期化
+        playerAnimationManager.Animate(
+            PlayerAnimationManager.PARAMETER_INT_COMBO, combo);
     }
 
-    // Use this for initialization
-    void Start () {
-        // 初期化
-        playerAnimationController.Animate(
-            PlayerAnimationController.PARAMETER_INT_COMBO, combo);
-    }
-	
-	// Update is called once per frame
-	void Update ()
+    public override void UpdateAttack(float inputAttack)
     {
         if (isAttack)
         {
@@ -99,7 +95,7 @@ public class PlayerAttack : MonoBehaviour
             FaceAttack(attackQuaternion);
 
             time += Time.deltaTime;
-            if(time >= moveParameter.moveTime)
+            if (time >= moveParameter.moveTime)
             {
                 isMove = true;
             }
@@ -123,12 +119,12 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        if (Input.GetAxisRaw("Attack") >= 1)
+        if (inputAttack >= 1)
         {
             if (isInput) { return; }
 
-            // 通常攻撃
-            Attack();
+            // 剣攻撃
+            AttackSword();
 
             isInput = true;
         }
@@ -139,9 +135,9 @@ public class PlayerAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// 通常攻撃
+    /// 剣攻撃
     /// </summary>
-    void Attack()
+    void AttackSword()
     {
         if (attackDelayCoroutine != null || maxComboCoroutine != null) { return; }
 
@@ -151,38 +147,21 @@ public class PlayerAttack : MonoBehaviour
         attackDelayCoroutine = StartCoroutine(AttackDelay());
 
         combo++;
-        playerAnimationController.Animate(
-            PlayerAnimationController.PARAMETER_INT_COMBO, combo);
+        playerAnimationManager.Animate(
+            PlayerAnimationManager.PARAMETER_INT_COMBO, combo);
 
         // 通常攻撃アニメーションを再生
-        playerAnimationController.Animate(
-            PlayerAnimationController.PARAMETER_TRIGGER_ATTACK);
+        playerAnimationManager.Animate(
+            PlayerAnimationManager.PARAMETER_TRIGGER_ATTACK);
 
-        // 移動入力を取得
-        float moveHorizontal = Input.GetAxisRaw("MoveHorizontal");
-        float moveVertical = Input.GetAxisRaw("MoveVertical");
+        Vector3 attackDirection = Vector3.Scale(
+            Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
-        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveForward = cameraForward * moveVertical + Camera.main.transform.right * moveHorizontal;
-
-        // 攻撃角度を計算
-        Vector3 attackDirection = moveForward;
-
-        // 移動入力がされていなかったら
-        if (attackDirection != Vector3.zero)
-        {
-            attackQuaternion = Quaternion.LookRotation(attackDirection);
-        }
-        else
-        {
-            attackQuaternion = transform.rotation;
-        }
-
-        //attackQuaternion = Quaternion.LookRotation(cameraForward);
+        attackQuaternion = Quaternion.LookRotation(attackDirection);
 
         isMove = false;
-        // 移動パラメータを更新
-        UpdateMoveParameter();
+        // 移動パラメータを変更
+        ChangeMoveParameter();
         isAttack = true;
 
         // 移動位置を計算
@@ -208,9 +187,9 @@ public class PlayerAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動パラメータを更新
+    /// 移動パラメータを変更
     /// </summary>
-    void UpdateMoveParameter()
+    void ChangeMoveParameter()
     {
         // 初期化
         time = 0f;
@@ -219,8 +198,8 @@ public class PlayerAttack : MonoBehaviour
         switch (combo)
         {
             case 1:
-                if (playerAnimationController.GetBool(
-                    PlayerAnimationController.PARAMETER_BOOL_RUN))
+                if (playerAnimationManager.GetBool(
+                    PlayerAnimationManager.PARAMETER_BOOL_RUN))
                 {
                     num = 0;
                 }
@@ -255,8 +234,6 @@ public class PlayerAttack : MonoBehaviour
         float step = FACE_SPEED * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation, attackQuaternion, step);
-
-        //transform.rotation = attackQuaternion;
     }
 
     private IEnumerator AttackDelay()

@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour, IPlayerMove
 {
     private PlayerStateManager playerStateManager;
-    private PlayerAnimationController playerAnimationController;
+    private PlayerAnimationManager playerAnimationManager;
 
     /// <summary>
     /// 入力の遊び値
@@ -33,7 +33,7 @@ public class PlayerMove : MonoBehaviour, IPlayerMove
     {
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
-        playerAnimationController = GetComponent<PlayerAnimationController>();
+        playerAnimationManager = GetComponent<PlayerAnimationManager>();
 
         // 移動方向を初期化
         moveQuaternion = transform.rotation;
@@ -57,8 +57,8 @@ public class PlayerMove : MonoBehaviour, IPlayerMove
             Mathf.Abs(inputMoveVertical) > INPUT_IDLE_VALUE)
         {
             // 走るアニメーションを再生
-            playerAnimationController.Animate(
-                PlayerAnimationController.PARAMETER_BOOL_RUN, true);
+            playerAnimationManager.Animate(
+                PlayerAnimationManager.PARAMETER_BOOL_RUN, true);
 
             // 現在のプレイヤーの状態が行動可能だったら
             if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
@@ -78,8 +78,8 @@ public class PlayerMove : MonoBehaviour, IPlayerMove
         else
         {
             // 走るアニメーションを停止
-            playerAnimationController.Animate(
-                PlayerAnimationController.PARAMETER_BOOL_RUN, false);
+            playerAnimationManager.Animate(
+                PlayerAnimationManager.PARAMETER_BOOL_RUN, false);
         }
     }
 

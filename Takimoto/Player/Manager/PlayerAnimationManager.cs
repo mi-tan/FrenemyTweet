@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーのアニメーションを制御するクラス
+/// プレイヤーのアニメーションを管理するクラス
 /// </summary>
-public class PlayerAnimationController : MonoBehaviour
+public class PlayerAnimationManager : MonoBehaviour
 {
     private Animator playerAnimator;
 

@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
     private float distance;
     private float cameraY;
 
-    private float d;
+    private float initialDistance;
 
     // Use this for initialization
     void Start ()
@@ -42,9 +42,9 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        distance = Vector3.Distance(transform.position, targetPlayer.transform.position + targetPlayer.transform.up * cameraY);
-        d = distance;
         cameraY = transform.position.y;
+        distance = Vector3.Distance(transform.position, targetPlayer.transform.position + targetPlayer.transform.up * cameraY);
+        initialDistance = distance;
     }
 	
 	// Update is called once per frame
@@ -61,6 +61,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     void RotateCamera()
     {
+        // ↓PlayerInputから入力するように修正予定↓
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         float rotationHorizontal = Input.GetAxisRaw("RotationHorizontal");
@@ -97,19 +98,19 @@ public class CameraController : MonoBehaviour
         // 障害物の前にカメラを移動
         if (Physics.Linecast(targetPlayer.transform.position + targetPlayer.transform.up * cameraY, test, out hit, LayerMask.GetMask("Field")))
         {
-            d = Vector3.Distance(targetPlayer.transform.position + targetPlayer.transform.up * cameraY, hit.point);
+            initialDistance = Vector3.Distance(targetPlayer.transform.position + targetPlayer.transform.up * cameraY, hit.point);
 
-            if (d > distance)
+            if (initialDistance > distance)
             {
-                d = distance;
+                initialDistance = distance;
             }
         }
         else
         {
-            d = distance;
+            initialDistance = distance;
         }
         Debug.DrawLine(targetPlayer.transform.position + targetPlayer.transform.up * cameraY, test, Color.red);
 
-        transform.position = targetPlayer.transform.position + targetPlayer.transform.up * cameraY - transform.forward * d;
+        transform.position = targetPlayer.transform.position + targetPlayer.transform.up * cameraY - transform.forward * initialDistance;
     }
 }

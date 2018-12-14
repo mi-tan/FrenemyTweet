@@ -18,19 +18,21 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// マウス垂直感度
     /// </summary>
-    private float mouseYSpeed = 1f;
+    private float mouseYSpeed = 1.5f;
     /// <summary>
     /// コントローラ水平感度
     /// </summary>
-    private float rotationHorizontalSpeed = 400f;
+    private float rotationHorizontalSpeed = 300f;
     /// <summary>
     /// コントローラ垂直感度
     /// </summary>
-    private float rotationVerticalSpeed = 1f;
+    private float rotationVerticalSpeed = 200f;
 
-    private float distance;
+    const float UPPER_LIMIT = 320f;
+    const float LOWER_LIMIT = 70f;
+
     private float cameraY;
-
+    private float distance;
     private float initialDistance;
 
     // Use this for initialization
@@ -67,16 +69,18 @@ public class CameraController : MonoBehaviour
         float rotationHorizontal = Input.GetAxisRaw("RotationHorizontal");
         float rotationVertical = Input.GetAxisRaw("RotationVertical");
 
-        if(transform.eulerAngles.x < -40)
+        if(transform.localEulerAngles.x < UPPER_LIMIT && transform.localEulerAngles.x > 180f)
         {
-            if (mouseY < 0) { mouseY = 0; }
+            //Debug.Log("上限");
+            if (mouseY > 0) { mouseY = 0; }
             if (rotationVertical < 0) { rotationVertical = 0; }
         }
-        //if(transform.eulerAngles.x < -80)
-        //{
-        //    if (mouseY < 0) { mouseY = 0; }
-        //    if (rotationVertical < 0) { rotationVertical = 0; }
-        //}
+        else if (transform.eulerAngles.x > LOWER_LIMIT && transform.localEulerAngles.x < 180f)
+        {
+            //Debug.Log("下限");
+            if (mouseY < 0) { mouseY = 0; }
+            if (rotationVertical > 0) { rotationVertical = 0; }
+        }
 
         transform.RotateAround(
             targetPos + targetPlayer.transform.up * cameraY,
@@ -94,7 +98,7 @@ public class CameraController : MonoBehaviour
         transform.RotateAround(
             targetPos + targetPlayer.transform.up * cameraY,
             transform.right,
-            rotationVertical * rotationVerticalSpeed);
+            rotationVertical * rotationVerticalSpeed * Time.deltaTime);
     }
 
     /// <summary>

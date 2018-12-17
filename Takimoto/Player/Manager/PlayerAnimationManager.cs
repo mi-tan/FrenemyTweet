@@ -14,7 +14,7 @@ public class PlayerAnimationManager : MonoBehaviour
     /// </summary>
     public const string PARAMETER_BOOL_RUN = "Run";
     /// <summary>
-    /// 近接攻撃パラメータ
+    /// 通常攻撃パラメータ
     /// </summary>
     public const string PARAMETER_TRIGGER_ATTACK = "Attack";
     /// <summary>

@@ -8,21 +8,23 @@ using UnityEngine;
 public class EnemyController : NormalEnemy {
 
     private IEnemyMove iEnemyMove;
+    private IEnemyAttack iEnemyAttack;
 
-    int x = 0;
-    int y = 0;
+    // int x = 0;
+    // int y = 0;
 
     /// <summary>
     /// 移動水平入力
     /// </summary>
-    const string INPUT_MOVE_HORIZONTAL = "MoveHorizontal";
+    const string INPUT_MOVE_HORIZONTAL = "Horizontal";
     /// <summary>
     /// 移動垂直入力
     /// </summary>
-    const string INPUT_MOVE_VERTICAL = "MoveVertical";
+    const string INPUT_MOVE_VERTICAL = "Vertical";
 
     private void Start () {
         iEnemyMove = GetComponent<IEnemyMove>();
+        iEnemyAttack = GetComponent<IEnemyAttack>();
 
     }
 	
@@ -32,6 +34,8 @@ public class EnemyController : NormalEnemy {
         float tesZ = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);
 
         // iMove.Move(x, y);
-        iEnemyMove.Move(tesX, tesZ);
+        iEnemyMove.Move(tesX, tesZ, enemyMoveSpeed);
+
+
 	}
 }

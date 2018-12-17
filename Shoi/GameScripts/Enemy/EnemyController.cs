@@ -10,6 +10,8 @@ public class EnemyController : NormalEnemy {
     private IEnemyMove iEnemyMove;
     private IEnemyAttack iEnemyAttack;
 
+    private EnemyDamage enemyDamage;
+
     // int x = 0;
     // int y = 0;
 
@@ -25,6 +27,7 @@ public class EnemyController : NormalEnemy {
     private void Start () {
         iEnemyMove = GetComponent<IEnemyMove>();
         iEnemyAttack = GetComponent<IEnemyAttack>();
+        enemyDamage = GetComponent<EnemyDamage>();
 
     }
 	
@@ -38,4 +41,10 @@ public class EnemyController : NormalEnemy {
 
 
 	}
+
+    public override void TakeDamage(int damage)
+    {
+        enemyDamage.TakeDamage(damage);
+        //base.TakeDamage(damage);
+    }
 }

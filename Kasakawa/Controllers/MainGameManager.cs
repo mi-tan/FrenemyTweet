@@ -29,13 +29,15 @@ public class MainGameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        foreach (var sceneName in subSceneNames)
+        {
+            SceneController.AddSceneAsync(sceneName);
+        }
+
+        //yield return new WaitForSeconds(1f);
+
         // ゲーム開始時のイベントを実行
         startSubject.OnNext(Unit.Default);
-
-        //foreach (var sceneName in subSceneNames)
-        //{
-        //    SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-        //}
 
         // 時間をカウントする(毎フレーム)
         (this).UpdateAsObservable()

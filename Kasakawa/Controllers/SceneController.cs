@@ -23,6 +23,24 @@ public class SceneController{
     /// <param name="sceneName"></param>
     public static void AddSceneAsync(string sceneName)
     {
+
+        string sceneNameTemp = null;
+
+        // 現在読み込まれているシーン数だけループ
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+
+            // 読み込まれているシーンを取得する
+            sceneNameTemp = SceneManager.GetSceneAt(i).name;
+
+            if (sceneNameTemp.Equals(sceneName))
+            {
+                Debug.LogWarning($"シーン名:{sceneName}は既に読み込まれています");
+                return;
+            }
+
+        }
+
         SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
 

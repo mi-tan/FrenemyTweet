@@ -5,11 +5,11 @@ using UnityEngine;
 /// <summary>
 /// 敵の攻撃クラス
 /// </summary>
-public class EnemyAttack : IEnemyAttack
+public class EnemyAttack : MonoBehaviour, IEnemyAttack
 {
 
     public void Attack()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("攻撃");
     }
 }

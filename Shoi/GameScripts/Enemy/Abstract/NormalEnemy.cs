@@ -8,6 +8,6 @@ using UnityEngine;
 public class NormalEnemy : EnemyBase {
 
     [SerializeField, Tooltip("移動速度")]
-    protected int moveSpeed;
+    protected float enemyMoveSpeed;
 
 }

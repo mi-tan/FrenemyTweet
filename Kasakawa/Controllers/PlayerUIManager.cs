@@ -30,16 +30,21 @@ public class PlayerUIManager : MonoBehaviour
         InitializePlayerUI();
     }
 
+    /// <summary>
+    /// UI初期化処理
+    /// </summary>
     private void InitializePlayerUI()
     {
         int playerHP = gameManager.player.GetHp();
-
-        Debug.Log(playerHP);
 
         hpSlider.maxValue = gameManager.player.GetMaxHp();
         hpSlider.value = playerHP;
     }
 
+    /// <summary>
+    /// プレイヤーのHPをUIに反映する
+    /// </summary>
+    /// <param name="hp"></param>
     private void ChangeHPValue(int hp)
     {
         hpSlider.value = hp;

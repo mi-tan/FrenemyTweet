@@ -7,10 +7,6 @@ using UnityEngine;
 /// </summary>
 public abstract class EnemyBase : MonoBehaviour, IDamage
 {
-    [SerializeField,Tooltip("体力")]
-    protected int hp;
-    [SerializeField, Tooltip("攻撃力")]
-    protected int power;
 
     public virtual void TakeDamage(int damage)
     {

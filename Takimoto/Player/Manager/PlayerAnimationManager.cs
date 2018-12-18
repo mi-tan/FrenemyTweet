@@ -12,15 +12,15 @@ public class PlayerAnimationManager : MonoBehaviour
     /// <summary>
     /// 走るパラメータ
     /// </summary>
-    public const string PARAMETER_BOOL_RUN = "Run";
+    private const string PARAMETER_BOOL_RUN = "Run";
     /// <summary>
     /// 通常攻撃パラメータ
     /// </summary>
-    public const string PARAMETER_TRIGGER_ATTACK = "Attack";
+    private const string PARAMETER_TRIGGER_ATTACK = "Attack";
     /// <summary>
     /// コンボパラメータ
     /// </summary>
-    public const string PARAMETER_INT_COMBO = "Combo";
+    private const string PARAMETER_INT_COMBO = "Combo";
 
 
     void Awake()
@@ -29,23 +29,29 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
     }
 
-    public void Animate(string name)
+
+    public void SetBoolRun(bool value)
     {
-        playerAnimator.SetTrigger(name);
+        playerAnimator.SetBool(PARAMETER_BOOL_RUN, value);
     }
 
-    public void Animate(string name, bool value)
+    public bool GetBoolRun()
     {
-        playerAnimator.SetBool(name, value);
+        return playerAnimator.GetBool(PARAMETER_BOOL_RUN);
     }
 
-    public void Animate(string name, int value)
+    public void SetTriggerAttack()
     {
-        playerAnimator.SetInteger(name, value);
+        playerAnimator.SetTrigger(PARAMETER_TRIGGER_ATTACK);
     }
 
-    public bool GetBool(string name)
+    public void SetBoolAttack(bool value)
     {
-        return playerAnimator.GetBool(name);
+        playerAnimator.SetBool(PARAMETER_TRIGGER_ATTACK, value);
+    }
+
+    public void SetIntegerCombo(int value)
+    {
+        playerAnimator.SetInteger(PARAMETER_INT_COMBO, value);
     }
 }

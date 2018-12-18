@@ -11,8 +11,7 @@ using UnityEngine.UI;
 public class PlayerUIManager : MonoBehaviour
 {
     [Inject]
-    [SerializeField]
-    MainGameManager gameManager;
+    private MainGameManager gameManager;
 
     [SerializeField]
     private Slider hpSlider;
@@ -20,7 +19,9 @@ public class PlayerUIManager : MonoBehaviour
     void Awake()
     {
 
-
+        // プレイヤーのHPが変化した場合、表示を更新する
+        gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetHp())
+            .Subscribe(hp => { ChangeHPValue(hp); });
 
     }
 
@@ -31,7 +32,17 @@ public class PlayerUIManager : MonoBehaviour
 
     private void InitializePlayerUI()
     {
-        
+        int playerHP = gameManager.player.GetHp();
+
+        Debug.Log(playerHP);
+
+        hpSlider.maxValue = gameManager.player.GetMaxHp();
+        hpSlider.value = playerHP;
+    }
+
+    private void ChangeHPValue(int hp)
+    {
+        hpSlider.value = hp;
     }
 
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class MainGameTimerUIManager : MonoBehaviour
 {
     [Inject]
-    MainGameManager gameManager;
+    private MainGameManager gameManager;
 
     [SerializeField]
     private Text timeText;

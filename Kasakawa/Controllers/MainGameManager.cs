@@ -29,6 +29,9 @@ public class MainGameManager : MonoBehaviour {
     /// </summary>
     public float TimeCount { get; private set; } = 0f;
 
+    [Inject]
+    public PlayerProvider player;
+
     // Use this for initialization
     void Start()
     {

@@ -8,8 +8,7 @@ using UnityEngine.UI;
 public class GameUIManager : MonoBehaviour
 {
     [Inject]
-    [SerializeField]
-    MainGameManager gameManager;
+    private MainGameManager gameManager;
 
     [SerializeField]
     private GameObject startUI;

@@ -24,17 +24,22 @@ public class MainGameManager : MonoBehaviour {
     [Header("サブシーン名のリスト")]
     private string[] subSceneNames;
 
+    /// <summary>
+    /// 経過時間をカウントする
+    /// </summary>
     public float TimeCount { get; private set; } = 0f;
+
+    [Inject]
+    public PlayerProvider player;
 
     // Use this for initialization
     void Start()
     {
+        // サブシーンを読み込む
         foreach (var sceneName in subSceneNames)
         {
             SceneController.AddSceneAsync(sceneName);
         }
-
-        //yield return new WaitForSeconds(1f);
 
         // ゲーム開始時のイベントを実行
         startSubject.OnNext(Unit.Default);

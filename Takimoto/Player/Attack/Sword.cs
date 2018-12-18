@@ -72,7 +72,8 @@ class Sword : MeleeWeapon
         /// </summary>
         public float moveSpeed;
     }
-    public MoveParameters[] moveParameters = new MoveParameters[4];
+    [SerializeField]
+    private MoveParameters[] moveParameters = new MoveParameters[4];
     private MoveParameters moveParameter;
 
 

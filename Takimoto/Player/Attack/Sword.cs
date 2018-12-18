@@ -81,10 +81,6 @@ class Sword : MeleeWeapon
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
-
-        // 初期化
-        playerAnimationManager.Animate(
-            PlayerAnimationManager.PARAMETER_INT_COMBO, combo);
     }
 
     public override void UpdateAttack(float inputAttack)

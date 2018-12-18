@@ -77,6 +77,8 @@ public class PlayerMove : MonoBehaviour, IPlayerMove
         }
         else
         {
+            moveQuaternion = transform.rotation;
+
             // 走るアニメーションを停止
             playerAnimationManager.Animate(
                 PlayerAnimationManager.PARAMETER_BOOL_RUN, false);

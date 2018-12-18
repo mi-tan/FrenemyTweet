@@ -11,13 +11,14 @@ public class TwitterComponent : MonoBehaviour {
     //public GameObject TimeLineGet;
     [SerializeField,Tooltip("取得するツイートの数")]
     private int getTweetNum;
-
+    [SerializeField]
+    private IconGet _Iconget;
     private const string CONSUMER_KEY = "uAWdP7574vZXG95E3YxCxdePq";
     private const string CONSUMER_SECRET = "NIMvj4ImnUfZKFXtDB4GEdYSIA4K6NOHwDG6cZCOf6O0XGfMYm";
     //private string user_id = "TwitterUserID";
 
     Twitter.RequestTokenResponse m_RequestTokenResponse;
-    Twitter.AccessTokenResponse m_AccessTokenResponse;
+    public Twitter.AccessTokenResponse m_AccessTokenResponse;
     Twitter.AccessTokenResponse t_AccessTokenResponse;
 
     const string PLAYER_PREFS_TWITTER_USER_ID = "TwitterUserID";
@@ -58,6 +59,13 @@ public class TwitterComponent : MonoBehaviour {
             new Twitter.AccessTokenCallback(this.OnAccessTokenCallback)));
     }
 
+    // アイコンを取得
+    public void OnClickIcon()
+    {
+        StartCoroutine(Twitter.API.GetUserIcon(m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse, 
+              new Twitter.GetUserIconCallback(this.OnGetUserIcon)));
+    }
+
     // ツイート
     //public void OnClickTweetButon()
     //{
@@ -66,6 +74,12 @@ public class TwitterComponent : MonoBehaviour {
     //    StartCoroutine(Twitter.API.PostTweet(myTweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
     //        new Twitter.PostTweetCallback(this.OnPostTweet)));
     //}
+    
+    internal class ScreenNameGet
+    {
+        Twitter.AccessTokenResponse response;
+    }
+
 
     void OnRequestTokenCallback(bool success, Twitter.RequestTokenResponse response)
     {
@@ -136,10 +150,10 @@ public class TwitterComponent : MonoBehaviour {
     void OnGetUserTimeline(bool success, string response)
     {
         print("GetUserTimeline- " + (success ? "succedded." : "failed."));
-
         if (success)
         {
             var json = JSON.Parse(response);
+            
             // イナミュレーターを取得
             var jsonEnum = json.GetEnumerator();
             while (jsonEnum.MoveNext())
@@ -150,5 +164,16 @@ public class TwitterComponent : MonoBehaviour {
             }
         }
         isGetSentence = true;
+    }
+    
+
+    void OnGetUserIcon(bool success, string response)
+    {
+        print("GetUserIcon- " + (success ? "seccedded." : "failed."));
+
+        if(success)
+        {
+            Debug.Log("ぬ");
+        }
     }
 }

@@ -14,7 +14,7 @@ public class PlayerDamage : MonoBehaviour
 
     public void Damage(int damage)
     {
-        playerParameter.Hp -= damage;
+        playerParameter.SetHp(playerParameter.Hp - damage);
 
         Debug.Log("プレイヤーに" + damage + "ダメージ");
         //Debug.Log("残りHP："+ playerParameter.Hp);

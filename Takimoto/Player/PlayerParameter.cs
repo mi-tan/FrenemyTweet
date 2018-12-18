@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class PlayerParameter : MonoBehaviour
 {
-    private int maxHp = 100;
-    public int MaxHp
-    {
-        get;
-        set;
-    }
+    public int MaxHp { get; private set; } = 100;
 
-    private int hp = 100;
-    public int Hp
+    public int Hp { get; private set; } = 100;
+
+    public void SetHp(int value)
     {
-        get;
-        set;
+        Hp = Mathf.Clamp(value, 0, MaxHp);
     }
 }

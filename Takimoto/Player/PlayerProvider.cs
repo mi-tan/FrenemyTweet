@@ -6,6 +6,7 @@ public class PlayerProvider : CharacterBase
 {
     private PlayerDamage playerDamage;
     private PlayerParameter playerParameter;
+    private PlayerSkill playerSkill;
 
 
     void Awake()
@@ -13,6 +14,7 @@ public class PlayerProvider : CharacterBase
         // コンポーネントを取得
         playerDamage = GetComponent<PlayerDamage>();
         playerParameter = GetComponent<PlayerParameter>();
+        playerSkill = GetComponent<PlayerSkill>();
     }
 
     public override void TakeDamage(int damage)
@@ -28,5 +30,10 @@ public class PlayerProvider : CharacterBase
     public int GetMaxHp()
     {
         return playerParameter.MaxHp;
+    }
+
+    public PlayerSkillBase GetSelectSkill()
+    {
+        return playerSkill.GetSelectSkill();
     }
 }

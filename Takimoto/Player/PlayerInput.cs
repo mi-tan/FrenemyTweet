@@ -7,6 +7,7 @@ public class PlayerInput : MonoBehaviour
     private IPlayerMove iPlayerMove;
     private IPlayerAttack iPlayerAttack;
     private PlayerCamera playerCamera;
+    private PlayerSkill playerSkill;
 
     /// <summary>
     /// 移動水平入力
@@ -44,6 +45,7 @@ public class PlayerInput : MonoBehaviour
         iPlayerMove = GetComponent<IPlayerMove>();
         iPlayerAttack = GetComponent<IPlayerAttack>();
         playerCamera = GetComponent<PlayerCamera>();
+        playerSkill = GetComponent<PlayerSkill>();
     }
 
     void Update()
@@ -52,16 +54,18 @@ public class PlayerInput : MonoBehaviour
         float inputMoveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);
         float inputMoveVertical = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);
         float inputAttack = Input.GetAxisRaw(INPUT_ATTACK);
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
-        float rotationHorizontal = Input.GetAxisRaw("RotationHorizontal");
-        float rotationVertical = Input.GetAxisRaw("RotationVertical");
+        float inputMouseX = Input.GetAxis("Mouse X");
+        float inputMouseY = Input.GetAxis("Mouse Y");
+        float inputRotationHorizontal = Input.GetAxisRaw("RotationHorizontal");
+        float inputRotationVertical = Input.GetAxisRaw("RotationVertical");
 
         // 移動
         iPlayerMove.UpdateMove(inputMoveHorizontal, inputMoveVertical);
         // 攻撃
         iPlayerAttack.UpdateAttack(inputAttack);
         // カメラ
-        playerCamera.UpdateCamera(mouseX, mouseY, rotationHorizontal, rotationVertical);
+        playerCamera.UpdateCamera(inputMouseX, inputMouseY, inputRotationHorizontal, inputRotationVertical);
+        // スキル発動
+        playerSkill.UpdateSkill(inputAttack);
     }
 }

@@ -46,7 +46,7 @@ public class PlayerInput : MonoBehaviour
         playerCamera = GetComponent<PlayerCamera>();
     }
 
-	void Update()
+    void Update()
     {
         // 入力を取得
         float inputMoveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);

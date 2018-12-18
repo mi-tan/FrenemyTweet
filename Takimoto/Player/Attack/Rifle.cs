@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 銃
+/// </summary>
 class Rifle : RangeWeapon
 {
+    private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
 
     /// <summary>
@@ -15,6 +19,7 @@ class Rifle : RangeWeapon
     void Awake()
     {
         // コンポーネントを取得
+        playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
     }
 
@@ -34,6 +39,8 @@ class Rifle : RangeWeapon
         // 通常攻撃アニメーションを再生
         playerAnimationManager.Animate(
             PlayerAnimationManager.PARAMETER_TRIGGER_ATTACK, isInput);
+
+        // 開発途中のため、攻撃しながら歩けます
     }
 
     void AttackRifle()

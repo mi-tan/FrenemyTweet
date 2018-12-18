@@ -61,11 +61,11 @@ public class PlayerInput : MonoBehaviour
 
         // 移動
         iPlayerMove.UpdateMove(inputMoveHorizontal, inputMoveVertical);
-        // 攻撃
+        // 通常攻撃
         iPlayerAttack.UpdateAttack(inputAttack);
         // カメラ
         playerCamera.UpdateCamera(inputMouseX, inputMouseY, inputRotationHorizontal, inputRotationVertical);
-        // スキル発動
+        // スキル発動、切り替え
         playerSkill.UpdateSkill(inputAttack);
     }
 }

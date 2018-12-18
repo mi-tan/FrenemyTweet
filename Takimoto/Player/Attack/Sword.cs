@@ -143,12 +143,10 @@ class Sword : MeleeWeapon
         attackDelayCoroutine = StartCoroutine(AttackDelay());
 
         combo++;
-        playerAnimationManager.Animate(
-            PlayerAnimationManager.PARAMETER_INT_COMBO, combo);
+        playerAnimationManager.SetIntegerCombo(combo);
 
         // 通常攻撃アニメーションを再生
-        playerAnimationManager.Animate(
-            PlayerAnimationManager.PARAMETER_TRIGGER_ATTACK);
+        playerAnimationManager.SetTriggerAttack();
 
         Vector3 attackDirection = Vector3.Scale(
             Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
@@ -194,8 +192,7 @@ class Sword : MeleeWeapon
         switch (combo)
         {
             case 1:
-                if (playerAnimationManager.GetBool(
-                    PlayerAnimationManager.PARAMETER_BOOL_RUN))
+                if (playerAnimationManager.GetBoolRun())
                 {
                     num = 0;
                 }
@@ -248,7 +245,9 @@ class Sword : MeleeWeapon
         yield return new WaitForSeconds(STOP_COMBO_TIME);
 
         // コンボをリセット
-        ResetCombo();
+        combo = 0;
+        // プレイヤーの状態を行動可能に変更
+        playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
 
         stopComboCoroutine = null;
     }
@@ -260,19 +259,10 @@ class Sword : MeleeWeapon
         yield return new WaitForSeconds(MAX_COMBO_TIME);
 
         // コンボをリセット
-        ResetCombo();
-
-        maxComboCoroutine = null;
-    }
-
-    /// <summary>
-    /// コンボをリセット
-    /// </summary>
-    void ResetCombo()
-    {
         combo = 0;
-
         // プレイヤーの状態を行動可能に変更
         playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
+
+        maxComboCoroutine = null;
     }
 }

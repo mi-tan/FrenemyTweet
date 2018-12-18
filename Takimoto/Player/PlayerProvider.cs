@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class PlayerProvider : CharacterBase
+public class PlayerProvider : CharacterBase
 {
     private PlayerDamage playerDamage;
     private PlayerParameter playerParameter;
@@ -23,5 +23,10 @@ class PlayerProvider : CharacterBase
     public int GetHp()
     {
         return playerParameter.Hp;
+    }
+
+    public int GetMaxHp()
+    {
+        return playerParameter.MaxHp;
     }
 }

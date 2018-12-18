@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーの移動を行うクラス
+/// 近接プレイヤーの移動を行うクラス
 /// </summary>
-public class PlayerMove : MonoBehaviour, IPlayerMove
+public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
@@ -57,8 +57,7 @@ public class PlayerMove : MonoBehaviour, IPlayerMove
             Mathf.Abs(inputMoveVertical) > INPUT_IDLE_VALUE)
         {
             // 走るアニメーションを再生
-            playerAnimationManager.Animate(
-                PlayerAnimationManager.PARAMETER_BOOL_RUN, true);
+            playerAnimationManager.SetBoolRun(true);
 
             // 現在のプレイヤーの状態が行動可能だったら
             if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
@@ -80,8 +79,7 @@ public class PlayerMove : MonoBehaviour, IPlayerMove
             moveQuaternion = transform.rotation;
 
             // 走るアニメーションを停止
-            playerAnimationManager.Animate(
-                PlayerAnimationManager.PARAMETER_BOOL_RUN, false);
+            playerAnimationManager.SetBoolRun(false);
         }
     }
 

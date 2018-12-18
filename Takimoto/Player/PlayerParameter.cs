@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class PlayerParameter : MonoBehaviour
 {
+    private int maxHp = 100;
+    public int MaxHp
+    {
+        get;
+        set;
+    }
+
     private int hp = 100;
     public int Hp
     {
-        get
-        {
-            return hp;
-        }
-        set
-        {
-            hp = value;
-        }
+        get;
+        set;
     }
 }

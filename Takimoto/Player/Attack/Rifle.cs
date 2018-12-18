@@ -37,8 +37,7 @@ class Rifle : RangeWeapon
         }
 
         // 通常攻撃アニメーションを再生
-        playerAnimationManager.Animate(
-            PlayerAnimationManager.PARAMETER_TRIGGER_ATTACK, isInput);
+        playerAnimationManager.SetBoolAttack(isInput);
 
         // 開発途中のため、攻撃しながら歩けます
     }

@@ -11,7 +11,6 @@ using UnityEngine.EventSystems;
 public class AttackCollision : MonoBehaviour {
 
     private int attackPower = 10;
-
     public int setAttackPower{ set { attackPower = value; } }
 
     private void Awake()

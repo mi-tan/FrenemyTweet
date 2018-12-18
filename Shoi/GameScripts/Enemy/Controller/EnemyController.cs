@@ -11,9 +11,10 @@ public class EnemyController : NormalEnemy {
     private IEnemyAttack iEnemyAttack;
 
     private EnemyDamage enemyDamage;
+    private EnemyParameter enemyParameter;
 
-    // int x = 0;
-    // int y = 0;
+    int x = 0;
+    int y = 0;
 
     /// <summary>
     /// 移動水平入力
@@ -28,6 +29,7 @@ public class EnemyController : NormalEnemy {
         iEnemyMove = GetComponent<IEnemyMove>();
         iEnemyAttack = GetComponent<IEnemyAttack>();
         enemyDamage = GetComponent<EnemyDamage>();
+        enemyParameter = GetComponent<EnemyParameter>();
 
     }
 	
@@ -37,14 +39,18 @@ public class EnemyController : NormalEnemy {
         float tesZ = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);
 
         // iMove.Move(x, y);
-        iEnemyMove.Move(tesX, tesZ, enemyMoveSpeed);
-
+        iEnemyMove.Move(tesX, tesZ, enemyParameter.enemyMoveSpeed);
 
 	}
 
     public override void TakeDamage(int damage)
     {
         enemyDamage.TakeDamage(damage);
-        //base.TakeDamage(damage);
+
+        // HPが0以下
+        if(enemyParameter.hp <= 0)
+        {
+            enemyDamage.DeathEnemy();
+        }
     }
 }

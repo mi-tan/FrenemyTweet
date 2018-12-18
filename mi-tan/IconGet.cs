@@ -6,27 +6,21 @@ public class IconGet : MonoBehaviour {
 
     [SerializeField]
     ImageDownloder _imageDownLoder;
+    public Twitter.AccessTokenResponse sendIcon;
 
-    Twitter.AccessTokenResponse TwitterIcon;
-    string TwitterID = "";
+    [SerializeField]
+    TwitterComponent tc;
 
-    // Use this for initialization
     void Start () {
-
-	}
-	
-    public void TwitterIconGet(Twitter.AccessTokenResponse response)
-    {
-
-        TwitterID = response.UserId;
-        Debug.Log(TwitterID);
-        _imageDownLoder.GetComponent<ImageDownloder>();
-        _imageDownLoder.Icon("");
+        tc.GetComponent<TwitterComponent>();
     }
+    
 
-    public void OnClic()
+
+    public void OnClick()
     {
-        Debug.Log(TwitterID);
+        sendIcon = tc.m_AccessTokenResponse;
+        StartCoroutine(_imageDownLoder.Icon(sendIcon));
     }
 
 }

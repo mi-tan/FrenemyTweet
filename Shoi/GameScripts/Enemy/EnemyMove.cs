@@ -15,16 +15,19 @@ public class EnemyMove : MonoBehaviour, IEnemyMove
     /// <summary>
     /// 向く速度
     /// </summary>
-    const float FACE_SPEED = 1200f;
+    private const float FACE_SPEED = 1200f;
     /// <summary>
     /// 移動角度
     /// </summary>
-    Quaternion moveQuaternion;
+    private Quaternion moveQuaternion;
+
+    private EnemyAnimationController enemyAnimationController;
 
     private void Awake()
     {
         // 初期化
         moveQuaternion = transform.rotation;
+        enemyAnimationController = GetComponent<EnemyAnimationController>();
     }
 
     public void Move(float x, float z,float moveSpeed)
@@ -37,6 +40,7 @@ public class EnemyMove : MonoBehaviour, IEnemyMove
             Mathf.Abs(z) >= INPUT_VALUE)
         {
             // 移動アニメーション開始
+            enemyAnimationController.Run(true);
 
             // 移動角度を計算
             Vector3 moveDirection = new Vector3(x, 0, z);
@@ -50,6 +54,7 @@ public class EnemyMove : MonoBehaviour, IEnemyMove
         else
         {
             // 移動アニメーション停止
+            enemyAnimationController.Run(false);
         }
     }
 

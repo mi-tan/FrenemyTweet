@@ -16,12 +16,22 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private Slider hpSlider;
 
+    [SerializeField]
+    private Text skillNameText;
+
+    [SerializeField]
+    private Image skillIcon;
+
     void Awake()
     {
 
         // プレイヤーのHPが変化した場合、表示を更新する
         gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetHp())
-            .Subscribe(hp => { ChangeHPValue(hp); });
+            .Subscribe(hp => { UpdateHPValue(hp); });
+
+        // プレイヤーの選択スキルが変化した場合、表示を更新する
+        gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetSelectSkill())
+            .Subscribe(skill => { UpdateSkillInfo(skill); });
 
     }
 
@@ -38,16 +48,31 @@ public class PlayerUIManager : MonoBehaviour
         int playerHP = gameManager.player.GetHp();
 
         hpSlider.maxValue = gameManager.player.GetMaxHp();
-        hpSlider.value = playerHP;
+        UpdateHPValue(playerHP);
+
+        // 現在のスキル情報を表示する
+        UpdateSkillInfo(gameManager.player.GetSelectSkill());
+
     }
 
     /// <summary>
     /// プレイヤーのHPをUIに反映する
     /// </summary>
     /// <param name="hp"></param>
-    private void ChangeHPValue(int hp)
+    private void UpdateHPValue(int hp)
     {
         hpSlider.value = hp;
+    }
+
+    /// <summary>
+    /// プレイヤーが選択しているスキルの情報をUIに反映する
+    /// </summary>
+    /// <param name="skill"></param>
+    private void UpdateSkillInfo(PlayerSkillBase skill)
+    {
+        skillNameText.text = skill.SkillName;
+
+        skillIcon.sprite = skill.SkillIcon;
     }
 
 }

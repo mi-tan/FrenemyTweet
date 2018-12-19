@@ -9,6 +9,8 @@ public abstract class PlayerSkillBase : ScriptableObject
     private string skillName;
     [SerializeField]
     private Sprite skillIcon;
+    [SerializeField]
+    private AnimationClip skillAnimation;
 
     public string SkillName
     {
@@ -26,5 +28,13 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
-    public abstract void ActivateSkill();
+    public AnimationClip SkillAnimation
+    {
+        get
+        {
+            return skillAnimation;
+        }
+    }
+
+    public abstract void ActivateSkill(Transform createTrans);
 }

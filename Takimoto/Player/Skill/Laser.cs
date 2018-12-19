@@ -11,8 +11,13 @@ public class Laser : PlayerSkillBase
     [SerializeField]
     private AttackCollision laserPrefab;
 
-    public override void ActivateSkill()
+    [SerializeField]
+    private Vector3 createOffset;
+
+
+    public override void ActivateSkill(Transform createTrans)
     {
-        Instantiate(laserPrefab);
+        Debug.Log("レーザー生成");
+        Instantiate(laserPrefab, createTrans.position + createOffset, createTrans.rotation);
     }
 }

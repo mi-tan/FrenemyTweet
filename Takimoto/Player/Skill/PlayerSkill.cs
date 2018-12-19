@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class PlayerSkill : MonoBehaviour
 {
-    /// <summary>
-    /// スキル数
-    /// </summary>
-    const int SKILL_QUANTITY = 3;
+    private PlayerStateManager playerStateManager;
+    private PlayerAnimationManager playerAnimationManager;
+
     /// <summary>
     /// スキル番号
     /// </summary>
     private int skillNumber = 0;
 
     [SerializeField]
-    private PlayerSkillBase[] skillList = new PlayerSkillBase[SKILL_QUANTITY];
+    private PlayerSkillBase[] skillList = new PlayerSkillBase[PlayerParameter.SKILL_QUANTITY];
 
     /// <summary>
     /// 入力中か
@@ -38,6 +37,14 @@ public class PlayerSkill : MonoBehaviour
         return skillList[SkillNumber];
     }
 
+
+    void Awake()
+    {
+        // コンポーネントを取得
+        playerStateManager = GetComponent<PlayerStateManager>();
+        playerAnimationManager = GetComponent<PlayerAnimationManager>();
+    }
+
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
     {
         // スキル切り替え
@@ -55,7 +62,13 @@ public class PlayerSkill : MonoBehaviour
             // スキル発動
             if (skillList[SkillNumber] != null)
             {
-                skillList[SkillNumber].ActivateSkill();
+                // プレイヤーの状態をスキル中に変更
+                //playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
+
+                skillList[SkillNumber].ActivateSkill(transform);
+
+                playerAnimationManager.ChangeSkillClip(skillList[SkillNumber].SkillAnimation);
+                playerAnimationManager.SetTriggerSkill();
             }
             else
             {

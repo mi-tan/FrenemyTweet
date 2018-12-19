@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 class Rifle : RangeWeapon
 {
-    private PlayerStateManager playerStateManager;
+    //private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
 
     /// <summary>
@@ -19,7 +19,7 @@ class Rifle : RangeWeapon
     void Awake()
     {
         // コンポーネントを取得
-        playerStateManager = GetComponent<PlayerStateManager>();
+        //playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
     }
 

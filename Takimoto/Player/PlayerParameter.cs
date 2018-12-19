@@ -12,4 +12,9 @@ public class PlayerParameter : MonoBehaviour
     {
         Hp = Mathf.Clamp(value, 0, MaxHp);
     }
+
+    /// <summary>
+    /// スキル数
+    /// </summary>
+    public const int SKILL_QUANTITY = 3;
 }

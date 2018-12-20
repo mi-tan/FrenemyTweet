@@ -34,10 +34,11 @@ public class EnemyDamage :　MonoBehaviour {
         // 被ダメージ時のアニメーション再生
         animationController.TakeDamage(true);
         animationController.Type(randNum);
-        Observable.TimerFrame(animationController.GetFlagOffFrame).Subscribe(_ => {
-        // 被ダメージ時のアニメーション停止
+        Observable.TimerFrame(animationController.GetFlagOffFrame).Subscribe(_ =>
+        {
+            // 被ダメージ時のアニメーション停止
             animationController.TakeDamage(false);
-        });
+        }).AddTo(gameObject);
         Debug.Log($"受けたダメージ： {damage}");
     }
 

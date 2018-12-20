@@ -83,7 +83,7 @@ public class EnemyController : NormalEnemy {
 
     public override void TakeDamage(int damage)
     {
-        // 
+        // 被ダメージ時武器の当たり判定をなくす
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
         {
             weapon.AttackEnd();

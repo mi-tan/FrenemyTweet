@@ -32,20 +32,22 @@ public class AttackCollision : MonoBehaviour {
     {
         get
         {
-            if (!myMeshRenderer)
-            {
+            if (!myMeshRenderer){
                 myMeshRenderer = GetComponent<MeshRenderer>();
             }
             return myMeshRenderer;
         }
     }
 
-    //private Subject<Unit> attackStartSubject = new Subject<Unit>();
+    /// <summary>
+    /// イベントを入れるところ
+    /// </summary>
+    private Subject<Unit> attackCollisionSubject = new Subject<Unit>();
 
-    //public IObservable<Unit> OnAttackStart
-    //{
-    //    get { return attackStartSubject; }
-    //}
+    public IObservable<Unit> OnAttackCollision
+    {
+        get { return attackCollisionSubject; }
+    }
 
     private MeshRenderer myMeshRenderer;
 
@@ -72,8 +74,8 @@ public class AttackCollision : MonoBehaviour {
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        // エフェクト出す
-
+        // 登録されたイベント実行
+        attackCollisionSubject.OnNext(Unit.Default);
         CallTakeDamage(other.gameObject);
     }
 

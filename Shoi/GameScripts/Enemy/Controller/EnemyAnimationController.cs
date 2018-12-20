@@ -2,17 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAnimationController : MonoBehaviour {
-
+public class EnemyAnimationController : MonoBehaviour
+{
 
     private Animator enemyAnimator;
 
     private const string PARAMETER_BOOL_RUN = "Run";
+    private const string PARAMETER_BOOL_ATTACK = "Attack";
+    private const string PARAMETER_INT_Type = "Type";
 
     private void Awake()
     {
         // コンポーネントを取得
         enemyAnimator = GetComponent<Animator>();
+    }
+
+    /// <summary>
+    /// Runアニメーション制御
+    /// </summary>
+    /// <param name="flag"></param>
+    public void Run(bool value)
+    {
+        Animate(PARAMETER_BOOL_RUN, value);
+    }
+
+    /// <summary>
+    /// Attackアニメーション制御
+    /// </summary>
+    /// <param name="flag"></param>
+    public void Attack(bool value)
+    {
+        Animate(PARAMETER_BOOL_ATTACK, value);
+    }
+
+    public void Type(int value)
+    {
+        Animate(PARAMETER_INT_Type, value);
     }
 
     #region Animate
@@ -36,9 +61,4 @@ public class EnemyAnimationController : MonoBehaviour {
     //    return enemyAnimator.GetBool(name);
     //}
     #endregion Animate
-
-    public void Run(bool flag)
-    {
-        Animate(PARAMETER_BOOL_RUN, flag);
-    }
 }

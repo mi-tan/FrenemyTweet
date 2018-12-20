@@ -35,6 +35,10 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     private bool isAttack = false;
     /// <summary>
+    /// 生成したか
+    /// </summary>
+    private bool isCreation = false;
+    /// <summary>
     /// 入力中か
     /// </summary>
     private bool isInput = false;
@@ -43,10 +47,6 @@ public class PlayerSkill : MonoBehaviour
     /// 攻撃角度
     /// </summary>
     private Quaternion attackQuaternion;
-    /// <summary>
-    /// 攻撃角度に向く速度
-    /// </summary>
-    const float FACE_SPEED = 1200f;
 
 
     void Awake()
@@ -66,6 +66,13 @@ public class PlayerSkill : MonoBehaviour
 
         if (isAttack)
         {
+            if (!isCreation)
+            {
+                Vector3 attackDirection = Vector3.Scale(
+                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                attackQuaternion = Quaternion.LookRotation(attackDirection);
+            }
+
             // 攻撃方向に向く
             FaceAttack(attackQuaternion);
         }
@@ -85,9 +92,6 @@ public class PlayerSkill : MonoBehaviour
                 // プレイヤーの状態をスキル中に変更
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
 
-                Vector3 attackDirection = Vector3.Scale(
-                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-                attackQuaternion = Quaternion.LookRotation(attackDirection);
                 isAttack = true;
 
                 // スキル発動アニメーション再生
@@ -119,13 +123,12 @@ public class PlayerSkill : MonoBehaviour
     /// <param name="attackQuaternion">攻撃角度</param>
     void FaceAttack(Quaternion attackQuaternion)
     {
-        // 攻撃角度に向いていたら、この先の処理を行わない
-        if (transform.rotation == attackQuaternion) { return; }
-
-        // 攻撃角度に徐々に向く
-        float step = FACE_SPEED * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation, attackQuaternion, step);
+        // 攻撃角度に向いていなかったら
+        if (transform.rotation != attackQuaternion)
+        {
+            // 攻撃角度に向く
+            transform.rotation = attackQuaternion;
+        }
     }
 
     /// <summary>
@@ -137,6 +140,8 @@ public class PlayerSkill : MonoBehaviour
     private IEnumerator CreateSkill(float skillCreationTime, PlayerSkillBase skill)
     {
         yield return new WaitForSeconds(skillCreationTime);
+
+        isCreation = true;
 
         skill.ActivateSkill(transform, skill.SkillCreationPos);
     }
@@ -150,7 +155,9 @@ public class PlayerSkill : MonoBehaviour
     {
         yield return new WaitForSeconds(recoveryTime);
 
+        // 初期化
         isAttack = false;
+        isCreation = false;
 
         // プレイヤーの状態を行動可能に変更
         playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);

@@ -94,7 +94,6 @@ public class EnemyController : NormalEnemy {
         {
             weapon.AttackEnd();
         }
-
         enemyDamage.TakeDamage(damage);
 
 

@@ -35,6 +35,10 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     private bool isAttack = false;
     /// <summary>
+    /// 生成したか
+    /// </summary>
+    private bool isCreation = false;
+    /// <summary>
     /// 入力中か
     /// </summary>
     private bool isInput = false;
@@ -66,6 +70,13 @@ public class PlayerSkill : MonoBehaviour
 
         if (isAttack)
         {
+            if (!isCreation)
+            {
+                Vector3 attackDirection = Vector3.Scale(
+                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                attackQuaternion = Quaternion.LookRotation(attackDirection);
+            }
+
             // 攻撃方向に向く
             FaceAttack(attackQuaternion);
         }
@@ -85,9 +96,6 @@ public class PlayerSkill : MonoBehaviour
                 // プレイヤーの状態をスキル中に変更
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
 
-                Vector3 attackDirection = Vector3.Scale(
-                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-                attackQuaternion = Quaternion.LookRotation(attackDirection);
                 isAttack = true;
 
                 // スキル発動アニメーション再生
@@ -138,6 +146,8 @@ public class PlayerSkill : MonoBehaviour
     {
         yield return new WaitForSeconds(skillCreationTime);
 
+        isCreation = true;
+
         skill.ActivateSkill(transform, skill.SkillCreationPos);
     }
 
@@ -151,6 +161,7 @@ public class PlayerSkill : MonoBehaviour
         yield return new WaitForSeconds(recoveryTime);
 
         isAttack = false;
+        isCreation = false;
 
         // プレイヤーの状態を行動可能に変更
         playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);

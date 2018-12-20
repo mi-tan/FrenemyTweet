@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UniRx;
+using System;
 
 /// <summary>
 /// 衝突したオブジェクトにダメージを与えるクラス
@@ -10,8 +12,42 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Collider))]
 public class AttackCollision : MonoBehaviour {
 
+    /// <summary>
+    /// 攻撃力
+    /// </summary>
     private int attackPower = 10;
-    public int setAttackPower{ set { attackPower = value; } }
+    public int SetAttackPower{ set { attackPower = value; } }
+
+    /// <summary>
+    /// 攻撃時のエフェクト
+    /// </summary>
+    private GameObject hitEffect;
+    public GameObject SetHitEffect { set { hitEffect = value; } }
+
+    private Collider myCollider;
+    private bool debugFlag = false;
+    public bool SetDebugFlag { set { debugFlag = value; } }
+
+    public MeshRenderer MyMeshRenderer
+    {
+        get
+        {
+            if (!myMeshRenderer)
+            {
+                myMeshRenderer = GetComponent<MeshRenderer>();
+            }
+            return myMeshRenderer;
+        }
+    }
+
+    //private Subject<Unit> attackStartSubject = new Subject<Unit>();
+
+    //public IObservable<Unit> OnAttackStart
+    //{
+    //    get { return attackStartSubject; }
+    //}
+
+    private MeshRenderer myMeshRenderer;
 
     private void Awake()
     {
@@ -19,8 +55,15 @@ public class AttackCollision : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
 
-        Collider collider = GetComponent<Collider>();
-        collider.isTrigger = true;
+        myCollider = GetComponent<Collider>();
+        
+        myCollider.isTrigger = true;
+        myCollider.enabled = false;
+    }
+
+    private void Start()
+    {
+        AttackEnd();
     }
 
     /// <summary>
@@ -29,6 +72,8 @@ public class AttackCollision : MonoBehaviour {
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
+        // エフェクト出す
+
         CallTakeDamage(other.gameObject);
     }
 
@@ -43,5 +88,37 @@ public class AttackCollision : MonoBehaviour {
             eventData: null,
             functor: (iDamage, eventData) => iDamage.TakeDamage(attackPower)
         );
+    }
+
+    /// <summary>
+    /// 攻撃開始
+    /// </summary>
+    public void AttackStart()
+    {
+        // attackStartSubject.OnNext(Unit.Default);
+        // デバッグフラグがオフの場合は通常時の処理
+        if (debugFlag)
+        {
+            // デバッグ処理
+            MyMeshRenderer.enabled = true;
+        }
+
+        myCollider.enabled = true;
+       
+    }
+
+    /// <summary>
+    /// 攻撃終了
+    /// </summary>
+    public void AttackEnd()
+    {
+        // デバッグフラグがオフの場合は通常時の処理
+        if (debugFlag)
+        {
+            // デバッグ処理
+            MyMeshRenderer.enabled = false;
+        }
+
+        myCollider.enabled = false;
     }
 }

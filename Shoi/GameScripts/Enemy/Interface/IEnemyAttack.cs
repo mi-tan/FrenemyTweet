@@ -7,6 +7,6 @@ using UnityEngine;
 /// </summary>
 public interface IEnemyAttack {
 
-    void Attack();
+    void SwordAttack(int value);
 
 }

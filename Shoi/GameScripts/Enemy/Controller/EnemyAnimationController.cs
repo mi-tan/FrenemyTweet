@@ -6,9 +6,18 @@ public class EnemyAnimationController : MonoBehaviour
 {
 
     private Animator enemyAnimator;
+    /// <summary>
+    /// フラグをオフにするまでのフレーム数
+    /// </summary>
+    private int flagOffFrame = 12;
+    public int GetFlagOffFrame
+    {
+        get { return flagOffFrame; }
+    }
 
     private const string PARAMETER_BOOL_RUN = "Run";
     private const string PARAMETER_BOOL_ATTACK = "Attack";
+    private const string PARAMETER_BOOL_TAKEDAMAGE = "TakeDamage";
     private const string PARAMETER_INT_Type = "Type";
 
     private void Awake()
@@ -18,7 +27,7 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     /// <summary>
-    /// Runアニメーション制御
+    /// 移動アニメーション制御
     /// </summary>
     /// <param name="flag"></param>
     public void Run(bool value)
@@ -27,7 +36,7 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     /// <summary>
-    /// Attackアニメーション制御
+    /// 攻撃アニメーション制御
     /// </summary>
     /// <param name="flag"></param>
     public void Attack(bool value)
@@ -35,6 +44,18 @@ public class EnemyAnimationController : MonoBehaviour
         Animate(PARAMETER_BOOL_ATTACK, value);
     }
 
+    /// <summary>
+    /// 被ダメージ時のアニメーション制御
+    /// </summary>
+    public void TakeDamage(bool value)
+    {
+        Animate(PARAMETER_BOOL_TAKEDAMAGE, value);
+    }
+
+    /// <summary>
+    /// アニメーションの種類
+    /// </summary>
+    /// <param name="value"></param>
     public void Type(int value)
     {
         Animate(PARAMETER_INT_Type, value);

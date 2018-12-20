@@ -96,5 +96,5 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
-    public abstract void ActivateSkill(Transform playerTrans, Vector3 createPos);
+    public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos);
 }

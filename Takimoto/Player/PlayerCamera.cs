@@ -49,7 +49,7 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// 角度上限
     /// </summary>
-    const float ANGLE_UPPER_LIMIT = 320f;
+    const float ANGLE_UPPER_LIMIT = 330f;
     /// <summary>
     /// 角度下限
     /// </summary>

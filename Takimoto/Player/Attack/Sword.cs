@@ -24,8 +24,8 @@ class Sword : MeleeWeapon
     /// </summary>
     const int MAX_COMBO = 3;
 
-    const float ATTACK_DELAY_TIME = 0.25f;
-    const float STOP_COMBO_TIME = 0.8f;
+    const float ATTACK_DELAY_TIME = 0.2f;
+    const float STOP_COMBO_TIME = 0.65f;
     const float MAX_COMBO_TIME = 1.1f;
 
     private Coroutine attackDelayCoroutine;
@@ -104,6 +104,15 @@ class Sword : MeleeWeapon
                     // 移動位置に徐々に移動
                     transform.position = Vector3.Lerp(
                         transform.position, movePosition, moveParameter.moveSpeed * Time.deltaTime);
+
+                    if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
+                    {
+                        // 初期化
+                        isAttack = false;
+
+                        time = 0f;
+                        isMove = false;
+                    }
                 }
                 else
                 {

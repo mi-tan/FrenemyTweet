@@ -47,10 +47,6 @@ public class PlayerSkill : MonoBehaviour
     /// 攻撃角度
     /// </summary>
     private Quaternion attackQuaternion;
-    /// <summary>
-    /// 攻撃角度に向く速度
-    /// </summary>
-    const float FACE_SPEED = 1200f;
 
 
     void Awake()
@@ -127,13 +123,12 @@ public class PlayerSkill : MonoBehaviour
     /// <param name="attackQuaternion">攻撃角度</param>
     void FaceAttack(Quaternion attackQuaternion)
     {
-        // 攻撃角度に向いていたら、この先の処理を行わない
-        if (transform.rotation == attackQuaternion) { return; }
-
-        // 攻撃角度に徐々に向く
-        float step = FACE_SPEED * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation, attackQuaternion, step);
+        // 攻撃角度に向いていなかったら
+        if (transform.rotation != attackQuaternion)
+        {
+            // 攻撃角度に向く
+            transform.rotation = attackQuaternion;
+        }
     }
 
     /// <summary>
@@ -160,6 +155,7 @@ public class PlayerSkill : MonoBehaviour
     {
         yield return new WaitForSeconds(recoveryTime);
 
+        // 初期化
         isAttack = false;
         isCreation = false;
 

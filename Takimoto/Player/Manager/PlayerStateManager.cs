@@ -20,6 +20,10 @@ public class PlayerStateManager : MonoBehaviour
         /// 攻撃中
         /// </summary>
         ATTACK,
+        /// <summary>
+        /// スキル中
+        /// </summary>
+        SKILL,
     }
     /// <summary>
     /// 現在のプレイヤーの状態

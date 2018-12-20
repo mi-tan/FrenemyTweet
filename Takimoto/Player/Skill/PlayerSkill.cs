@@ -7,19 +7,10 @@ public class PlayerSkill : MonoBehaviour
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
 
+    private int skillNumber = 0;
     /// <summary>
     /// スキル番号
     /// </summary>
-    private int skillNumber = 0;
-
-    [SerializeField]
-    private PlayerSkillBase[] skillList = new PlayerSkillBase[PlayerParameter.SKILL_QUANTITY];
-
-    /// <summary>
-    /// 入力中か
-    /// </summary>
-    private bool isInput = false;
-
     public int SkillNumber
     {
         get
@@ -32,10 +23,30 @@ public class PlayerSkill : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private PlayerSkillBase[] skillList = new PlayerSkillBase[PlayerParameter.SKILL_QUANTITY];
     public PlayerSkillBase GetSelectSkill()
     {
         return skillList[SkillNumber];
     }
+
+    /// <summary>
+    /// 攻撃中か
+    /// </summary>
+    private bool isAttack = false;
+    /// <summary>
+    /// 入力中か
+    /// </summary>
+    private bool isInput = false;
+
+    /// <summary>
+    /// 攻撃角度
+    /// </summary>
+    private Quaternion attackQuaternion;
+    /// <summary>
+    /// 攻撃角度に向く速度
+    /// </summary>
+    const float FACE_SPEED = 1200f;
 
 
     void Awake()
@@ -49,26 +60,45 @@ public class PlayerSkill : MonoBehaviour
     {
         // スキル切り替え
         ChangeSkill(
-            inputSelectSkill1, 
-            inputSelectSkill2, 
+            inputSelectSkill1,
+            inputSelectSkill2,
             inputSelectSkill3);
 
-        //Debug.Log(skillNumber);
+        if (isAttack)
+        {
+            // 攻撃方向に向く
+            FaceAttack(attackQuaternion);
+        }
+
+        // 現在のプレイヤーの状態が行動可能ではなかったら、この先の処理を行わない
+        if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE) { return; }
 
         if (inputActivateSkill >= 1)
         {
             if (isInput) { return; }
 
-            // スキル発動
-            if (skillList[SkillNumber] != null)
+            PlayerSkillBase skill = skillList[SkillNumber];
+
+            // スキルがあったら
+            if (skill != null)
             {
                 // プレイヤーの状態をスキル中に変更
-                //playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
+                playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
 
-                skillList[SkillNumber].ActivateSkill(transform);
+                Vector3 attackDirection = Vector3.Scale(
+                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                attackQuaternion = Quaternion.LookRotation(attackDirection);
+                isAttack = true;
 
-                playerAnimationManager.ChangeSkillClip(skillList[SkillNumber].SkillAnimation);
+                // スキル発動アニメーション再生
+                playerAnimationManager.ChangeSkillClip(skill.SkillAnimation);
                 playerAnimationManager.SetTriggerSkill();
+
+                // スキル生成
+                StartCoroutine(CreateSkill(skill.SkillCreationTime, skill));
+
+                // スキル硬直解除
+                StartCoroutine(RecoverySkill(skill.SkillRecoveryTime));
             }
             else
             {
@@ -81,6 +111,49 @@ public class PlayerSkill : MonoBehaviour
         {
             isInput = false;
         }
+    }
+
+    /// <summary>
+    /// 攻撃方向に向く
+    /// </summary>
+    /// <param name="attackQuaternion">攻撃角度</param>
+    void FaceAttack(Quaternion attackQuaternion)
+    {
+        // 攻撃角度に向いていたら、この先の処理を行わない
+        if (transform.rotation == attackQuaternion) { return; }
+
+        // 攻撃角度に徐々に向く
+        float step = FACE_SPEED * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation, attackQuaternion, step);
+    }
+
+    /// <summary>
+    /// スキル生成
+    /// </summary>
+    /// <param name="skillCreationTime">スキル生成時間</param>
+    /// <param name="skill"></param>
+    /// <returns></returns>
+    private IEnumerator CreateSkill(float skillCreationTime, PlayerSkillBase skill)
+    {
+        yield return new WaitForSeconds(skillCreationTime);
+
+        skill.ActivateSkill(transform, skill.SkillCreationPos);
+    }
+
+    /// <summary>
+    /// スキル硬直解除
+    /// </summary>
+    /// <param name="recoveryTime">硬直解除時間</param>
+    /// <returns></returns>
+    private IEnumerator RecoverySkill(float recoveryTime)
+    {
+        yield return new WaitForSeconds(recoveryTime);
+
+        isAttack = false;
+
+        // プレイヤーの状態を行動可能に変更
+        playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
     }
 
     /// <summary>

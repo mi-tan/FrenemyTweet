@@ -5,19 +5,29 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Laser")]
 public class Laser : PlayerSkillBase
 {
+    [Header("攻撃力")]
     [SerializeField]
     private int attackPower = 2;
-
-    [SerializeField]
-    private AttackCollision laserPrefab;
-
-    [SerializeField]
-    private Vector3 createOffset;
-
-
-    public override void ActivateSkill(Transform createTrans)
+    /// <summary>
+    /// 攻撃力
+    /// </summary>
+    public int AttackPower
     {
-        Debug.Log("レーザー生成");
-        Instantiate(laserPrefab, createTrans.position + createOffset, createTrans.rotation);
+        get
+        {
+            return attackPower;
+        }
+    }
+
+
+    public override void ActivateSkill(Transform playerTrans, Vector3 createPos)
+    {
+        //Debug.Log("レーザー生成");
+        Vector3 pos = 
+            playerTrans.position + 
+            playerTrans.right * createPos.x +
+            playerTrans.up * createPos.y +
+            playerTrans.forward * createPos.z;
+        Instantiate(skillPrefab, pos, playerTrans.rotation);
     }
 }

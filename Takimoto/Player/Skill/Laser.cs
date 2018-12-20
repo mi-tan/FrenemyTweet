@@ -35,7 +35,7 @@ public class Laser : PlayerSkillBase
 
         Quaternion qua = new Quaternion();
 
-        if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] {"Field", "Enemy"})))
+        if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] {"Field"})))
         {
             Vector3 vec = (hit.point - playerTrans.position).normalized;
             qua = Quaternion.LookRotation(vec);

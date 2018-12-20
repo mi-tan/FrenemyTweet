@@ -60,12 +60,7 @@ public class AttackCollision : MonoBehaviour {
         myCollider = GetComponent<Collider>();
         
         myCollider.isTrigger = true;
-        myCollider.enabled = false;
-    }
-
-    private void Start()
-    {
-        AttackEnd();
+        // myCollider.enabled = false;
     }
 
     /// <summary>

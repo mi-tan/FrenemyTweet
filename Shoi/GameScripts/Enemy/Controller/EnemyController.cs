@@ -47,6 +47,12 @@ public class EnemyController : NormalEnemy {
 
         // HP初期化
         enemyParameter.hp = enemyParameter.getMaxHP;
+
+        // 武器のコライダー制御
+        foreach (AttackCollision weapon in enemyParameter.useWeapon)
+        {
+            weapon.AttackEnd();
+        }
     }
 
 	

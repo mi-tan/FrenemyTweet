@@ -9,13 +9,11 @@ using UniRx;
 public class EnemyAttack : MonoBehaviour, IEnemyAttack
 {
     private EnemyAnimationController enemyAnimationController;
-    private int flagOffFrame = 12;
 
     // 攻撃してない
     // 攻撃してるけど受け付ける
     // 攻撃してるけど受け付けない
     // 攻撃させない
-
 
     private void Start()
     {
@@ -29,7 +27,7 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttack
         // 攻撃アニメーションを呼び出し
         enemyAnimationController.Type(value);
 
-        Observable.TimerFrame(flagOffFrame).Subscribe(_ => {
+        Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ => {
             enemyAnimationController.Attack(false);
         });
     }

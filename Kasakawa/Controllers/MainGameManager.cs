@@ -29,6 +29,12 @@ public class MainGameManager : MonoBehaviour {
     /// </summary>
     public float TimeCount { get; private set; } = 0f;
 
+    /// <summary>
+    /// ステージ開始の待ち時間
+    /// </summary>
+    [SerializeField]
+    private float startWaitTime = 0.5f;
+
     [Inject]
     public PlayerProvider player;
 
@@ -41,11 +47,20 @@ public class MainGameManager : MonoBehaviour {
             SceneController.AddSceneAsync(sceneName);
         }
 
-        // ゲーム開始時のイベントを実行
-        startSubject.OnNext(Unit.Default);
+        // ゲーム開始まで遅延処理する
+        Observable.Timer(System.TimeSpan.FromSeconds(startWaitTime))
+            .Subscribe(_ =>
+            {
+                // ゲーム開始時のイベントを実行
+                startSubject.OnNext(Unit.Default);
 
-        // 時間をカウントする(毎フレーム)
-        (this).UpdateAsObservable()
-        .Subscribe(_ => { TimeCount += Time.deltaTime; });
+                // 時間をカウントする(毎フレーム)
+                (this).UpdateAsObservable()
+                .Subscribe(x => { TimeCount += Time.deltaTime; })
+                .AddTo(gameObject);
+            })
+            .AddTo(gameObject);
+
+       
     }
 }

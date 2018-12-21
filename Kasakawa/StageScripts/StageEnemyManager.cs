@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageEnemyManager : MonoBehaviour {
+public sealed class StageEnemyManager : MonoBehaviour {
 
     [SerializeField]
     private EnemyRegion[] enemyDataArray;

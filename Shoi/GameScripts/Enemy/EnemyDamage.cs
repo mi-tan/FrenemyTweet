@@ -6,7 +6,7 @@ using UniRx;
 /// <summary>
 /// ダメージを計算するクラス
 /// </summary>
-public class EnemyDamage :　MonoBehaviour {
+public sealed class EnemyDamage :　MonoBehaviour {
 
     /// <summary>
     /// 防御力
@@ -16,6 +16,10 @@ public class EnemyDamage :　MonoBehaviour {
     /// ダメージアニメーションの数
     /// </summary>
     private int damageAnimationNum = 4;
+    /// <summary>
+    /// 被ダメージ時のエフェクト
+    /// </summary>
+    private GameObject damageEffect;
 
     private EnemyParameter enemyparameter;
     private EnemyAnimationController animationController;
@@ -24,6 +28,8 @@ public class EnemyDamage :　MonoBehaviour {
     {
         enemyparameter = GetComponent<EnemyParameter>();
         animationController = GetComponent<EnemyAnimationController>();
+
+        damageEffect = enemyparameter.damageEffect;
     }
 
     public void TakeDamage(int damage)
@@ -34,6 +40,9 @@ public class EnemyDamage :　MonoBehaviour {
         // 被ダメージ時のアニメーション再生
         animationController.TakeDamage(true);
         animationController.Type(randNum);
+        // エフェクト生成
+        //Instantiate(damageEffect, transform.position, transform.rotation);
+
         Observable.TimerFrame(animationController.GetFlagOffFrame).Subscribe(_ =>
         {
             // 被ダメージ時のアニメーション停止

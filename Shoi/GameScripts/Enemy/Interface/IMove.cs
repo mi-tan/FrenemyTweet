@@ -8,5 +8,5 @@ using UnityEngine;
 public interface IEnemyMove {
 
 
-    void Move(float x, float z,float moveSpeed);
+    void Move(Vector3 destination,float moveSpeed);
 }

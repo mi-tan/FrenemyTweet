@@ -10,7 +10,7 @@ using System;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class AttackCollision : MonoBehaviour {
+public sealed class AttackCollision : MonoBehaviour {
 
     /// <summary>
     /// 攻撃力

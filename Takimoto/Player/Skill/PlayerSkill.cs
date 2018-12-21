@@ -25,9 +25,13 @@ public class PlayerSkill : MonoBehaviour
 
     [SerializeField]
     private PlayerSkillBase[] skillList = new PlayerSkillBase[PlayerParameter.SKILL_QUANTITY];
+    public PlayerSkillBase[] GetSkillList()
+    {
+        return skillList;
+    }
     public PlayerSkillBase GetSelectSkill()
     {
-        return skillList[SkillNumber];
+        return skillList[skillNumber];
     }
 
     /// <summary>

@@ -96,5 +96,19 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
+    [Header("スキルクールタイム")]
+    [SerializeField]
+    private float skillCoolTime;
+    /// <summary>
+    /// スキルクールタイム
+    /// </summary>
+    public float SkillCoolTime
+    {
+        get
+        {
+            return skillCoolTime;
+        }
+    }
+
     public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos);
 }

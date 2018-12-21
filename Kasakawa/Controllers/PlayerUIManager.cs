@@ -22,6 +22,9 @@ public sealed class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private Image[] skillIconImage;
 
+    [SerializeField]
+    private Transform selectSkillUI;
+
     void Awake()
     {
 
@@ -31,7 +34,7 @@ public sealed class PlayerUIManager : MonoBehaviour
 
         // プレイヤーの選択スキルが変化した場合、表示を更新する
         gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetSelectSkill())
-            .Subscribe(skill => { UpdateSkillInfo(skill); });
+            .Subscribe(skill => { UpdateSelectedSkillInfo(skill,gameManager.player.GetSkillNumber()); });
 
     }
 
@@ -50,8 +53,16 @@ public sealed class PlayerUIManager : MonoBehaviour
         hpSlider.maxValue = gameManager.player.GetMaxHp();
         UpdateHPValue(playerHP);
 
+        var skillList = gameManager.player.GetSkillList();
+
+        // スキルアイコンをUIに表示
+        for(int i= 0; i < skillList.Length; i++)
+        {
+            UpdateSelectedSkillInfo(skillList[i], i);
+        }
+
         // 現在のスキル情報を表示する
-        UpdateSkillInfo(gameManager.player.GetSelectSkill());
+        UpdateSelectedSkillInfo(gameManager.player.GetSelectSkill(),gameManager.player.GetSkillNumber());
 
     }
 
@@ -68,7 +79,7 @@ public sealed class PlayerUIManager : MonoBehaviour
     /// プレイヤーが選択しているスキルの情報をUIに反映する
     /// </summary>
     /// <param name="skill"></param>
-    private void UpdateSkillInfo(PlayerSkillBase skill)
+    private void UpdateSelectedSkillInfo(PlayerSkillBase skill,int skillNum)
     {
         //skillNameText.text = skill.SkillName;
 
@@ -77,7 +88,9 @@ public sealed class PlayerUIManager : MonoBehaviour
             return;
         }
 
-        skillIconImage[0].sprite = skill.SkillIcon;
+        skillIconImage[skillNum].sprite = skill.SkillIcon;
+
+        selectSkillUI.transform.position = skillIconImage[skillNum].transform.position;
     }
 
 }

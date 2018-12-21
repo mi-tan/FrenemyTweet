@@ -4,22 +4,38 @@ using UnityEngine;
 using Zenject;
 using UniRx;
 
-public class StageSceneManager : MonoBehaviour {
+public sealed class StageSceneManager : MonoBehaviour {
 
     [Inject]
     private MainGameManager gameManager;
 
-    [SerializeField]
+    [Inject]
     private StageEnemyManager enemyManager;
 
-	void Awake ()
+    public StageEnemyManager EnemyManager
+    {
+        get
+        {
+            return enemyManager;
+        }
+    }
+
+    void Awake ()
     {
         // 全ての敵を無効化
-        enemyManager.DisableAllEnemy();
+        EnemyManager.DisableAllEnemy();
         // ゲーム開始時に敵を有効化する
         gameManager.OnGameStart.Subscribe(_ => {
-            enemyManager.ActivateStartEnemy();
+            EnemyManager.ActivateStartEnemy();
         })
             .AddTo(gameObject);
+    }
+
+    /// <summary>
+    /// ステージクリア時の動作
+    /// </summary>
+    public void ClearStage()
+    {
+        SceneController.ReloadSceneAsync();
     }
 }

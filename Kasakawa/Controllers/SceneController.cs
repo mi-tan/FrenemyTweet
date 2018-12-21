@@ -6,7 +6,16 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// シーン遷移の管理クラス
 /// </summary>
-public class SceneController{
+public sealed class SceneController{
+
+    /// <summary>
+    /// 指定したシーンに飛ぶ(非同期)
+    /// </summary>
+    /// <param name="sceneName"></param>
+	public static void JumpSceneAsync(int sceneNum)
+    {
+        SceneManager.LoadSceneAsync(sceneNum);
+    }
 
     /// <summary>
     /// 指定したシーンに飛ぶ(非同期)
@@ -42,6 +51,14 @@ public class SceneController{
         }
 
         SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+    }
+
+    /// <summary>
+    /// 現在のシーンを読み直す(リトライ)
+    /// </summary>
+    public static void ReloadSceneAsync()
+    {
+        JumpSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
 }

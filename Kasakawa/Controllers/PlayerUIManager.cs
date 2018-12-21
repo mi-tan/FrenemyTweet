@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// プレイヤー関連のUIを管理するクラス
 /// </summary>
-public class PlayerUIManager : MonoBehaviour
+public sealed class PlayerUIManager : MonoBehaviour
 {
     [Inject]
     private MainGameManager gameManager;
@@ -16,11 +16,11 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private Slider hpSlider;
 
-    [SerializeField]
-    private Text skillNameText;
+    //[SerializeField]
+    //private Text skillNameText;
 
     [SerializeField]
-    private Image skillIcon;
+    private Image[] skillIconImage;
 
     void Awake()
     {
@@ -70,9 +70,14 @@ public class PlayerUIManager : MonoBehaviour
     /// <param name="skill"></param>
     private void UpdateSkillInfo(PlayerSkillBase skill)
     {
-        skillNameText.text = skill.SkillName;
+        //skillNameText.text = skill.SkillName;
 
-        skillIcon.sprite = skill.SkillIcon;
+        if (!skill) {
+            Debug.LogWarning("SkillがNull");
+            return;
+        }
+
+        skillIconImage[0].sprite = skill.SkillIcon;
     }
 
 }

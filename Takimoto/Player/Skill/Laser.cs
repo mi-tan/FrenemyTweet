@@ -18,6 +18,9 @@ public class Laser : PlayerSkillBase
             return attackPower;
         }
     }
+    [Header("消去時間")]
+    [SerializeField]
+    private float destroyTime = 2.4f;
 
 
     public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos)
@@ -37,14 +40,15 @@ public class Laser : PlayerSkillBase
 
         if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] {"Field"})))
         {
-            Vector3 vec = (hit.point - playerTrans.position).normalized;
+            Vector3 vec = (hit.point - pos).normalized;
             qua = Quaternion.LookRotation(vec);
         }
         else
         {
-            Debug.LogWarning("Rayで照準位置が取得できませんでした");
+            Debug.LogWarning("Rayで照準位置が取得できていない");
         }
 
-        Instantiate(skillPrefab, pos, qua);
+        AttackCollision p = Instantiate(skillPrefab, pos, qua);
+        Destroy(p.gameObject, destroyTime);
     }
 }

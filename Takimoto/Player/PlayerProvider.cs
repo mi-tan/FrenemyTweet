@@ -32,6 +32,16 @@ public class PlayerProvider : CharacterBase
         return playerParameter.MaxHp;
     }
 
+    public int GetSkillNumber()
+    {
+        return playerSkill.SkillNumber;
+    }
+
+    public PlayerSkillBase[] GetSkillList()
+    {
+        return playerSkill.GetSkillList();
+    }
+
     public PlayerSkillBase GetSelectSkill()
     {
         return playerSkill.GetSelectSkill();

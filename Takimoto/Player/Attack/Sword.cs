@@ -24,7 +24,7 @@ class Sword : MeleeWeapon
     /// </summary>
     const int MAX_COMBO = 3;
 
-    const float ATTACK_DELAY_TIME = 0.2f;
+    const float ATTACK_DELAY_TIME = 0.25f;
     const float STOP_COMBO_TIME = 0.65f;
     const float MAX_COMBO_TIME = 1.1f;
 
@@ -56,6 +56,7 @@ class Sword : MeleeWeapon
     /// </summary>
     private Quaternion attackQuaternion;
 
+    // ↓ScriptableObjectで実装予定↓
     [System.Serializable]
     public struct MoveParameters
     {
@@ -75,6 +76,12 @@ class Sword : MeleeWeapon
     [SerializeField]
     private MoveParameters[] moveParameters = new MoveParameters[4];
     private MoveParameters moveParameter;
+    // ↑ScriptableObjectで実装予定↑
+
+    [SerializeField]
+    private ParticleSystem attackEffect;
+    [SerializeField]
+    private Transform sword;
 
 
     void Awake()
@@ -91,12 +98,6 @@ class Sword : MeleeWeapon
             // 攻撃方向に向く
             FaceAttack(attackQuaternion);
 
-            time += Time.deltaTime;
-            if (time >= moveParameter.moveTime)
-            {
-                isMove = true;
-            }
-
             if (isMove)
             {
                 if (transform.position != movePosition)
@@ -105,7 +106,7 @@ class Sword : MeleeWeapon
                     transform.position = Vector3.Lerp(
                         transform.position, movePosition, moveParameter.moveSpeed * Time.deltaTime);
 
-                    if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
+                    if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
                     {
                         // 初期化
                         isAttack = false;
@@ -121,6 +122,22 @@ class Sword : MeleeWeapon
 
                     time = 0f;
                     isMove = false;
+                }
+            }
+            else
+            {
+                time += Time.deltaTime;
+                if (time >= moveParameter.moveTime)
+                {
+                    // ↓斬撃エフェクトテスト↓
+                    if (attackEffect != null)
+                    {
+                        ParticleSystem a = Instantiate(attackEffect, transform.position + transform.up + transform.forward * 2, transform.rotation);
+                        Destroy(a.gameObject, 3f);
+                    }
+                    // ↑斬撃エフェクトテスト↑
+
+                    isMove = true;
                 }
             }
         }

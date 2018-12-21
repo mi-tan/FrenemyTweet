@@ -53,7 +53,7 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// 角度下限
     /// </summary>
-    const float ANGLE_LOWER_LIMIT = 70f;
+    const float ANGLE_LOWER_LIMIT = 40f;
 
 
     void Awake()

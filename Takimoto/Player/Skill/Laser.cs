@@ -7,7 +7,7 @@ public class Laser : PlayerSkillBase
 {
     [Header("攻撃力")]
     [SerializeField]
-    private int attackPower = 2;
+    private int attackPower = 5;
     /// <summary>
     /// 攻撃力
     /// </summary>

@@ -56,32 +56,26 @@ class Sword : MeleeWeapon
     /// </summary>
     private Quaternion attackQuaternion;
 
-    // ↓ScriptableObjectで実装予定↓
-    [System.Serializable]
-    public struct MoveParameters
-    {
-        /// <summary>
-        /// 移動時間
-        /// </summary>
-        public float moveTime;
-        /// <summary>
-        /// 移動距離
-        /// </summary>
-        public float moveDistance;
-        /// <summary>
-        /// 移動速度
-        /// </summary>
-        public float moveSpeed;
-    }
     [SerializeField]
-    private MoveParameters[] moveParameters = new MoveParameters[4];
-    private MoveParameters moveParameter;
-    // ↑ScriptableObjectで実装予定↑
+    private AttackMoveParameter swordIdleAttack1;
+    [SerializeField]
+    private AttackMoveParameter swordRunAttack1;
+    [SerializeField]
+    private AttackMoveParameter swordAttack2;
+    [SerializeField]
+    private AttackMoveParameter swordAttack3;
+
+    private AttackMoveParameter attackMoveParameter;
+
+    // ↓斬撃エフェクトテスト↓
+    //[SerializeField]
+    //private ParticleSystem attackEffect;
+    //[SerializeField]
+    //private Transform sword;
+    // ↑斬撃エフェクトテスト↑
 
     [SerializeField]
-    private ParticleSystem attackEffect;
-    [SerializeField]
-    private Transform sword;
+    private Collider swordCollider;
 
 
     void Awake()
@@ -89,6 +83,9 @@ class Sword : MeleeWeapon
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
+
+        // 剣の当たり判定を初期化
+        swordCollider.enabled = false;
     }
 
     public override void UpdateAttack(float inputAttack)
@@ -104,7 +101,7 @@ class Sword : MeleeWeapon
                 {
                     // 移動位置に徐々に移動
                     transform.position = Vector3.Lerp(
-                        transform.position, movePosition, moveParameter.moveSpeed * Time.deltaTime);
+                        transform.position, movePosition, attackMoveParameter.MoveSpeed * Time.deltaTime);
 
                     if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
                     {
@@ -127,14 +124,14 @@ class Sword : MeleeWeapon
             else
             {
                 time += Time.deltaTime;
-                if (time >= moveParameter.moveTime)
+                if (time >= attackMoveParameter.MoveTime)
                 {
                     // ↓斬撃エフェクトテスト↓
-                    if (attackEffect != null)
-                    {
-                        ParticleSystem a = Instantiate(attackEffect, transform.position + transform.up + transform.forward * 2, transform.rotation);
-                        Destroy(a.gameObject, 3f);
-                    }
+                    //if (attackEffect != null)
+                    //{
+                    //    ParticleSystem a = Instantiate(attackEffect, transform.position + transform.up + transform.forward * 2, transform.rotation);
+                    //    Destroy(a.gameObject, 3f);
+                    //}
                     // ↑斬撃エフェクトテスト↑
 
                     isMove = true;
@@ -192,7 +189,7 @@ class Sword : MeleeWeapon
         // 移動位置を計算
         Quaternion temp = transform.rotation;
         transform.rotation = attackQuaternion;
-        movePosition = transform.position + transform.forward * moveParameter.moveDistance;
+        movePosition = transform.position + transform.forward * attackMoveParameter.MoveDistance;
         transform.rotation = temp;
 
         if (stopComboCoroutine != null)
@@ -218,31 +215,31 @@ class Sword : MeleeWeapon
     {
         // 初期化
         time = 0f;
-        int num = 0;
+        AttackMoveParameter amp = null;
 
         switch (combo)
         {
             case 1:
-                if (playerAnimationManager.GetBoolRun())
+                if (!playerAnimationManager.GetBoolRun())
                 {
-                    num = 0;
+                    amp = swordIdleAttack1;
                 }
                 else
                 {
-                    num = 1;
+                    amp = swordRunAttack1;
                 }
                 break;
 
             case 2:
-                num = 2;
+                amp = swordAttack2;
                 break;
 
             case 3:
-                num = 3;
+                amp = swordAttack3;
                 break;
         }
 
-        moveParameter = moveParameters[num];
+        attackMoveParameter = amp;
     }
 
     /// <summary>
@@ -295,5 +292,19 @@ class Sword : MeleeWeapon
         playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
 
         maxComboCoroutine = null;
+    }
+
+    public void StartAttack()
+    {
+        // ここで攻撃力を変更予定
+
+        //Debug.Log("当たり判定：有効");
+        swordCollider.enabled = true;
+    }
+
+    public void EndAttack()
+    {
+        //Debug.Log("当たり判定：無効");
+        swordCollider.enabled = false;
     }
 }

@@ -7,17 +7,8 @@ public class Laser : PlayerSkillBase
 {
     [Header("攻撃力")]
     [SerializeField]
-    private int attackPower = 5;
-    /// <summary>
-    /// 攻撃力
-    /// </summary>
-    public int AttackPower
-    {
-        get
-        {
-            return attackPower;
-        }
-    }
+    private int attackPower = 100;
+
     [Header("消去時間")]
     [SerializeField]
     private float destroyTime = 2.4f;
@@ -48,7 +39,8 @@ public class Laser : PlayerSkillBase
             Debug.LogWarning("Rayで照準位置が取得できていない");
         }
 
-        AttackCollision p = Instantiate(skillPrefab, pos, qua);
-        Destroy(p.gameObject, destroyTime);
+        AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
+        attackCollision.SetAttackPower = attackPower;
+        Destroy(attackCollision.gameObject, destroyTime);
     }
 }

@@ -52,6 +52,9 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         // 移動方向に向く
         FaceMove(moveQuaternion);
 
+        playerAnimationManager.SetFloatHorizontal(inputMoveHorizontal);
+        playerAnimationManager.SetFloatVertical(inputMoveVertical);
+
         // 移動入力されていたら
         if (Mathf.Abs(inputMoveHorizontal) > INPUT_IDLE_VALUE ||
             Mathf.Abs(inputMoveVertical) > INPUT_IDLE_VALUE)

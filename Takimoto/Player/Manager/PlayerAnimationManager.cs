@@ -30,6 +30,9 @@ public class PlayerAnimationManager : MonoBehaviour
     private AnimatorOverrideController overrideController;
     const string OVERRIDE_CLIP_NAME = "Skill";
 
+    private const string PARAMETER_FLOAT_VERTICAL = "Vertical";
+    private const string PARAMETER_FLOAT_HORIZONTAL = "Horizontal";
+
 
     void Awake()
     {
@@ -92,5 +95,15 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SetTriggerSkill()
     {
         playerAnimator.SetTrigger(PARAMETER_TRIGGER_SKILL);
+    }
+
+    public void SetFloatVertical(float value)
+    {
+        playerAnimator.SetFloat(PARAMETER_FLOAT_VERTICAL, value);
+    }
+
+    public void SetFloatHorizontal(float value)
+    {
+        playerAnimator.SetFloat(PARAMETER_FLOAT_HORIZONTAL, value);
     }
 }

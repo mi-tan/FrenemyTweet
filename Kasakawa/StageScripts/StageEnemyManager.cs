@@ -71,7 +71,7 @@ public sealed class StageEnemyManager : MonoBehaviour {
         {
             // 敵を無効化する
             enemyRegion.SetActive(false);
-            Debug.Log($"{enemyRegion}を無効化");
+            //Debug.Log($"{enemyRegion}を無効化");
         }
     }
 }

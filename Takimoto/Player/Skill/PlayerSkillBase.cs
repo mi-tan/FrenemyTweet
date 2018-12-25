@@ -47,6 +47,21 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
+
+    [Header("スキルアニメーション速度")]
+    [SerializeField]
+    private float skillAnimationSpeed;
+    /// <summary>
+    /// スキル発動アニメーション速度
+    /// </summary>
+    public float SkillAnimationSpeed
+    {
+        get
+        {
+            return skillAnimationSpeed;
+        }
+    }
+
     [Header("スキル生成時間")]
     [SerializeField]
     private float skillCreationTime;

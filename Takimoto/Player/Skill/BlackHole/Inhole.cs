@@ -7,7 +7,12 @@ public class Inhole : MonoBehaviour
     private List<Rigidbody> Enemys = new List<Rigidbody>();
 
 
-    private void FixedUpdate()
+    void Awake()
+    {
+        Destroy(gameObject, 3f);
+    }
+
+    void FixedUpdate()
     {
         foreach(Rigidbody rb in Enemys)
         {
@@ -16,7 +21,7 @@ public class Inhole : MonoBehaviour
             float distance = 0f;
             distance = Vector3.Distance(transform.position, rb.transform.position);
 
-            rb.velocity = (-(rb.transform.position - transform.position).normalized * 10 * distance / rb.mass);
+            rb.velocity = (-(rb.transform.position - transform.position).normalized * 20 * distance / rb.mass);
         }
     }
 

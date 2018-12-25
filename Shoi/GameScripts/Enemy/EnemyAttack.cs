@@ -6,7 +6,7 @@ using UniRx;
 /// <summary>
 /// 敵の攻撃クラス
 /// </summary>
-public class EnemyAttack : MonoBehaviour, IEnemyAttack
+public sealed class EnemyAttack : MonoBehaviour, IEnemyAttack
 {
     private EnemyAnimationController enemyAnimationController;
 
@@ -22,6 +22,8 @@ public class EnemyAttack : MonoBehaviour, IEnemyAttack
 
     public void SwordAttack(int value)
     {
+        // 移動アニメーションを停止
+        enemyAnimationController.Run(false);
         // 攻撃を許可
         enemyAnimationController.Attack(true);
         // 攻撃アニメーションを呼び出し

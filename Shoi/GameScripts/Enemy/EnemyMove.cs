@@ -5,9 +5,8 @@ using UnityEngine;
 /// <summary>
 /// 移動を制御するクラス
 /// </summary>
-public class EnemyMove : MonoBehaviour, IEnemyMove
+public sealed class EnemyMove : MonoBehaviour, IEnemyMove
 {
-
     /// <summary>
     /// 入力を測定する値
     /// </summary>
@@ -15,13 +14,16 @@ public class EnemyMove : MonoBehaviour, IEnemyMove
     /// <summary>
     /// 向く速度
     /// </summary>
-    private const float FACE_SPEED = 1200f;
+    private const float FACE_SPEED = 100000f;
     /// <summary>
     /// 移動角度
     /// </summary>
     private Quaternion moveQuaternion;
 
     private EnemyAnimationController enemyAnimationController;
+
+    //　攻撃した後のフリーズ時間
+    private float FREEZE_TIME = 0.3f;
 
     private void Awake()
     {
@@ -30,32 +32,23 @@ public class EnemyMove : MonoBehaviour, IEnemyMove
         enemyAnimationController = GetComponent<EnemyAnimationController>();
     }
 
-    public void Move(float x, float z,float moveSpeed)
+
+    public void Move(Vector3 destination, float moveSpeed)
     {
-
         //Debug.Log("H：" + x + " V：" + z);
+        Debug.Log("Move");
 
-        // 移動入力されていたら
-        if (Mathf.Abs(x) >= INPUT_VALUE ||
-            Mathf.Abs(z) >= INPUT_VALUE)
-        {
-            // 移動アニメーション開始
-            enemyAnimationController.Run(true);
+        // 移動アニメーション開始
+        enemyAnimationController.Run(true);
+        
+        moveQuaternion = Quaternion.LookRotation(destination);
 
-            // 移動角度を計算
-            Vector3 moveDirection = new Vector3(x, 0, z);
-            moveQuaternion = Quaternion.LookRotation(moveDirection);
-
-            // 位置を移動
-            transform.position += transform.forward * moveSpeed * Time.deltaTime;
-            // 移動角度に向く
-            UpdateFace(moveQuaternion);
-        }
-        else
-        {
-            // 移動アニメーション停止
-            enemyAnimationController.Run(false);
-        }
+        // 位置を移動
+        transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        // 移動角度に向く
+        UpdateFace(moveQuaternion);
+        //// 移動アニメーション停止
+        //enemyAnimationController.Run(false);
     }
 
     /// <summary>
@@ -64,7 +57,6 @@ public class EnemyMove : MonoBehaviour, IEnemyMove
     /// <param name="moveQuaternion">移動角度</param>
     private void UpdateFace(Quaternion moveQuaternion)
     {
-
         // 移動角度に向いていたら、この先の処理を行わない
         if (transform.rotation == moveQuaternion) { return; }
 

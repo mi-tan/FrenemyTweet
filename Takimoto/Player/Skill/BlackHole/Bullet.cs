@@ -9,6 +9,9 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private Inhole blackHole;
 
+    [SerializeField]
+    private float bulletSpeed;
+
 
     private void Awake()
     {
@@ -21,12 +24,17 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        transform.position += transform.forward * 30 * Time.deltaTime;
+        // ↓親のRigidbodyで移動に変更↓
+        transform.position += transform.forward * bulletSpeed * Time.deltaTime;
     }
 
     void CreateBlackHole()
     {
-        Instantiate(blackHole, transform.position, transform.rotation);
+        if (blackHole)
+        {
+            Instantiate(blackHole, transform.position, transform.rotation);
+        }
+
         Destroy(gameObject);
     }
 }

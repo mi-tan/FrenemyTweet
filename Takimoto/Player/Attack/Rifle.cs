@@ -25,6 +25,10 @@ class Rifle : RangeWeapon
 
     public override void UpdateAttack(float inputAttack)
     {
+        // 現在のプレイヤーの状態が行動可能か攻撃中ではなかったら、この先の処理を行わない
+        if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
+            playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK) { return; }
+
         if (inputAttack >= 1)
         {
             // プレイヤーの状態を攻撃中に変更

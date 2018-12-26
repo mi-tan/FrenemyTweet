@@ -78,8 +78,11 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
             }
             else
             {
-                // 位置を移動
-                transform.position += (transform.forward * inputMoveVertical + transform.right * inputMoveHorizontal) * ATTACK_MOVE_SPEED * Time.deltaTime;
+                if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ATTACK)
+                {
+                    // 位置を移動
+                    transform.position += (transform.forward * inputMoveVertical + transform.right * inputMoveHorizontal) * ATTACK_MOVE_SPEED * Time.deltaTime;
+                }
 
                 moveQuaternion = transform.rotation;
             }

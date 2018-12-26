@@ -49,11 +49,11 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// 角度上限
     /// </summary>
-    const float ANGLE_UPPER_LIMIT = 330f;
+    const float ANGLE_UPPER_LIMIT = 340f;
     /// <summary>
     /// 角度下限
     /// </summary>
-    const float ANGLE_LOWER_LIMIT = 40f;
+    const float ANGLE_LOWER_LIMIT = 25f;
 
 
     void Awake()

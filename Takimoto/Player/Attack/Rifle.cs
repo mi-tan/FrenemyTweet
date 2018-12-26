@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 class Rifle : RangeWeapon
 {
-    //private PlayerStateManager playerStateManager;
+    private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
 
     /// <summary>
@@ -19,7 +19,7 @@ class Rifle : RangeWeapon
     void Awake()
     {
         // コンポーネントを取得
-        //playerStateManager = GetComponent<PlayerStateManager>();
+        playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
     }
 
@@ -27,12 +27,21 @@ class Rifle : RangeWeapon
     {
         if (inputAttack >= 1)
         {
-            if (isInput) { return; }
+            // プレイヤーの状態を攻撃中に変更
+            playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ATTACK);
+
+            // 攻撃方向に向く
+            Vector3 attackDirection = Vector3.Scale(
+                Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+            transform.rotation = Quaternion.LookRotation(attackDirection);
 
             isInput = true;
         }
         else
         {
+            // プレイヤーの状態を攻撃中に変更
+            playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
+
             isInput = false;
         }
 
@@ -40,10 +49,5 @@ class Rifle : RangeWeapon
         playerAnimationManager.SetBoolAttack(isInput);
 
         // 開発途中のため、攻撃しながら歩けます
-    }
-
-    void AttackRifle()
-    {
-
     }
 }

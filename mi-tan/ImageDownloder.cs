@@ -22,6 +22,8 @@ public class ImageDownloder : MonoBehaviour
 
         test.url = url;
         test.name = IconUrl;
+        var ScreenName = IconUrl;
+    
 
         // wwwクラスのコンストラクタに画像URLを指定
         WWW www = new WWW(url);
@@ -36,9 +38,14 @@ public class ImageDownloder : MonoBehaviour
         yield return response;
 
         Renderer r = GetComponent<Renderer>();
+        var texture2D = www.textureNonReadable;
+
         // _MainTex＝Albedoを書き換える
         r.material.EnableKeyword("_MainTex");
-        r.material.SetTexture("_MainTex", www.textureNonReadable);
+        r.material.SetTexture("_MainTex", texture2D);
+
+        TwitterParameterManager.Instance.SetUserIcon(texture2D);
+        TwitterParameterManager.Instance.SetUserID(ScreenName);
 
     }
 

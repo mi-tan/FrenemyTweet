@@ -17,4 +17,9 @@ public class TwitterSceneManager : MonoBehaviour {
         SceneController.JumpSceneAsync(gameSceneName);
     }
 
+    public void CalcParameter()
+    {
+
+    }
+
 }

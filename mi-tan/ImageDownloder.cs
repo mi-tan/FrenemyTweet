@@ -8,6 +8,9 @@ public class ImageDownloder : MonoBehaviour
     SceneTest test;
     SceneTest testname;
 
+    [SerializeField]
+    TwitterSceneManager twitterSceneManager;
+
     private void Start()
     {
         test = GameObject.Find("URLInfo").GetComponent<SceneTest>();
@@ -50,6 +53,8 @@ public class ImageDownloder : MonoBehaviour
         TwitterParameterManager.Instance.SetUserIcon(texture2D);
         TwitterParameterManager.Instance.SetUserID(ScreenName);
 
+
+        twitterSceneManager.CalcParameter();
     }
 
 

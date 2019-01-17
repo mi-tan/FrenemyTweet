@@ -25,6 +25,9 @@ class Rifle : RangeWeapon
     /// </summary>
     const float STANCE_MOVE_SPEED = 1.5f;
 
+    const int MAX_BULLET_NUMBER = 30;
+    private int bulletNumber = 30; 
+
 
     void Awake()
     {
@@ -66,6 +69,9 @@ class Rifle : RangeWeapon
 
             // 構え移動
             StanceMove(inputMoveHorizontal, inputMoveVertical);
+
+            // 弾を発射
+            ShootBullet();
         }
         else
         {
@@ -102,5 +108,10 @@ class Rifle : RangeWeapon
         Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
         transform.position += moveForward * STANCE_MOVE_SPEED * Time.deltaTime;
+    }
+
+    void ShootBullet()
+    {
+
     }
 }

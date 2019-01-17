@@ -21,7 +21,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     /// <summary>
     /// 移動速度
     /// </summary>
-    const float MOVE_SPEED = 6f;
+    const float MOVE_SPEED = 5.5f;
 
     /// <summary>
     /// 移動方向

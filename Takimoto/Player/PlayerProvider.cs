@@ -8,6 +8,9 @@ public class PlayerProvider : CharacterBase
     private PlayerParameter playerParameter;
     private PlayerSkill playerSkill;
 
+    [SerializeField]
+    private MeshRenderer faceMat;
+
 
     void Awake()
     {
@@ -15,6 +18,11 @@ public class PlayerProvider : CharacterBase
         playerDamage = GetComponent<PlayerDamage>();
         playerParameter = GetComponent<PlayerParameter>();
         playerSkill = GetComponent<PlayerSkill>();
+    }
+
+    private void Start()
+    {
+        SetFaceTexture(TwitterParameterManager.Instance.IconTexture);
     }
 
     public override void TakeDamage(int damage)
@@ -80,5 +88,12 @@ public class PlayerProvider : CharacterBase
     public float[] GetSkillCoolTimes()
     {
         return playerSkill.GetSkillCoolTimes();
+    }
+
+    public void SetFaceTexture(Texture2D tex)
+    {
+        if (!tex) { return; }
+        faceMat.material.EnableKeyword("_MainTex");
+        faceMat.material.SetTexture("_MainTex", tex);
     }
 }

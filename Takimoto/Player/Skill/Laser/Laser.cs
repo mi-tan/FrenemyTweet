@@ -37,7 +37,7 @@ public class Laser : PlayerSkillBase
         }
         else
         {
-            Debug.LogWarning("Rayで照準位置が取得できていない");
+            Debug.LogWarning("Rayで照準位置が取得できていない(Laser)");
         }
 
         AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);

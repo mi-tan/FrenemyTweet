@@ -21,7 +21,11 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// <summary>
     /// 移動速度
     /// </summary>
-    const float MOVE_SPEED = 5f;
+    const float MOVE_SPEED = 4f;
+    /// <summary>
+    /// 攻撃時の移動速度
+    /// </summary>
+    const float ATTACK_MOVE_SPEED = 1f;
 
     /// <summary>
     /// 移動方向
@@ -74,6 +78,12 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
             }
             else
             {
+                if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ATTACK)
+                {
+                    // 位置を移動
+                    transform.position += (transform.forward * inputMoveVertical + transform.right * inputMoveHorizontal) * ATTACK_MOVE_SPEED * Time.deltaTime;
+                }
+
                 moveQuaternion = transform.rotation;
             }
         }

@@ -15,6 +15,12 @@ public class TwitterParameterManager: SingletonMonoBehaviour<TwitterParameterMan
 
     private Texture2D iconTexture = null;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void SetUserID(string setID)
     {
         userID = setID;

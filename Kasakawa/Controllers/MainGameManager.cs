@@ -47,6 +47,9 @@ public class MainGameManager : MonoBehaviour {
             SceneController.AddSceneAsync(sceneName);
         }
 
+        // プレイヤーのパラメータを設定する
+        InitPlayerParameter();
+
         // ゲーム開始まで遅延処理する
         Observable.Timer(System.TimeSpan.FromSeconds(startWaitTime))
             .Subscribe(_ =>
@@ -60,7 +63,21 @@ public class MainGameManager : MonoBehaviour {
                 .AddTo(gameObject);
             })
             .AddTo(gameObject);
-
        
+    }
+
+    private void InitPlayerParameter()
+    {
+        // 最大HPをセットする
+        player.SetMaxHp(PlayerParameterManager.Instance.PlayerHP);
+
+        // HPをセットする
+        player.SetHp(PlayerParameterManager.Instance.PlayerHP);
+
+        // 基礎攻撃力をセットする
+        player.SetBasicAttackPower(PlayerParameterManager.Instance.AttackPower);
+
+        // 現在の攻撃力をセットする
+        player.SetPlayerAttackPower(PlayerParameterManager.Instance.AttackPower);
     }
 }

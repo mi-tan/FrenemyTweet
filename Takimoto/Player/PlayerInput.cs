@@ -79,7 +79,6 @@ public class PlayerInput : MonoBehaviour
         bool inputSelectSkill2 = Input.GetButtonDown(INPUT_SELECT_SKILL_2);
         bool inputSelectSkill3 = Input.GetButtonDown(INPUT_SELECT_SKILL_3);
 
-
         // 移動
         iPlayerMove.UpdateMove(
             inputMoveHorizontal, 

@@ -6,6 +6,7 @@ public class PlayerSkill : MonoBehaviour
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
+    private PlayerProvider playerProvider;
 
     private int skillNumber = 0;
     /// <summary>
@@ -64,6 +65,7 @@ public class PlayerSkill : MonoBehaviour
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerProvider = GetComponent<PlayerProvider>();
     }
 
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
@@ -119,6 +121,8 @@ public class PlayerSkill : MonoBehaviour
 
                     // スキル硬直解除
                     StartCoroutine(RecoverySkill(skill.SkillRecoveryTime));
+
+                    skill.SetPlayerAttackPower(playerProvider.GetPlayerAttackPower());
                 }
                 else
                 {

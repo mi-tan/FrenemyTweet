@@ -126,4 +126,10 @@ public abstract class PlayerSkillBase : ScriptableObject
     }
 
     public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos);
+
+    protected int playerAttackPower = 0;
+    public void SetPlayerAttackPower(int value)
+    {
+        playerAttackPower = value;
+    }
 }

@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public sealed class SceneController{
 
+    //private const string playSceneName = "MainGameSample";
+
     /// <summary>
     /// 指定したシーンに飛ぶ(非同期)
     /// </summary>
@@ -60,5 +62,10 @@ public sealed class SceneController{
     {
         JumpSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
+
+    //public static void LoadPlaySceneAsync()
+    //{
+    //    JumpSceneAsync(playSceneName);
+    //}
 
 }

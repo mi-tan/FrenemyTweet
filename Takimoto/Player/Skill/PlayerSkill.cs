@@ -126,7 +126,7 @@ public class PlayerSkill : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(skillList[SkillNumber].SkillName + "：クールタイム(" + skillCoolTimes[SkillNumber] + "秒)");
+                    //Debug.Log(skillList[SkillNumber].SkillName + "：クールタイム(" + skillCoolTimes[SkillNumber] + "秒)");
                 }
             }
             else

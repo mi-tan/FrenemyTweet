@@ -15,6 +15,22 @@ public class TwitterParameterManager: SingletonMonoBehaviour<TwitterParameterMan
 
     private Texture2D iconTexture = null;
 
+    public string UserID
+    {
+        get
+        {
+            return userID;
+        }
+    }
+
+    public Texture2D IconTexture
+    {
+        get
+        {
+            return iconTexture;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();

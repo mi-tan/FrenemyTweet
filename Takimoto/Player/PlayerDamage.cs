@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class PlayerDamage : MonoBehaviour
 {
-    private PlayerParameter playerParameter;
+    private PlayerProvider playerProvider;
 
 
     void Awake()
     {
-        playerParameter = GetComponent<PlayerParameter>();
+        playerProvider = GetComponent<PlayerProvider>();
     }
 
     public void Damage(int damage)
     {
-        playerParameter.SetHp(playerParameter.Hp - damage);
+        playerProvider.SetHp(playerProvider.GetHp() - damage);
 
         Debug.Log("プレイヤーに" + damage + "ダメージ");
         //Debug.Log("残りHP："+ playerParameter.Hp);

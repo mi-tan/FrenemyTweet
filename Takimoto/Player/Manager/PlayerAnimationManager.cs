@@ -25,9 +25,13 @@ public class PlayerAnimationManager : MonoBehaviour
     /// スキルパラメータ
     /// </summary>
     private const string PARAMETER_TRIGGER_SKILL = "Skill";
+    private const string PARAMETER_FLOAT_SKILL_SPEED = "SkillSpeed";
 
     private AnimatorOverrideController overrideController;
     const string OVERRIDE_CLIP_NAME = "Skill";
+
+    private const string PARAMETER_FLOAT_VERTICAL = "Vertical";
+    private const string PARAMETER_FLOAT_HORIZONTAL = "Horizontal";
 
 
     void Awake()
@@ -40,7 +44,7 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.runtimeAnimatorController = overrideController;
     }
 
-    public void ChangeSkillClip(AnimationClip overrideAnimationClip)
+    public void ChangeSkillClip(AnimationClip overrideAnimationClip, float skillAnimationSpeed)
     {
         // ステートをキャッシュ
         AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[playerAnimator.layerCount];
@@ -59,6 +63,8 @@ public class PlayerAnimationManager : MonoBehaviour
         {
             playerAnimator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
         }
+
+        playerAnimator.SetFloat(PARAMETER_FLOAT_SKILL_SPEED, skillAnimationSpeed);
     }
 
     public void SetBoolRun(bool value)
@@ -89,5 +95,15 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SetTriggerSkill()
     {
         playerAnimator.SetTrigger(PARAMETER_TRIGGER_SKILL);
+    }
+
+    public void SetFloatVertical(float value)
+    {
+        playerAnimator.SetFloat(PARAMETER_FLOAT_VERTICAL, value);
+    }
+
+    public void SetFloatHorizontal(float value)
+    {
+        playerAnimator.SetFloat(PARAMETER_FLOAT_HORIZONTAL, value);
     }
 }

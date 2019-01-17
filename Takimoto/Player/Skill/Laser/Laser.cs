@@ -5,14 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Laser")]
 public class Laser : PlayerSkillBase
 {
-    [Header("攻撃力")]
+    private PlayerProvider playerProvider;
+
+    [Header("スキルの攻撃力")]
     [SerializeField]
-    private int attackPower = 100;
+    private int skillAttackPower = 100;
 
     [Header("消去時間")]
     [SerializeField]
     private float destroyTime = 2.4f;
-
 
     public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos)
     {
@@ -36,11 +37,12 @@ public class Laser : PlayerSkillBase
         }
         else
         {
-            Debug.LogWarning("Rayで照準位置が取得できていない");
+            Debug.LogWarning("Rayで照準位置が取得できていない(Laser)");
         }
 
         AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
-        attackCollision.SetAttackPower = attackPower;
+        // ダメージ計算
+        attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;
         Destroy(attackCollision.gameObject, destroyTime);
     }
 }

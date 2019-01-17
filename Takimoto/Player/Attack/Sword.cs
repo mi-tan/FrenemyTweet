@@ -9,6 +9,7 @@ class Sword : MeleeWeapon
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
+    private PlayerProvider playerProvider;
 
     /// <summary>
     /// 入力中か
@@ -77,18 +78,27 @@ class Sword : MeleeWeapon
     [SerializeField]
     private Collider swordCollider;
 
+    private AttackCollision attackCollision;
+
+    /// <summary>
+    /// 剣コンボごとの攻撃力
+    /// </summary>
+    private int[] swordAttackPower = { 0, 10, 20, 30 };
+
 
     void Awake()
     {
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerProvider = GetComponent<PlayerProvider>();
+        attackCollision = swordCollider.gameObject.GetComponent<AttackCollision>();
 
         // 剣の当たり判定を初期化
         swordCollider.enabled = false;
     }
 
-    public override void UpdateAttack(float inputAttack)
+    public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
         if (isAttack)
         {
@@ -296,7 +306,8 @@ class Sword : MeleeWeapon
 
     public void StartAttack()
     {
-        // ここで攻撃力を変更予定
+        // 攻撃力を変更、ダメージ計算
+        attackCollision.SetAttackPower = swordAttackPower[combo] + playerProvider.GetPlayerAttackPower();
 
         //Debug.Log("当たり判定：有効");
         swordCollider.enabled = true;

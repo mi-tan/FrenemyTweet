@@ -79,7 +79,6 @@ public class PlayerInput : MonoBehaviour
         bool inputSelectSkill2 = Input.GetButtonDown(INPUT_SELECT_SKILL_2);
         bool inputSelectSkill3 = Input.GetButtonDown(INPUT_SELECT_SKILL_3);
 
-
         // 移動
         iPlayerMove.UpdateMove(
             inputMoveHorizontal, 
@@ -87,7 +86,9 @@ public class PlayerInput : MonoBehaviour
 
         // 通常攻撃
         iPlayerAttack.UpdateAttack(
-            inputAttack);
+            inputAttack,
+            inputMoveHorizontal,
+            inputMoveVertical);
 
         // カメラ
         playerCamera.UpdateCamera(

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IPlayerAttack
 {
-    void UpdateAttack(float inputAttack);
+    void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical);
 }

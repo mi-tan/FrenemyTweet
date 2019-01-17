@@ -6,6 +6,7 @@ public class PlayerSkill : MonoBehaviour
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
+    private PlayerProvider playerProvider;
 
     private int skillNumber = 0;
     /// <summary>
@@ -52,12 +53,19 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     private Quaternion attackQuaternion;
 
+    private float[] skillCoolTimes = new float[PlayerParameter.SKILL_QUANTITY];
+    public float[] GetSkillCoolTimes()
+    {
+        return skillCoolTimes;
+    }
+
 
     void Awake()
     {
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerProvider = GetComponent<PlayerProvider>();
     }
 
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
@@ -81,6 +89,8 @@ public class PlayerSkill : MonoBehaviour
             FaceAttack(attackQuaternion);
         }
 
+        UpdateCoolTime();
+
         // 現在のプレイヤーの状態が行動可能ではなかったら、この先の処理を行わない
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE) { return; }
 
@@ -93,24 +103,35 @@ public class PlayerSkill : MonoBehaviour
             // スキルがあったら
             if (skill != null)
             {
-                // プレイヤーの状態をスキル中に変更
-                playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
+                if (skillCoolTimes[SkillNumber] <= 0)
+                {
+                    // プレイヤーの状態をスキル中に変更
+                    playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.SKILL);
 
-                isAttack = true;
+                    isAttack = true;
 
-                // スキル発動アニメーション再生
-                playerAnimationManager.ChangeSkillClip(skill.SkillAnimation);
-                playerAnimationManager.SetTriggerSkill();
+                    // スキル発動アニメーション再生
+                    playerAnimationManager.ChangeSkillClip(skill.SkillAnimation, skill.SkillAnimationSpeed);
+                    playerAnimationManager.SetTriggerSkill();
 
-                // スキル生成
-                StartCoroutine(CreateSkill(skill.SkillCreationTime, skill));
+                    // スキル生成
+                    StartCoroutine(CreateSkill(skill.SkillCreationTime, skill));
 
-                // スキル硬直解除
-                StartCoroutine(RecoverySkill(skill.SkillRecoveryTime));
+                    skillCoolTimes[SkillNumber] = skill.SkillCoolTime;
+
+                    // スキル硬直解除
+                    StartCoroutine(RecoverySkill(skill.SkillRecoveryTime));
+
+                    skill.SetPlayerAttackPower(playerProvider.GetPlayerAttackPower());
+                }
+                else
+                {
+                    Debug.Log(skillList[SkillNumber].SkillName + "：クールタイム(" + skillCoolTimes[SkillNumber] + "秒)");
+                }
             }
             else
             {
-                Debug.LogWarning("skillList["+ skillNumber + "] = null");
+                Debug.LogWarning("skillList["+ SkillNumber + "] = null");
             }
 
             isInput = true;
@@ -179,5 +200,20 @@ public class PlayerSkill : MonoBehaviour
         if (inputSelectSkill1) { SkillNumber = 0; }
         if (inputSelectSkill2) { SkillNumber = 1; }
         if (inputSelectSkill3) { SkillNumber = 2; }
+    }
+
+    void UpdateCoolTime()
+    {
+        for(int i = 0; i < skillCoolTimes.Length; i++)
+        {
+            if (skillCoolTimes[i] > 0)
+            {
+                skillCoolTimes[i] -= Time.deltaTime;
+            }
+            else
+            {
+                skillCoolTimes[i] = 0f;
+            }
+        }
     }
 }

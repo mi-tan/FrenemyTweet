@@ -17,11 +17,15 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// <summary>
     /// 移動方向に向く速度
     /// </summary>
-    const float FACE_SPEED = 1200f;
+    const float FACE_SPEED = 1500f;
     /// <summary>
     /// 移動速度
     /// </summary>
-    const float MOVE_SPEED = 5f;
+    const float MOVE_SPEED = 4f;
+    /// <summary>
+    /// 攻撃時の移動速度
+    /// </summary>
+    const float ATTACK_MOVE_SPEED = 1f;
 
     /// <summary>
     /// 移動方向
@@ -52,6 +56,9 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         // 移動方向に向く
         FaceMove(moveQuaternion);
 
+        playerAnimationManager.SetFloatHorizontal(inputMoveHorizontal);
+        playerAnimationManager.SetFloatVertical(inputMoveVertical);
+
         // 移動入力されていたら
         if (Mathf.Abs(inputMoveHorizontal) > INPUT_IDLE_VALUE ||
             Mathf.Abs(inputMoveVertical) > INPUT_IDLE_VALUE)
@@ -67,10 +74,16 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 moveQuaternion = Quaternion.LookRotation(moveDirection);
 
                 // 位置を移動
-                transform.position += transform.forward * MOVE_SPEED * Time.deltaTime;
+                transform.position += moveForward * MOVE_SPEED * Time.deltaTime;
             }
             else
             {
+                if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ATTACK)
+                {
+                    // 位置を移動
+                    transform.position += (transform.forward * inputMoveVertical + transform.right * inputMoveHorizontal) * ATTACK_MOVE_SPEED * Time.deltaTime;
+                }
+
                 moveQuaternion = transform.rotation;
             }
         }

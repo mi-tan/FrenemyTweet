@@ -27,9 +27,39 @@ public class PlayerProvider : CharacterBase
         return playerParameter.Hp;
     }
 
+    public void SetHp(int value)
+    {
+        playerParameter.SetHp(value);
+    }
+
     public int GetMaxHp()
     {
         return playerParameter.MaxHp;
+    }
+
+    public void SetMaxHp(int value)
+    {
+        playerParameter.SetMaxHp(value);
+    }
+
+    public int GetBasicAttackPower()
+    {
+        return playerParameter.BasicAttackPower;
+    }
+
+    public void SetBasicAttackPower(int value)
+    {
+        playerParameter.SetBasicAttackPower(value);
+    }
+
+    public int GetPlayerAttackPower()
+    {
+        return playerParameter.PlayerAttackPower;
+    }
+
+    public void SetPlayerAttackPower(int value)
+    {
+        playerParameter.SetPlayerAttackPower(value);
     }
 
     public int GetSkillNumber()
@@ -45,5 +75,10 @@ public class PlayerProvider : CharacterBase
     public PlayerSkillBase GetSelectSkill()
     {
         return playerSkill.GetSelectSkill();
+    }
+
+    public float[] GetSkillCoolTimes()
+    {
+        return playerSkill.GetSkillCoolTimes();
     }
 }

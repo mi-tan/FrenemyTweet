@@ -7,9 +7,9 @@ public class PlayerParameterManager : SingletonMonoBehaviour<PlayerParameterMana
     [SerializeField]
     private PlayerParameter playerParameter;
 
-    private int playerHP = 10;
+    private int playerHP = 50;
 
-    private int attackPower = 10;
+    private int attackPower = 50;
 
     public int PlayerHP
     {

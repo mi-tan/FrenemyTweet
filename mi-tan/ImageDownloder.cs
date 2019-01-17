@@ -14,8 +14,11 @@ public class ImageDownloder : MonoBehaviour
         testname = GameObject.Find("URLInfo").GetComponent<SceneTest>();
     }
 
+
     public IEnumerator Icon(Twitter.AccessTokenResponse response)
     {
+
+
         string strIcon = response.ScreenName.ToString();
         string IconUrl = strIcon;
         string url = "https://twitter.com/" + IconUrl + "/profile_image?size=original";

@@ -37,6 +37,11 @@ public class TwitterComponent : MonoBehaviour {
     private List<string> sentenceList = new List<string>();
     public List<string> getSentenceList { get { return sentenceList; } }
 
+    private void Start()
+    {
+        _Iconget.GetComponent<IconGet>();
+    }
+
     // タイムラインを取得
     public void OnClickTimeLine()
     {
@@ -153,14 +158,17 @@ public class TwitterComponent : MonoBehaviour {
         if (success)
         {
             var json = JSON.Parse(response);
-            
+
+            _Iconget.OnClick();
             // イナミュレーターを取得
             var jsonEnum = json.GetEnumerator();
             while (jsonEnum.MoveNext())
             {
+
                 //Debug.Log(jsonEnum.MoveNext());
                 //Debug.Log(((JSONNode)jsonEnum.Current)["text"]);
                 sentenceList.Add(((JSONNode)jsonEnum.Current)["text"]);
+
             }
         }
         isGetSentence = true;

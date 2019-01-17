@@ -22,6 +22,7 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     /// </summary>
     private List<string> tweetList = new List<string>();
 
+
     //private void Start()
     //{
     //    iAnalysis = obj.GetComponent<IAnalysis>();

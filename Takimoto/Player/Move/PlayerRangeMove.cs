@@ -17,7 +17,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// <summary>
     /// 移動方向に向く速度
     /// </summary>
-    const float FACE_SPEED = 1200f;
+    const float FACE_SPEED = 1500f;
     /// <summary>
     /// 移動速度
     /// </summary>
@@ -70,7 +70,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 moveQuaternion = Quaternion.LookRotation(moveDirection);
 
                 // 位置を移動
-                transform.position += transform.forward * MOVE_SPEED * Time.deltaTime;
+                transform.position += moveForward * MOVE_SPEED * Time.deltaTime;
             }
             else
             {

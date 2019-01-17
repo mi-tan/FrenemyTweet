@@ -98,7 +98,7 @@ class Sword : MeleeWeapon
         swordCollider.enabled = false;
     }
 
-    public override void UpdateAttack(float inputAttack)
+    public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
         if (isAttack)
         {

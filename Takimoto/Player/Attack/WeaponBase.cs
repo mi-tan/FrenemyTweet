@@ -4,7 +4,7 @@ using UnityEngine;
 
 abstract class WeaponBase : MonoBehaviour, IPlayerAttack
 {
-    public virtual void UpdateAttack(float inputAttack)
+    public virtual void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
         Debug.LogError("overrideされていない(WeaponBase)");
     }

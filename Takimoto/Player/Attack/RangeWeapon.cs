@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 abstract class RangeWeapon : WeaponBase
 {
-    public override void UpdateAttack(float inputAttack)
+    public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
         Debug.LogError("overrideされていない(RangeWeapon)");
     }

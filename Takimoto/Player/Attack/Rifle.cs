@@ -20,6 +20,11 @@ class Rifle : RangeWeapon
     /// </summary>
     private Quaternion attackQuaternion;
 
+    /// <summary>
+    /// 構え移動速度
+    /// </summary>
+    const float STANCE_MOVE_SPEED = 1.5f;
+
 
     void Awake()
     {
@@ -28,7 +33,7 @@ class Rifle : RangeWeapon
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
     }
 
-    public override void UpdateAttack(float inputAttack)
+    public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
         if (inputAttack >= 1)
         {
@@ -42,11 +47,16 @@ class Rifle : RangeWeapon
             isInput = false;
         }
 
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.SKILL) { return; }
+
         // 通常攻撃アニメーションを再生
         playerAnimationManager.SetBoolAttack(isInput);
 
         if (isInput)
         {
+            // プレイヤーの状態を攻撃中に変更
+            playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ATTACK);
+
             Vector3 attackDirection = Vector3.Scale(
                 Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
             attackQuaternion = Quaternion.LookRotation(attackDirection);
@@ -54,8 +64,8 @@ class Rifle : RangeWeapon
             // 攻撃方向に向く
             FaceAttack(attackQuaternion);
 
-            // プレイヤーの状態を攻撃中に変更
-            playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ATTACK);
+            // 構え移動
+            StanceMove(inputMoveHorizontal, inputMoveVertical);
         }
         else
         {
@@ -79,5 +89,18 @@ class Rifle : RangeWeapon
             // 攻撃角度に向く
             transform.rotation = attackQuaternion;
         }
+    }
+
+    /// <summary>
+    /// 構え移動
+    /// </summary>
+    void StanceMove(float inputMoveHorizontal, float inputMoveVertical)
+    {
+        if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK) { return; }
+
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+
+        transform.position += moveForward * STANCE_MOVE_SPEED * Time.deltaTime;
     }
 }

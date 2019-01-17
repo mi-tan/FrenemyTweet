@@ -86,7 +86,9 @@ public class PlayerInput : MonoBehaviour
 
         // 通常攻撃
         iPlayerAttack.UpdateAttack(
-            inputAttack);
+            inputAttack,
+            inputMoveHorizontal,
+            inputMoveVertical);
 
         // カメラ
         playerCamera.UpdateCamera(

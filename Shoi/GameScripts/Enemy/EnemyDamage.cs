@@ -29,6 +29,12 @@ public sealed class EnemyDamage :　MonoBehaviour {
         enemyparameter = GetComponent<EnemyParameter>();
         animationController = GetComponent<EnemyAnimationController>();
 
+        if (damageEffect == null)
+        {
+            Debug.LogWarning("ダメージエフェクト未設定");
+            return;
+        }
+
         damageEffect = enemyparameter.damageEffect;
     }
 
@@ -41,7 +47,14 @@ public sealed class EnemyDamage :　MonoBehaviour {
         animationController.TakeDamage(true);
         animationController.Type(randNum);
         // エフェクト生成
-        //Instantiate(damageEffect, transform.position, transform.rotation);
+        if (damageEffect==null)
+        {
+            Debug.LogWarning("敵被ダメージ時のエフェクトが設定されていません");
+        }
+        else
+        {
+            Instantiate(damageEffect, transform.position, transform.rotation);
+        }
 
         Observable.TimerFrame(animationController.GetFlagOffFrame).Subscribe(_ =>
         {

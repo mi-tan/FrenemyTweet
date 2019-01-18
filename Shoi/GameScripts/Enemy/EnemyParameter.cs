@@ -26,11 +26,13 @@ public class EnemyParameter : MonoBehaviour {
     [SerializeField, Tooltip("プレイヤーを追いかけ始める距離")]
     public float chaseDistance = 9f;
     [SerializeField,Tooltip("見回り時の待ち時間")]
-    public int waitFrame = 40;
+    public float waitTime = 4;
     [SerializeField,Tooltip("攻撃後の硬直時間")]
-    public int freezeFrame = 60;
+    public float freezeTime = 1.5f;
     [SerializeField, Tooltip("巡回範囲")]
     public int movingRange = 5;
+    [SerializeField]
+    public float attackAngle = 20f;
 
 
     public int getMaxHP { get { return maxHP; } }

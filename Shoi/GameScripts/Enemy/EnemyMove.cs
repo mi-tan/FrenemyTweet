@@ -38,11 +38,11 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
         // 移動アニメーション開始
         enemyAnimationController.Run(true);
 
-        Vector3 direction = (destination - transform.position).normalized;
-
+        Vector3 lookVector = destination - transform.position;
+        lookVector.y = 0;
 
         //moveQuaternion = Quaternion.LookRotation(new Vector3(destination.x, transform.position.y, destination.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destination - transform.position), FACE_SPEED);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookVector), FACE_SPEED);
       
         // 位置を移動
         transform.position += transform.forward * moveSpeed * Time.deltaTime;

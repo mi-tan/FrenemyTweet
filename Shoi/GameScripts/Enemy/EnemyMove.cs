@@ -14,7 +14,7 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
     /// <summary>
     /// 向く速度
     /// </summary>
-    private const float FACE_SPEED = 100000f;
+    private const float FACE_SPEED = 0.3f;
     /// <summary>
     /// 移動角度
     /// </summary>
@@ -35,34 +35,16 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
 
     public void Move(Vector3 destination, float moveSpeed)
     {
-        //Debug.Log("H：" + x + " V：" + z);
-        Debug.Log("Move");
-
         // 移動アニメーション開始
         enemyAnimationController.Run(true);
-        
-        moveQuaternion = Quaternion.LookRotation(destination);
 
+        Vector3 direction = (destination - transform.position).normalized;
+
+
+        //moveQuaternion = Quaternion.LookRotation(new Vector3(destination.x, transform.position.y, destination.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destination - transform.position), FACE_SPEED);
+      
         // 位置を移動
         transform.position += transform.forward * moveSpeed * Time.deltaTime;
-        // 移動角度に向く
-        UpdateFace(moveQuaternion);
-        //// 移動アニメーション停止
-        //enemyAnimationController.Run(false);
-    }
-
-    /// <summary>
-    /// 移動角度に向く
-    /// </summary>
-    /// <param name="moveQuaternion">移動角度</param>
-    private void UpdateFace(Quaternion moveQuaternion)
-    {
-        // 移動角度に向いていたら、この先の処理を行わない
-        if (transform.rotation == moveQuaternion) { return; }
-
-        // 移動角度に徐々に向く
-        float step = FACE_SPEED * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, moveQuaternion, step);
-
     }
 }

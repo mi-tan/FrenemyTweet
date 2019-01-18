@@ -13,8 +13,11 @@ public class EnemyParameter : MonoBehaviour {
     public int hp = 100;
     [SerializeField, Tooltip("攻撃力")]
     public int power = 10;
+
+    [SerializeField, Tooltip("歩く移動速度")]
+    public float enemyWalkSpeed = 2;
     [SerializeField, Tooltip("移動速度")]
-    public float enemyMoveSpeed = 3;
+    public float enemyRunSpeed = 4;
     [SerializeField, Tooltip("攻撃時のエフェクト")]
     public GameObject attackEffect;
     [SerializeField, Tooltip("被ダメージ時のエフェクト")]

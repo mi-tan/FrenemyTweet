@@ -10,10 +10,6 @@ public sealed class EnemyAttack : MonoBehaviour, IEnemyAttack
 {
     private EnemyAnimationController enemyAnimationController;
 
-    // 攻撃してない
-    // 攻撃してるけど受け付ける
-    // 攻撃してるけど受け付けない
-    // 攻撃させない
 
     private void Start()
     {
@@ -33,5 +29,4 @@ public sealed class EnemyAttack : MonoBehaviour, IEnemyAttack
             enemyAnimationController.Attack(false);
         });
     }
-
 }

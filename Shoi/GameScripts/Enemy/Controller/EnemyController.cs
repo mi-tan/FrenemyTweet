@@ -127,7 +127,7 @@ public sealed class EnemyController : NormalEnemy
             if (destinationDistance > 0.5f)
             {
                 // 移動
-                iEnemyMove.Move(destination, enemyParameter.enemyMoveSpeed);
+                iEnemyMove.Move(destination, enemyParameter.enemyWalkSpeed);
             }
             else
             {
@@ -153,7 +153,7 @@ public sealed class EnemyController : NormalEnemy
             else
             {
                 // プレイヤーに近づく
-                iEnemyMove.Move(gameManager.player.transform.position, enemyParameter.enemyMoveSpeed);
+                iEnemyMove.Move(gameManager.player.transform.position, enemyParameter.enemyRunSpeed);
             }
 
             // プレイヤーと距離が空いた場合

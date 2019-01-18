@@ -14,7 +14,7 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// カメラの初期位置
     /// </summary>
-    static readonly Vector3 INITIAL_POSITION = new Vector3(0f, 1.6f, -8f);
+    static readonly Vector3 INITIAL_POSITION = new Vector3(0f, 1.6f, -4f);
     /// <summary>
     /// カメラの中心点
     /// </summary>
@@ -60,7 +60,7 @@ public class PlayerCamera : MonoBehaviour
     {
         // カメラを生成
         mainCamera = Instantiate(
-            mainCameraPrefab, INITIAL_POSITION, transform.rotation);
+            mainCameraPrefab, transform.position + INITIAL_POSITION, transform.rotation);
 
         // カメラの中心点を計算
         centerPoint = transform.position + transform.up * INITIAL_POSITION.y;

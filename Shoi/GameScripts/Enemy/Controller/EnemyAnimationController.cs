@@ -42,7 +42,7 @@ public class EnemyAnimationController : MonoBehaviour
     /// <param name="flag"></param>
     public void Attack(bool value)
     {
-        Debug.Log($"Attack = {value}");
+        // Debug.Log($"Attack = {value}");
         Animate(PARAMETER_BOOL_ATTACK, value);
     }
 

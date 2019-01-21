@@ -25,8 +25,9 @@ public sealed class EnemyAttack : MonoBehaviour, IEnemyAttack
         // 攻撃アニメーションを呼び出し
         enemyAnimationController.Type(value);
 
-        Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ => {
+        Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
+        {
             enemyAnimationController.Attack(false);
-        });
+        }).AddTo(gameObject);
     }
 }

@@ -72,6 +72,7 @@ public sealed class AttackCollision : MonoBehaviour {
         // 登録されたイベント実行
         attackCollisionSubject.OnNext(Unit.Default);
         CallTakeDamage(other.gameObject);
+        Instantiate(hitEffect, other.transform.position, transform.rotation);
     }
 
     /// <summary>
@@ -85,6 +86,7 @@ public sealed class AttackCollision : MonoBehaviour {
             eventData: null,
             functor: (iDamage, eventData) => iDamage.TakeDamage(attackPower)
         );
+       
     }
 
     /// <summary>

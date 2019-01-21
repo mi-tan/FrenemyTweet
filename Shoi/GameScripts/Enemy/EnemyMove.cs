@@ -15,20 +15,14 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
     /// 向く速度
     /// </summary>
     private const float FACE_SPEED = 0.3f;
-    /// <summary>
-    /// 移動角度
-    /// </summary>
-    private Quaternion moveQuaternion;
 
     private EnemyAnimationController enemyAnimationController;
 
     //　攻撃した後のフリーズ時間
-    private float FREEZE_TIME = 0.3f;
+    //private float FREEZE_TIME = 0.3f;
 
     private void Awake()
     {
-        // 初期化
-        moveQuaternion = transform.rotation;
         enemyAnimationController = GetComponent<EnemyAnimationController>();
     }
 

@@ -11,15 +11,12 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// <summary>
     /// 防御力
     /// </summary>
-    private int deffencePower = 0;
+    //private int deffencePower = 0;
+
     /// <summary>
     /// ダメージアニメーションの数
     /// </summary>
     private int damageAnimationNum = 4;
-    /// <summary>
-    /// 被ダメージ時のエフェクト
-    /// </summary>
-    private GameObject damageEffect;
 
     private EnemyParameter enemyparameter;
     private EnemyAnimationController animationController;
@@ -28,14 +25,6 @@ public sealed class EnemyDamage :　MonoBehaviour {
     {
         enemyparameter = GetComponent<EnemyParameter>();
         animationController = GetComponent<EnemyAnimationController>();
-
-        if (damageEffect == null)
-        {
-            Debug.LogWarning("ダメージエフェクト未設定");
-            return;
-        }
-
-        damageEffect = enemyparameter.damageEffect;
     }
 
     public void TakeDamage(int damage)
@@ -46,15 +35,6 @@ public sealed class EnemyDamage :　MonoBehaviour {
         // 被ダメージ時のアニメーション再生
         animationController.TakeDamage(true);
         animationController.Type(randNum);
-        // エフェクト生成
-        if (damageEffect==null)
-        {
-            Debug.LogWarning("敵被ダメージ時のエフェクトが設定されていません");
-        }
-        else
-        {
-            Instantiate(damageEffect, transform.position, transform.rotation);
-        }
 
         Observable.TimerFrame(animationController.GetFlagOffFrame).Subscribe(_ =>
         {

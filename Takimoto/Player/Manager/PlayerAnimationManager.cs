@@ -33,6 +33,8 @@ public class PlayerAnimationManager : MonoBehaviour
     private const string PARAMETER_FLOAT_VERTICAL = "Vertical";
     private const string PARAMETER_FLOAT_HORIZONTAL = "Horizontal";
 
+    private const string PARAMETER_TRIGGER_RELOAD = "Reload";
+
 
     void Awake()
     {
@@ -105,5 +107,10 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SetFloatHorizontal(float value)
     {
         playerAnimator.SetFloat(PARAMETER_FLOAT_HORIZONTAL, value);
+    }
+
+    public void SetTriggerReload()
+    {
+        playerAnimator.SetTrigger(PARAMETER_TRIGGER_RELOAD);
     }
 }

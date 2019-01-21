@@ -51,7 +51,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     public void UpdateMove(float inputMoveHorizontal, float inputMoveVertical)
     {
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+        Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
         // 移動方向に向く
         FaceMove(moveQuaternion);
@@ -70,11 +70,10 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
             if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
             {
                 // 移動方向を計算
-                Vector3 moveDirection = moveForward;
                 moveQuaternion = Quaternion.LookRotation(moveDirection);
 
                 // 位置を移動
-                transform.position += moveForward * MOVE_SPEED * Time.deltaTime;
+                transform.position += moveDirection.normalized * MOVE_SPEED * Time.deltaTime;
             }
             else
             {

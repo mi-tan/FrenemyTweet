@@ -24,6 +24,10 @@ public class PlayerStateManager : MonoBehaviour
         /// スキル中
         /// </summary>
         SKILL,
+        /// <summary>
+        /// リロード中
+        /// </summary>
+        RELOAD,
     }
     /// <summary>
     /// 現在のプレイヤーの状態

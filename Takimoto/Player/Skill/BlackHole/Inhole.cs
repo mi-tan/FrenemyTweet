@@ -6,10 +6,16 @@ public class Inhole : MonoBehaviour
 {
     private List<Rigidbody> Enemys = new List<Rigidbody>();
 
+    [SerializeField]
+    private float gravityPower = 100f;
+
+    [SerializeField]
+    private float destroyTime = 2.5f;
+
 
     void Awake()
     {
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, destroyTime);
     }
 
     void FixedUpdate()
@@ -21,7 +27,13 @@ public class Inhole : MonoBehaviour
             float distance = 0f;
             distance = Vector3.Distance(transform.position, rb.transform.position);
 
-            rb.velocity = (-(rb.transform.position - transform.position).normalized * 20 * distance / rb.mass);
+            rb.velocity = (-(rb.transform.position - transform.position).normalized * gravityPower * distance / rb.mass);
+
+            // 小さくして消す
+            //float a = rb.gameObject.transform.localScale.x * distance;
+            //a = Mathf.Clamp(a, 0, 1);
+            //rb.gameObject.transform.localScale = new Vector3(a, a, a);
+            //if (a == 0) { Destroy(rb.gameObject); }
         }
     }
 

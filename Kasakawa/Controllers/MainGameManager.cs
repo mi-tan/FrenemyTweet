@@ -4,6 +4,7 @@ using UnityEngine;
 using Zenject;
 using UniRx;
 using UniRx.Triggers;
+using UniRx.Async;
 using System;
 
 /// <summary>
@@ -38,22 +39,31 @@ public class MainGameManager : MonoBehaviour {
     [Inject]
     public PlayerProvider player;
 
+    private const string Start_Pos_Name = "PlayerStartPosition";
+
     // Use this for initialization
-    void Start()
+    private async void Start()
     {
         // サブシーンを読み込む
         foreach (var sceneName in subSceneNames)
         {
-            SceneController.AddSceneAsync(sceneName);
+           await SceneController.AddSceneAsync(sceneName);
         }
 
         // プレイヤーのパラメータを設定する
         InitPlayerParameter();
 
+        InitPlayerPosition();
+
+        //// 1フレーム待ってからプレイヤーを初期位置に移動する
+        //Observable.TimerFrame(2).Subscribe(_ => InitPlayerPosition());
+
+
         // ゲーム開始まで遅延処理する
         Observable.Timer(System.TimeSpan.FromSeconds(startWaitTime))
             .Subscribe(_ =>
             {
+                
                 // ゲーム開始時のイベントを実行
                 startSubject.OnNext(Unit.Default);
 
@@ -63,7 +73,7 @@ public class MainGameManager : MonoBehaviour {
                 .AddTo(gameObject);
             })
             .AddTo(gameObject);
-       
+
     }
 
     private void InitPlayerParameter()
@@ -79,5 +89,18 @@ public class MainGameManager : MonoBehaviour {
 
         // 現在の攻撃力をセットする
         player.SetPlayerAttackPower(PlayerParameterManager.Instance.AttackPower);
+    }
+
+    private void InitPlayerPosition()
+    {
+
+        var startPositionObject = GameObject.Find(Start_Pos_Name);
+
+        if (!startPositionObject) { Debug.LogWarning("プレイヤーの初期位置用オブジェクトがありません。"); return; }
+
+        var startPosition = startPositionObject.transform.position;
+
+        // プレイヤーを初期位置に移動させる
+        player.transform.position = startPosition;
     }
 }

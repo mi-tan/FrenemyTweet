@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// シーン遷移の管理クラス
 /// </summary>
-public sealed class SceneController{
+public sealed class SceneController
+{
 
     //private const string playSceneName = "MainGameSample";
 
@@ -14,25 +15,25 @@ public sealed class SceneController{
     /// 指定したシーンに飛ぶ(非同期)
     /// </summary>
     /// <param name="sceneName"></param>
-	public static void JumpSceneAsync(int sceneNum)
+	public static AsyncOperation JumpSceneAsync(int sceneNum)
     {
-        SceneManager.LoadSceneAsync(sceneNum);
+        return SceneManager.LoadSceneAsync(sceneNum);
     }
 
     /// <summary>
     /// 指定したシーンに飛ぶ(非同期)
     /// </summary>
     /// <param name="sceneName"></param>
-	public static void JumpSceneAsync(string sceneName)
+	public static AsyncOperation JumpSceneAsync(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        return SceneManager.LoadSceneAsync(sceneName);
     }
 
     /// <summary>
     /// 指定したシーンを追加で生成(非同期)
     /// </summary>
     /// <param name="sceneName"></param>
-    public static void AddSceneAsync(string sceneName)
+    public static AsyncOperation AddSceneAsync(string sceneName)
     {
 
         string sceneNameTemp = null;
@@ -47,20 +48,20 @@ public sealed class SceneController{
             if (sceneNameTemp.Equals(sceneName))
             {
                 Debug.LogWarning($"シーン名:{sceneName}は既に読み込まれています");
-                return;
+                return null;
             }
 
         }
 
-        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
 
     /// <summary>
     /// 現在のシーンを読み直す(リトライ)
     /// </summary>
-    public static void ReloadSceneAsync()
+    public static AsyncOperation ReloadSceneAsync()
     {
-        JumpSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        return JumpSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
     //public static void LoadPlaySceneAsync()

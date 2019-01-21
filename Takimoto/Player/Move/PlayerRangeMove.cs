@@ -89,6 +89,11 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         }
     }
 
+    public void UpdateDodge(bool inputDodge)
+    {
+
+    }
+
     /// <summary>
     /// 移動方向に向く
     /// </summary>

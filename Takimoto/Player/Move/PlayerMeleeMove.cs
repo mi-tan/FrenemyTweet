@@ -28,6 +28,10 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     /// </summary>
     private Quaternion moveQuaternion;
 
+    private bool isDodge = false;
+
+    private Coroutine recoveryDodgeCoroutine;
+
 
     void Awake()
     {
@@ -80,6 +84,43 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
             // 走るアニメーションを停止
             playerAnimationManager.SetBoolRun(false);
         }
+    }
+
+    public void UpdateDodge(bool inputDodge)
+    {
+        if (inputDodge)
+        {
+            if (!isDodge)
+            {
+                Debug.Log("回避");
+
+                if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE) { return; }
+
+                playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DODGE);
+
+                // 回避
+                playerAnimationManager.SetTriggerDodge();
+
+                recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
+            }
+
+            isDodge = true;
+        }
+        else
+        {
+            isDodge = false;
+        }
+    }
+
+    private IEnumerator RecoveryDodge()
+    {
+        if (recoveryDodgeCoroutine != null) { yield break; }
+
+        yield return new WaitForSeconds(0.65f);
+
+        playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
+
+        recoveryDodgeCoroutine = null;
     }
 
     /// <summary>

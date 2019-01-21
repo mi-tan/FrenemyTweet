@@ -197,9 +197,21 @@ public class PlayerSkill : MonoBehaviour
     /// <param name="inputSelectSkill3">スキル3切り替え入力</param>
     void ChangeSkill(bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
     {
-        if (inputSelectSkill1) { SkillNumber = 0; }
-        if (inputSelectSkill2) { SkillNumber = 1; }
-        if (inputSelectSkill3) { SkillNumber = 2; }
+        if (inputSelectSkill1)
+        {
+            if(GetSkillList()[0] == null) { return; }
+            SkillNumber = 0;
+        }
+        if (inputSelectSkill2)
+        {
+            if (GetSkillList()[1] == null) { return; }
+            SkillNumber = 1;
+        }
+        if (inputSelectSkill3)
+        {
+            if (GetSkillList()[2] == null) { return; }
+            SkillNumber = 2;
+        }
     }
 
     void UpdateCoolTime()

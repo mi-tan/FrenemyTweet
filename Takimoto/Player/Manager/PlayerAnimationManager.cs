@@ -34,6 +34,7 @@ public class PlayerAnimationManager : MonoBehaviour
     private const string PARAMETER_FLOAT_HORIZONTAL = "Horizontal";
 
     private const string PARAMETER_TRIGGER_RELOAD = "Reload";
+    private const string PARAMETER_TIRGGER_DODGE = "Dodge";
 
 
     void Awake()
@@ -112,5 +113,10 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SetTriggerReload()
     {
         playerAnimator.SetTrigger(PARAMETER_TRIGGER_RELOAD);
+    }
+
+    public void SetTriggerDodge()
+    {
+        playerAnimator.SetTrigger(PARAMETER_TIRGGER_DODGE);
     }
 }

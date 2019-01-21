@@ -90,6 +90,20 @@ public class PlayerProvider : CharacterBase
         return playerSkill.GetSkillCoolTimes();
     }
 
+    public float[] GetSkillBaseCoolTimes()
+    {
+        float[] skillBaseCoolTimes = new float[PlayerParameter.SKILL_QUANTITY];
+
+        for(int i = 0; i < skillBaseCoolTimes.Length; i++)
+        {
+            if (GetSkillList()[i] == null) { continue; }
+
+            skillBaseCoolTimes[i] = GetSkillList()[i].SkillCoolTime;
+        }
+
+        return skillBaseCoolTimes;
+    }
+
     public void SetFaceTexture(Texture2D tex)
     {
         if (!tex) { return; }

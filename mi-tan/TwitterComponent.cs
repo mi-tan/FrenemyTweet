@@ -11,8 +11,16 @@ public class TwitterComponent : MonoBehaviour {
     //public GameObject TimeLineGet;
     [SerializeField,Tooltip("取得するツイートの数")]
     private int getTweetNum;
+
     [SerializeField]
-    private IconGet _Iconget;
+    ImageDownloder _imageDownLoder;
+    public Twitter.AccessTokenResponse sendIcon;
+
+
+    [SerializeField]
+    TwitterComponent tc;
+
+
     private const string CONSUMER_KEY = "uAWdP7574vZXG95E3YxCxdePq";
     private const string CONSUMER_SECRET = "NIMvj4ImnUfZKFXtDB4GEdYSIA4K6NOHwDG6cZCOf6O0XGfMYm";
     //private string user_id = "TwitterUserID";
@@ -37,10 +45,7 @@ public class TwitterComponent : MonoBehaviour {
     private List<string> sentenceList = new List<string>();
     public List<string> getSentenceList { get { return sentenceList; } }
 
-    private void Start()
-    {
-        _Iconget.GetComponent<IconGet>();
-    }
+
 
     // タイムラインを取得
     public void OnClickTimeLine()
@@ -159,7 +164,9 @@ public class TwitterComponent : MonoBehaviour {
         {
             var json = JSON.Parse(response);
 
-            _Iconget.OnClick();
+            tc.GetComponent<TwitterComponent>();
+            sendIcon = tc.m_AccessTokenResponse;
+            StartCoroutine(_imageDownLoder.Icon(sendIcon));
             // イナミュレーターを取得
             var jsonEnum = json.GetEnumerator();
             while (jsonEnum.MoveNext())
@@ -173,7 +180,8 @@ public class TwitterComponent : MonoBehaviour {
         }
         isGetSentence = true;
     }
-    
+
+
 
     void OnGetUserIcon(bool success, string response)
     {

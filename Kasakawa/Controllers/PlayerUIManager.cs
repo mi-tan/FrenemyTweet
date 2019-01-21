@@ -150,7 +150,7 @@ public sealed class PlayerUIManager : MonoBehaviour
             var skillCoolTime = skillBaseTimes[i] - skillCoolTimes[i];
 
             // クールタイムをUIに反映する
-            skillIconArray[i].IconImage.fillAmount = skillBaseTimes[i]/skillCoolTime;
+            skillIconArray[i].IconImage.fillAmount = skillCoolTime/ skillBaseTimes[i];
         }
     }
 

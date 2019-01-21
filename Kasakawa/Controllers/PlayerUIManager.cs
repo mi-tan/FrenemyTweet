@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine.UI;
 
 /// <summary>
@@ -64,6 +65,10 @@ public sealed class PlayerUIManager : MonoBehaviour
         // プレイヤーの選択スキルが変化した場合、表示を更新する
         gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetSelectSkill())
             .Subscribe(skill => { UpdateSelectedSkillInfo(skill,gameManager.player.GetSkillNumber()); });
+
+        // スキルクールタイムの表示更新
+        this.UpdateAsObservable().Subscribe(_ => UpdateSkillCoolTime())
+            .AddTo(gameObject);
 
     }
 
@@ -134,14 +139,18 @@ public sealed class PlayerUIManager : MonoBehaviour
     {
 
         // スキルクールタイムの残り時間を取得する
-        float[] skillCoolTimes = gameManager.player.GetSkillCoolTimes();
+        var skillCoolTimes = gameManager.player.GetSkillCoolTimes();
 
         // スキルのクールタイムを取得する
-        var skillBaseTimes = gameManager.player.GetSkillCoolTimes();
+        var skillBaseTimes = gameManager.player.GetSkillBaseCoolTimes();
 
         for (int i = 0;i < skillIconArray.Length; i++)
         {
-            skillIconArray[i].IconImage.fillAmount = skillCoolTimes[i];
+            // 現在のクールタイムの経過時間を取得
+            var skillCoolTime = skillBaseTimes[i] - skillCoolTimes[i];
+
+            // クールタイムをUIに反映する
+            skillIconArray[i].IconImage.fillAmount = skillBaseTimes[i]/skillCoolTime;
         }
     }
 

@@ -68,22 +68,20 @@ class Sword : MeleeWeapon
 
     private AttackMoveParameter attackMoveParameter;
 
-    // ↓斬撃エフェクトテスト↓
-    //[SerializeField]
-    //private ParticleSystem attackEffect;
-    //[SerializeField]
-    //private Transform sword;
-    // ↑斬撃エフェクトテスト↑
-
     [SerializeField]
     private Collider swordCollider;
+    [SerializeField]
+    MeleeWeaponTrail trail;
 
     private AttackCollision attackCollision;
+
+    [SerializeField]
+    private GameObject hitEffect;
 
     /// <summary>
     /// 剣コンボごとの攻撃力
     /// </summary>
-    private int[] swordAttackPower = { 0, 10, 20, 30 };
+    private int[] swordAttackPower = { 0, 30, 35, 40 };
 
 
     void Awake()
@@ -96,6 +94,12 @@ class Sword : MeleeWeapon
 
         // 剣の当たり判定を初期化
         swordCollider.enabled = false;
+    }
+
+    private void Start()
+    {
+        if (hitEffect == null) { return; }
+        attackCollision.SetHitEffect = hitEffect;
     }
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
@@ -136,14 +140,6 @@ class Sword : MeleeWeapon
                 time += Time.deltaTime;
                 if (time >= attackMoveParameter.MoveTime)
                 {
-                    // ↓斬撃エフェクトテスト↓
-                    //if (attackEffect != null)
-                    //{
-                    //    ParticleSystem a = Instantiate(attackEffect, transform.position + transform.up + transform.forward * 2, transform.rotation);
-                    //    Destroy(a.gameObject, 3f);
-                    //}
-                    // ↑斬撃エフェクトテスト↑
-
                     isMove = true;
                 }
             }
@@ -311,11 +307,19 @@ class Sword : MeleeWeapon
 
         //Debug.Log("当たり判定：有効");
         swordCollider.enabled = true;
+
+        if (trail == null) { return; }
+        // 軌跡有効
+        trail.Emit = true;
     }
 
     public void EndAttack()
     {
         //Debug.Log("当たり判定：無効");
         swordCollider.enabled = false;
+
+        if (trail == null) { return; }
+        // 軌跡無効
+        trail.Emit = false;
     }
 }

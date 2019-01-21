@@ -72,7 +72,15 @@ public sealed class AttackCollision : MonoBehaviour {
         // 衝突位置
         Vector3 hitPos = other.ClosestPointOnBounds(this.transform.position);
 
-        Instantiate(hitEffect, hitPos, hitEffect.transform.rotation);
+        if (hitEffect!=null)
+        {
+            Instantiate(hitEffect, hitPos, hitEffect.transform.rotation);
+        }
+        else
+        {
+            Debug.LogWarning("hitEffectが登録されていません");
+        }
+
         // 登録されたイベント実行
         attackCollisionSubject.OnNext(Unit.Default);
         CallTakeDamage(other.gameObject);

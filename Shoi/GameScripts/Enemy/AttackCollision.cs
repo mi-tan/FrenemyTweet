@@ -69,10 +69,13 @@ public sealed class AttackCollision : MonoBehaviour {
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
+        // 衝突位置
+        Vector3 hitPos = other.ClosestPointOnBounds(this.transform.position);
+
+        Instantiate(hitEffect, hitPos, hitEffect.transform.rotation);
         // 登録されたイベント実行
         attackCollisionSubject.OnNext(Unit.Default);
         CallTakeDamage(other.gameObject);
-        Instantiate(hitEffect, other.transform.position, transform.rotation);
     }
 
     /// <summary>

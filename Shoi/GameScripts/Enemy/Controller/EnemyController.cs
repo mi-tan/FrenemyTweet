@@ -17,6 +17,7 @@ public sealed class EnemyController : NormalEnemy
     private EnemyParameter enemyParameter;
     private EnemyAttackListener enemyAttackListener;
     private EnemyAnimationController enemyAnimationController;
+    private AttackCollision attackCollision;
 
     [Inject]
     private MainGameManager gameManager;
@@ -59,12 +60,16 @@ public sealed class EnemyController : NormalEnemy
         enemyAttackListener = GetComponent<EnemyAttackListener>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
 
-
         // 使用する武器を設定
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
         {
             enemyAttackListener.setAttackCollision = weapon;
             weapon.SetDebugFlag = enemyParameter.AttackCollisionDebugFlag;
+
+            if (enemyParameter.attackEffect != null)
+            {
+                weapon.SetHitEffect = enemyParameter.attackEffect;
+            }
         }
     }
 
@@ -75,6 +80,7 @@ public sealed class EnemyController : NormalEnemy
         startPosition = transform.position;
         // HP初期化
         enemyParameter.hp = enemyParameter.getMaxHP;
+        
 
         // 武器のコライダー制御
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
@@ -194,6 +200,7 @@ public sealed class EnemyController : NormalEnemy
         enemyDamage.TakeDamage(damage);
 
         ChangeState(EnemyState.Freeze);
+
 
         if (attackWaitStream != null)
         {

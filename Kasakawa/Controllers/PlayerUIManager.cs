@@ -17,7 +17,7 @@ public sealed class PlayerUIManager : MonoBehaviour
     private Slider hpSlider;
 
     [SerializeField]
-    private Image[] skillIconImage;
+    private SkillIconImage[] skillIconArray;
 
     [SerializeField]
     private Transform selectSkillUI;
@@ -27,6 +27,32 @@ public sealed class PlayerUIManager : MonoBehaviour
 
     [SerializeField]
     private Text userIDText;
+
+    [System.Serializable]
+    private class SkillIconImage
+    {
+        [SerializeField]
+        private Image iconImage;
+
+        public Image IconImage
+        {
+            get
+            {
+                return iconImage;
+            }
+        }
+
+        [SerializeField]
+        private Image iconBackGroundImage;
+
+        public Image IconBackGroundImage
+        {
+            get
+            {
+                return iconBackGroundImage;
+            }
+        }
+    }
 
     void Awake()
     {
@@ -95,9 +121,28 @@ public sealed class PlayerUIManager : MonoBehaviour
             return;
         }
 
-        skillIconImage[skillNum].sprite = skill.SkillIcon;
+        // アイコン画像を変更する
+        skillIconArray[skillNum].IconImage.sprite = skill.SkillIcon;
 
-        selectSkillUI.transform.position = skillIconImage[skillNum].transform.position;
+        // アイコンの背景画像を変更する
+        skillIconArray[skillNum].IconBackGroundImage.sprite = skill.SkillIcon;
+
+        selectSkillUI.transform.position = skillIconArray[skillNum].IconImage.transform.position;
+    }
+
+    private void UpdateSkillCoolTime()
+    {
+
+        // スキルクールタイムの残り時間を取得する
+        float[] skillCoolTimes = gameManager.player.GetSkillCoolTimes();
+
+        // スキルのクールタイムを取得する
+        var skillBaseTimes = gameManager.player.GetSkillCoolTimes();
+
+        for (int i = 0;i < skillIconArray.Length; i++)
+        {
+            skillIconArray[i].IconImage.fillAmount = skillCoolTimes[i];
+        }
     }
 
     private void UpdateUserIconImage()
@@ -118,5 +163,5 @@ public sealed class PlayerUIManager : MonoBehaviour
 
         userIDText.text = userID;
     }
-
+    
 }

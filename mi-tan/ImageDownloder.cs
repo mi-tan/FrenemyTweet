@@ -11,6 +11,9 @@ public class ImageDownloder : MonoBehaviour
     [SerializeField]
     TwitterSceneManager twitterSceneManager;
 
+    [SerializeField]
+    private Text text;
+
     private void Start()
     {
         test = GameObject.Find("URLInfo").GetComponent<SceneTest>();
@@ -20,6 +23,7 @@ public class ImageDownloder : MonoBehaviour
 
     public IEnumerator Icon(Twitter.AccessTokenResponse response)
     {
+
 
 
         string strIcon = response.ScreenName.ToString();
@@ -43,15 +47,16 @@ public class ImageDownloder : MonoBehaviour
         // 画像ダウンロード完了を待機
         yield return response;
 
-        Renderer r = GetComponent<Renderer>();
-        var texture2D = www.textureNonReadable;
 
-        // _MainTex＝Albedoを書き換える
-        r.material.EnableKeyword("_MainTex");
-        r.material.SetTexture("_MainTex", texture2D);
+        RawImage rawImage = GetComponent<RawImage>();
+        var rawImageIcon = www.textureNonReadable;
+        rawImage.texture = rawImageIcon;
 
-        TwitterParameterManager.Instance.SetUserIcon(texture2D);
+        TwitterParameterManager.Instance.SetUserIcon(rawImageIcon);
         TwitterParameterManager.Instance.SetUserID(ScreenName);
+
+        var UserName = TwitterParameterManager.Instance.UserID;
+        text.text = "@" + UserName;
 
 
         twitterSceneManager.CalcParameter();

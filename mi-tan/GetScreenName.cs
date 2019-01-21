@@ -6,23 +6,36 @@ using UnityEngine.SceneManagement;
 
 public class GetScreenName : MonoBehaviour {
 
-    SceneTest test;
+    //SceneTest test;
     [SerializeField]
     private Text text;
 
-    // Use this for initialization
-    public void Start () {
-        test = GameObject.Find("URLInfo").GetComponent<SceneTest>();
-        string name = test.name;
-        StartCoroutine(ScreenName(name));
-    }
+    [SerializeField]
+    TwitterSceneManager twitterSceneManager;
+
+    //// Use this for initialization
+    //public void Start () {
+    //    test = GameObject.Find("URLInfo").GetComponent<SceneTest>();
+    //    string name = test.name;
+    //    StartCoroutine(ScreenName(name));
+    //}
 
 
-	
-    private IEnumerator ScreenName(string name)
-    {
-        text.text = name;
 
-        yield return name;
-    }
+    //private IEnumerator ScreenName(string name)
+    //{
+    //    text.text = name;
+
+    //    yield return name;
+    //}
+
+
+    //public void ScreenNameGet()
+    //{
+    //    string name = TwitterParameterManager.Instance.UserID;
+    //    Debug.Log(name);
+    //    StartCoroutine(ScreenName(name));
+    //}
+
+
 }

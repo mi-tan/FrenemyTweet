@@ -111,8 +111,6 @@ public sealed class EnemyController : NormalEnemy
             // 一定時間待つ
             elapsedTime += Time.deltaTime;
 
-            iEnemyMove.MoveStop();
-
             if (elapsedTime < enemyParameter.waitTime) { return; }
             elapsedTime = 0;
             destination = ReturnRandomDestination();
@@ -122,9 +120,8 @@ public sealed class EnemyController : NormalEnemy
         {
             // 一定時間待つ
             elapsedTime += Time.deltaTime;
-
-            iEnemyMove.MoveStop();
-
+            
+            // iEnemyMove.MoveStop();
             if (elapsedTime < enemyParameter.freezeTime) { return; }
             elapsedTime = 0;
             ChangeState(EnemyState.Chase);

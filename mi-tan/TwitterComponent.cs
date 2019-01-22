@@ -16,10 +16,14 @@ public class TwitterComponent : MonoBehaviour {
     ImageDownloder _imageDownLoder;
     public Twitter.AccessTokenResponse sendIcon;
 
-
     [SerializeField]
     TwitterComponent tc;
 
+    [SerializeField]
+    Animator PINCodeCanvasAni;
+
+    [SerializeField]
+    TutorialImageChanger tutorialImageChanger;
 
     private const string CONSUMER_KEY = "uAWdP7574vZXG95E3YxCxdePq";
     private const string CONSUMER_SECRET = "NIMvj4ImnUfZKFXtDB4GEdYSIA4K6NOHwDG6cZCOf6O0XGfMYm";
@@ -58,6 +62,7 @@ public class TwitterComponent : MonoBehaviour {
     // ピンコードを取得
     public void OnClickGetPINButon()
     {
+        tutorialImageChanger.NextTexture();
         StartCoroutine(Twitter.API.GetRequestToken(CONSUMER_KEY, CONSUMER_SECRET,
             new Twitter.RequestTokenCallback(this.OnRequestTokenCallback)));
     }
@@ -137,6 +142,7 @@ public class TwitterComponent : MonoBehaviour {
         else
         {
             print("OnAccessTokenCallback - failed.");
+            tutorialImageChanger.BackTexture();
         }
     }
 
@@ -179,6 +185,7 @@ public class TwitterComponent : MonoBehaviour {
             }
         }
         isGetSentence = true;
+        PINCodeCanvasAni.SetBool("EndFlag",true);
     }
 
 

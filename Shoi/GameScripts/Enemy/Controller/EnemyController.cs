@@ -48,6 +48,7 @@ public sealed class EnemyController : NormalEnemy
         Chase = 2,  // 追いかける
         Attack = 3, // 攻撃する
         Freeze = 4, // 攻撃後のフリーズ状態
+        Death = 5   // 死亡
     };
     private EnemyState currentState = EnemyState.Wait;
 
@@ -104,7 +105,6 @@ public sealed class EnemyController : NormalEnemy
                 ChangeState(EnemyState.Chase);
             }
         }
-
 
         if (currentState == EnemyState.Wait)
         {
@@ -212,6 +212,11 @@ public sealed class EnemyController : NormalEnemy
         if (enemyParameter.hp <= 0)
         {
             enemyDamage.DeathEnemy();
+            ChangeState(EnemyState.Death);
+        }
+        else
+        {
+            enemyDamage.TakeDamageAnimation();
         }
     }
 

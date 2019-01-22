@@ -18,6 +18,7 @@ public class EnemyAnimationController : MonoBehaviour
     private const string PARAMETER_BOOL_RUN = "Run";
     private const string PARAMETER_BOOL_ATTACK = "Attack";
     private const string PARAMETER_BOOL_TAKEDAMAGE = "TakeDamage";
+    private const string PARAMETER_BOOL_DEATH = "Death";
     private const string PARAMETER_INT_Type = "Type";
 
     private void Awake()
@@ -52,6 +53,14 @@ public class EnemyAnimationController : MonoBehaviour
     public void TakeDamage(bool value)
     {
         Animate(PARAMETER_BOOL_TAKEDAMAGE, value);
+    }
+
+    /// <summary>
+    /// 被ダメージ時のアニメーション制御
+    /// </summary>
+    public void Death(bool value)
+    {
+        Animate(PARAMETER_BOOL_DEATH, value);
     }
 
     /// <summary>

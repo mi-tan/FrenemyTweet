@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inhole : MonoBehaviour
 {
-    private List<Rigidbody> Enemys = new List<Rigidbody>();
+    private List<Rigidbody> enemys = new List<Rigidbody>();
 
     [SerializeField]
     private float gravityPower = 100f;
@@ -20,7 +20,7 @@ public class Inhole : MonoBehaviour
 
     void FixedUpdate()
     {
-        foreach(Rigidbody rb in Enemys)
+        foreach(Rigidbody rb in enemys)
         {
             if(!rb) { continue; }
 
@@ -40,16 +40,16 @@ public class Inhole : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         //Debug.Log("範囲内の敵を追加");
-        Enemys.Add(other.GetComponent<Rigidbody>());
+        enemys.Add(other.GetComponent<Rigidbody>());
     }
 
     void OnTriggerExit(Collider other)
     {
-        for(int i = 0; i < Enemys.Count; i++)
+        for(int i = 0; i < enemys.Count; i++)
         {
-            if (Enemys[i] == other.GetComponent<Rigidbody>())
+            if (enemys[i] == other.GetComponent<Rigidbody>())
             {
-                Enemys.RemoveAt(i);
+                enemys.RemoveAt(i);
             }
         }
     }

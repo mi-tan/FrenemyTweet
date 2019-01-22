@@ -94,7 +94,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
             {
                 Debug.Log("回避");
 
-                if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE) { return; }
+                if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE) { return; }
 
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DODGE);
 

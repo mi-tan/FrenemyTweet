@@ -27,11 +27,20 @@ public class TwitterSceneManager : MonoBehaviour {
     public void CalcParameter()
     {
         PlayerParameterManager.Instance.CalcStatus();
-        // プレイヤーのHPを表示する
-        hpText.text = PlayerParameterManager.Instance.PlayerHP.ToString();
 
-        // プレイヤーの攻撃力を表示する
-        attackText.text = PlayerParameterManager.Instance.AttackPower.ToString();
+        if (hpText)
+        {
+            // プレイヤーのHPを表示する
+            hpText.text = PlayerParameterManager.Instance.PlayerHP.ToString();
+        }
+
+
+        if (attackText)
+        {
+            // プレイヤーの攻撃力を表示する
+            attackText.text = PlayerParameterManager.Instance.AttackPower.ToString();
+        }
+        
 
     }
 

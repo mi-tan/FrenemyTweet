@@ -83,6 +83,9 @@ class Sword : MeleeWeapon
     /// </summary>
     private int[] swordAttackPower = { 0, 30, 35, 40 };
 
+    [SerializeField]
+    private RoundedUp roundedUp;
+
 
     void Awake()
     {
@@ -195,6 +198,9 @@ class Sword : MeleeWeapon
         // 移動位置を計算
         Quaternion temp = transform.rotation;
         transform.rotation = attackQuaternion;
+
+        roundedUp.SetPosition(transform.position + transform.forward * attackMoveParameter.MoveDistance + transform.forward);
+
         movePosition = transform.position + transform.forward * attackMoveParameter.MoveDistance;
         transform.rotation = temp;
 

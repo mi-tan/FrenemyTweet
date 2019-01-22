@@ -53,6 +53,10 @@ public class PlayerInput : MonoBehaviour
     /// スキル3切り替え入力
     /// </summary>
     const string INPUT_SELECT_SKILL_3 = "SelectSkill3";
+    /// <summary>
+    /// 回避入力
+    /// </summary>
+    const string INPUT_DODGE = "Dodge";
 
 
     void Awake()
@@ -78,6 +82,7 @@ public class PlayerInput : MonoBehaviour
         bool inputSelectSkill1 = Input.GetButtonDown(INPUT_SELECT_SKILL_1);
         bool inputSelectSkill2 = Input.GetButtonDown(INPUT_SELECT_SKILL_2);
         bool inputSelectSkill3 = Input.GetButtonDown(INPUT_SELECT_SKILL_3);
+        bool inputDodge = Input.GetButtonDown(INPUT_DODGE);
 
         // 移動
         iPlayerMove.UpdateMove(
@@ -103,5 +108,8 @@ public class PlayerInput : MonoBehaviour
             inputSelectSkill1,
             inputSelectSkill2,
             inputSelectSkill3);
+
+        iPlayerMove.UpdateDodge(
+            inputDodge);
     }
 }

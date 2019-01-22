@@ -28,6 +28,10 @@ public class PlayerStateManager : MonoBehaviour
         /// リロード中
         /// </summary>
         RELOAD,
+        /// <summary>
+        /// 回避中
+        /// </summary>
+        DODGE,
     }
     /// <summary>
     /// 現在のプレイヤーの状態

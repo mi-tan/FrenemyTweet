@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public sealed class AutoObjectDeleter : MonoBehaviour {
 
+    [SerializeField]
     private float waitTime = 0f;
 
 	// Use this for initialization

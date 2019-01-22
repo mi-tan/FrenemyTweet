@@ -25,7 +25,7 @@ class Sword : MeleeWeapon
     /// </summary>
     const int MAX_COMBO = 3;
 
-    const float ATTACK_DELAY_TIME = 0.4f;
+    const float ATTACK_DELAY_TIME = 0.35f;
     const float STOP_COMBO_TIME = 0.65f;
     const float MAX_COMBO_TIME = 1.1f;
 

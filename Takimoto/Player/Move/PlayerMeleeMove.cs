@@ -32,6 +32,11 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
     private Coroutine recoveryDodgeCoroutine;
 
+    private Vector3 dodgePos = new Vector3();
+
+    const float DODGE_SPEED = 3f;
+    const float DODGE_TIME = 0.67f;
+
 
     void Awake()
     {
@@ -88,6 +93,13 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
     public void UpdateDodge(bool inputDodge)
     {
+        if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        {
+            // 移動位置に徐々に移動
+            transform.position = Vector3.Lerp(
+                transform.position, dodgePos, DODGE_SPEED * Time.deltaTime);
+        }
+
         if (inputDodge)
         {
             if (!isDodge)
@@ -98,8 +110,10 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DODGE);
 
-                // 回避
+                // 回避アニメーション再生
                 playerAnimationManager.SetTriggerDodge();
+
+                dodgePos = transform.position + transform.forward * 5;
 
                 recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
             }
@@ -116,7 +130,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     {
         if (recoveryDodgeCoroutine != null) { yield break; }
 
-        yield return new WaitForSeconds(0.65f);
+        yield return new WaitForSeconds(DODGE_TIME);
 
         playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
 

@@ -9,5 +9,5 @@ public interface IEnemyMove {
 
 
     void Move(Vector3 destination,float moveSpeed);
-    void MoveStop();
+    //void MoveStop();
 }

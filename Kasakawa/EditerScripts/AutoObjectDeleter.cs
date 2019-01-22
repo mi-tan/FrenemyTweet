@@ -7,8 +7,10 @@ using UnityEngine;
 /// </summary>
 public sealed class AutoObjectDeleter : MonoBehaviour {
 
+    private float waitTime = 0f;
+
 	// Use this for initialization
 	void Start () {
-        Destroy(gameObject);
+        Destroy(gameObject, waitTime);
 	}
 }

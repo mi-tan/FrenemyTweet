@@ -25,7 +25,7 @@ class Sword : MeleeWeapon
     /// </summary>
     const int MAX_COMBO = 3;
 
-    const float ATTACK_DELAY_TIME = 0.25f;
+    const float ATTACK_DELAY_TIME = 0.4f;
     const float STOP_COMBO_TIME = 0.65f;
     const float MAX_COMBO_TIME = 1.1f;
 
@@ -198,8 +198,6 @@ class Sword : MeleeWeapon
         // 移動位置を計算
         Quaternion temp = transform.rotation;
         transform.rotation = attackQuaternion;
-
-        roundedUp.SetPosition(transform.position + transform.forward * attackMoveParameter.MoveDistance + transform.forward);
 
         movePosition = transform.position + transform.forward * attackMoveParameter.MoveDistance;
         transform.rotation = temp;

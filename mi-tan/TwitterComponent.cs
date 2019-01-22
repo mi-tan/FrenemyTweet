@@ -75,6 +75,12 @@ public class TwitterComponent : MonoBehaviour {
     // ピンコードを認証
     public void AuthPINButon(string myPIN)
     {
+        if (m_RequestTokenResponse == null)
+        {
+            authenticationText.text = "認証ボタンが押されてませんが？";
+            return;
+        }
+
         authenticationText.text = "認証中...";
 
         Twitter.AccessTokenCallback callBack = ((x, y) =>

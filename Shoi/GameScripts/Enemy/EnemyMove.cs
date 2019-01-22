@@ -44,9 +44,9 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
         transform.position += transform.forward * moveSpeed * Time.deltaTime;
     }
 
-    public void MoveStop()
-    {
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
-    }
+    //public void MoveStop()
+    //{
+    //    rigidbody.velocity = Vector3.zero;
+    //    rigidbody.angularVelocity = Vector3.zero;
+    //}
 }

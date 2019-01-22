@@ -50,18 +50,18 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
         yield return null;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GetSentence();
-            //Debug.Log("Push!!!");
-            //for (int i = 0; i < tweetList.Count; i++)
-            //{
-            //    Debug.Log("要素数["+i+"]："+tweetList[i]);
-            //}
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.A))
+    //    {
+    //        GetSentence();
+    //        //Debug.Log("Push!!!");
+    //        //for (int i = 0; i < tweetList.Count; i++)
+    //        //{
+    //        //    Debug.Log("要素数["+i+"]："+tweetList[i]);
+    //        //}
+    //    }
+    //}
 
 
     public AnalysisContainer GetSentence()

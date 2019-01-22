@@ -27,7 +27,7 @@ public class MainGameTimerUIManager : MonoBehaviour
     /// <param name="time"></param>
     public void ShowTimeCount(float time)
     {
-        timeText.text = $"Time : {time}";
+        timeText.text = $"Time : {time.ToString("f2")}";
     }
 
 }

@@ -75,11 +75,11 @@ public class TwitterComponent : MonoBehaviour {
     // ピンコードを認証
     public void AuthPINButon(string myPIN)
     {
+        authenticationText.text = "認証中...";
 
         Twitter.AccessTokenCallback callBack = ((x, y) =>
         {
             OnAccessTokenCallback(x, y);
-            authenticationText.text = "認証中...";
         });
 
         StartCoroutine(Twitter.API.GetAccessToken(CONSUMER_KEY, CONSUMER_SECRET, m_RequestTokenResponse.Token, myPIN,
@@ -154,9 +154,10 @@ public class TwitterComponent : MonoBehaviour {
         }
         else
         {
+            authenticationText.text = "認証失敗";
             print("OnAccessTokenCallback - failed.");
             tutorialImageChanger.BackTexture();
-            authenticationText.text = "認証失敗";
+            
         }
     }
 

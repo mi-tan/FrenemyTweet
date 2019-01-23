@@ -36,8 +36,8 @@ public class MainGameManager : MonoBehaviour {
     [SerializeField]
     private float startWaitTime = 0.5f;
 
-    [Inject]
-    public PlayerProvider player;
+
+    private PlayerProvider[] players;
 
     private const string Start_Pos_Name = "PlayerStartPosition";
 
@@ -78,17 +78,23 @@ public class MainGameManager : MonoBehaviour {
 
     private void InitPlayerParameter()
     {
-        // 最大HPをセットする
-        player.SetMaxHp(PlayerParameterManager.Instance.PlayerHP);
 
-        // HPをセットする
-        player.SetHp(PlayerParameterManager.Instance.PlayerHP);
+        foreach (var player in players)
+        {
+            // 最大HPをセットする
+            player.SetMaxHp(PlayerParameterManager.Instance.PlayerHP);
 
-        // 基礎攻撃力をセットする
-        player.SetBasicAttackPower(PlayerParameterManager.Instance.AttackPower);
+            // HPをセットする
+            player.SetHp(PlayerParameterManager.Instance.PlayerHP);
 
-        // 現在の攻撃力をセットする
-        player.SetPlayerAttackPower(PlayerParameterManager.Instance.AttackPower);
+            // 基礎攻撃力をセットする
+            player.SetBasicAttackPower(PlayerParameterManager.Instance.AttackPower);
+
+            // 現在の攻撃力をセットする
+            player.SetPlayerAttackPower(PlayerParameterManager.Instance.AttackPower);
+        }
+
+        
     }
 
     private void InitPlayerPosition()
@@ -101,6 +107,25 @@ public class MainGameManager : MonoBehaviour {
         var startPosition = startPositionObject.transform.position;
 
         // プレイヤーを初期位置に移動させる
-        player.transform.position = startPosition;
+        GetPlayer(0).transform.position = startPosition;
+    }
+
+    /// <summary>
+    /// プレイヤーを取得する
+    /// </summary>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    public PlayerProvider GetPlayer(int num)
+    {
+        if(num >= players.Length)
+        {
+            Debug.LogWarning("その番号のプレイヤーは存在しません");
+        }
+        return players[num];
+    }
+
+    public PlayerProvider[] GetPlayerArray()
+    {
+        return players;
     }
 }

@@ -30,16 +30,15 @@ class Rifle : RangeWeapon
     /// <summary>
     /// 最大弾数
     /// </summary>
-    private int maxBulletNumber = 3;
+    private int maxBulletNumber = 30;
     public int GetMaxBulletNumber()
     {
         return maxBulletNumber;
     }
-    [SerializeField]
     /// <summary>
     /// 弾数
     /// </summary>
-    private int bulletNumber = 3;
+    private int bulletNumber = 30;
     public int GetBulletNumber()
     {
         return bulletNumber;
@@ -52,7 +51,10 @@ class Rifle : RangeWeapon
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 1.3f;
+    const float RELOAD_TIME = 1.2f;
+
+    private Coroutine reloadCancelableCoroutine;
+    const float RELOAD_CANCELABLE_TIME = 0.3f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;
@@ -77,6 +79,8 @@ class Rifle : RangeWeapon
 
     private void Start()
     {
+        bulletNumber = maxBulletNumber;
+
         // マズルフラッシュを非表示
         muzzleFlash.SetActive(false);
     }
@@ -100,6 +104,7 @@ class Rifle : RangeWeapon
         {
             StopCoroutine(reloadCoroutine);
             reloadCoroutine = null;
+            playerStateManager.SetIsCancelable(false);
         }
 
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
@@ -243,17 +248,31 @@ class Rifle : RangeWeapon
     {
         if (reloadCoroutine != null) { yield break; }
 
+        reloadCancelableCoroutine =  StartCoroutine(ReloadCancelable());
+
         yield return new WaitForSeconds(RELOAD_TIME);
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.RELOAD)
         {
             // プレイヤーの状態を行動可能に変更
             playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
+            playerStateManager.SetIsCancelable(false);
 
             bulletNumber = maxBulletNumber;
         }
 
         reloadCoroutine = null;
+    }
+
+    private IEnumerator ReloadCancelable()
+    {
+        if (reloadCancelableCoroutine != null) { yield break; }
+
+        yield return new WaitForSeconds(RELOAD_CANCELABLE_TIME);
+
+        playerStateManager.SetIsCancelable(true);
+
+        reloadCancelableCoroutine = null;
     }
 
     private IEnumerator MuzzleFlash()

@@ -34,6 +34,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     const float DODGE_DISTANCE = 6f;
     const float DODGE_SPEED = 2.5f;
     const float DODGE_TIME = 0.68f;
+    private bool isDodgeMove = false;
 
 
     void Awake()
@@ -91,7 +92,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
     public void UpdateDodge(bool inputDodge, float inputMoveHorizontal, float inputMoveVertical)
     {
-        if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE && isDodgeMove)
         {
             // 移動位置に徐々に移動
             transform.position = Vector3.Lerp(
@@ -107,6 +108,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
                 if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE) { return; }
 
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DODGE);
+                isDodgeMove = false;
 
                 // 回避アニメーション再生
                 playerAnimationManager.SetTriggerDodge();
@@ -155,5 +157,10 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
         float step = FACE_SPEED * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation, moveQuaternion, step);
+    }
+
+    public void DodgeMoveStart()
+    {
+        isDodgeMove = true;
     }
 }

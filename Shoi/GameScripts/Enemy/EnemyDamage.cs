@@ -16,7 +16,7 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// <summary>
     /// ダメージアニメーションの数
     /// </summary>
-    private int damageAnimationNum = 4;
+    private int damageAnimationNum = 3;
     /// <summary>
     /// 死亡アニメーションの数
     /// </summary>
@@ -48,16 +48,16 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// </summary>
     public void TakeDamageAnimation()
     {
-        int randNum = Random.Range(1, damageAnimationNum);
+        int randNum = Random.Range(0, damageAnimationNum);
         // 被ダメージ時のアニメーション再生
-        enemyAnimationController.TakeDamage(true);
-        enemyAnimationController.Type(randNum);
-
-        Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
-        {
-            // 被ダメージ時のアニメーション停止
-            enemyAnimationController.TakeDamage(false);
-        }).AddTo(gameObject);
+        enemyAnimationController.TakeDamage(randNum);
+        //enemyAnimationController.Type(randNum);
+        
+        //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
+        //{
+        //    // 被ダメージ時のアニメーション停止
+        //    enemyAnimationController.TakeDamage(false);
+        //}).AddTo(gameObject);
     }
 
     /// <summary>

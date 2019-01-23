@@ -35,6 +35,7 @@ class Rifle : RangeWeapon
     {
         return maxBulletNumber;
     }
+    [SerializeField]
     /// <summary>
     /// 弾数
     /// </summary>
@@ -51,7 +52,7 @@ class Rifle : RangeWeapon
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 2.2f;
+    const float RELOAD_TIME = 1.47f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;
@@ -94,26 +95,32 @@ class Rifle : RangeWeapon
             isInput = false;
         }
 
-        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.SKILL &&
-            playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.RELOAD) { return; }
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE &&
+            reloadCoroutine != null)
+        {
+            StopCoroutine(reloadCoroutine);
+            reloadCoroutine = null;
+        }
 
+        if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
+            playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK) { return; }
 
         // 通常攻撃アニメーションを再生
         playerAnimationManager.SetBoolAttack(isInput);
 
         if (isInput)
         {
+            Vector3 attackDirection = Vector3.Scale(
+                Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+            attackQuaternion = Quaternion.LookRotation(attackDirection);
+
+            // 攻撃方向に向く
+            FaceAttack(attackQuaternion);
+
             if (bulletNumber > 0)
             {
                 // プレイヤーの状態を攻撃中に変更
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ATTACK);
-
-                Vector3 attackDirection = Vector3.Scale(
-                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-                attackQuaternion = Quaternion.LookRotation(attackDirection);
-
-                // 攻撃方向に向く
-                FaceAttack(attackQuaternion);
 
                 // 構え移動
                 StanceMove(inputMoveHorizontal, inputMoveVertical);

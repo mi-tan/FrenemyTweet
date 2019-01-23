@@ -18,8 +18,10 @@ public class EnemyAnimationController : MonoBehaviour
     private const string PARAMETER_BOOL_RUN = "Run";
     private const string PARAMETER_BOOL_ATTACK = "Attack";
     private const string PARAMETER_BOOL_TAKEDAMAGE = "TakeDamage";
-    private const string PARAMETER_BOOL_DEATH = "Death";
     private const string PARAMETER_INT_Type = "Type";
+    private const string ANIMATION_BOOL_DEATH_A = "Death_A";
+    private const string ANIMATION_BOOL_DEATH_B = "Death_B";
+    private const string ANIMATION_BOOL_DEATH_C = "Death_C";
 
     private void Awake()
     {
@@ -58,9 +60,12 @@ public class EnemyAnimationController : MonoBehaviour
     /// <summary>
     /// 被ダメージ時のアニメーション制御
     /// </summary>
-    public void Death(bool value)
+    public void Death(int value)
     {
-        Animate(PARAMETER_BOOL_DEATH, value);
+        if (value == 0) { enemyAnimator.CrossFade(ANIMATION_BOOL_DEATH_A, 0.5f); }
+        if (value == 1) { enemyAnimator.CrossFade(ANIMATION_BOOL_DEATH_B, 0.5f); }
+        if (value == 2) { enemyAnimator.CrossFade(ANIMATION_BOOL_DEATH_C, 0.5f); }
+
     }
 
     /// <summary>

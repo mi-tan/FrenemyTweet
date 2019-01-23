@@ -211,6 +211,8 @@ public sealed class EnemyController : NormalEnemy
         if (enemyParameter.hp <= 0)
         {
             enemyDamage.DeathEnemy();
+            gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
+
             ChangeState(EnemyState.Death);
         }
         else

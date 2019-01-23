@@ -93,7 +93,7 @@ public sealed class EnemyController : NormalEnemy
     private void Update()
     {
         // プレイヤーとの距離を計測
-        playerDistance = Vector3.Distance(transform.position, gameManager.player.transform.position);
+        playerDistance = Vector3.Distance(transform.position, gameManager.GetPlayer(0).transform.position);
 
 
         if (currentState == EnemyState.Walk || currentState == EnemyState.Wait)
@@ -127,53 +127,55 @@ public sealed class EnemyController : NormalEnemy
         }
         else if (currentState == EnemyState.Walk)
         {
+            // Run停止
+            enemyAnimationController.Run(false);
             // 目的地までの距離を計測
             destinationDistance = Vector3.Distance(transform.position, destination);
 
             if (destinationDistance > 0.5f)
             {
                 // 移動
-                iEnemyMove.Move(destination, enemyParameter.enemyWalkSpeed);
+                iEnemyMove.Move(destination, enemyParameter.enemyWalkSpeed, false);
             }
             else
             {
-                // 移動アニメーション停止
-                enemyAnimationController.Run(false);
+                // Walk停止
+                enemyAnimationController.Walk(false);
                 ChangeState(EnemyState.Wait);
             }
         }
         else if (currentState == EnemyState.Chase)
         {
-            Vector3 direction = (gameManager.player.transform.position - transform.position).normalized;
+            // Walk停止
+            enemyAnimationController.Walk(false);
+            // プレイヤーの方向
+            Vector3 direction = (gameManager.GetPlayer(0).transform.position - transform.position).normalized;
+            // 角度計算
             float angle = Vector3.Angle(direction, transform.forward);
-            //Debug.Log($"プレイヤーへの角度{angle}");
+
 
             // プレイヤーに近づききった場合
             if (angle <= enemyParameter.attackAngle &&
                 playerDistance < enemyParameter.attackDistance)
             {
-                // 移動アニメーション停止
+                // Run停止
                 enemyAnimationController.Run(false);
                 Attack();
             }
             else
             {
                 // プレイヤーに近づく
-                iEnemyMove.Move(gameManager.player.transform.position, enemyParameter.enemyRunSpeed);
+                iEnemyMove.Move(gameManager.GetPlayer(0).transform.position, enemyParameter.enemyRunSpeed, true);
             }
 
             // プレイヤーと距離が空いた場合
             if (playerDistance > enemyParameter.chaseDistance)
             {
-                // 移動アニメーション停止
+                // Run停止
                 enemyAnimationController.Run(false);
                 ChangeState(EnemyState.Wait);
             }
         }
-        //else if (currentState == EnemyState.Attack)
-        //{
-        //    ChangeState(EnemyState.Freeze);
-        //}
     }
 
     /// <summary>

@@ -39,7 +39,6 @@ public class EnemyAnimationController : MonoBehaviour
     /// <param name="flag"></param>
     public void Walk(bool value)
     {
-        Debug.Log("Walk："+value);
         Animate(PARAMETER_BOOL_Walk, value);
     }
 
@@ -49,7 +48,6 @@ public class EnemyAnimationController : MonoBehaviour
     /// <param name="flag"></param>
     public void Run(bool value)
     {
-        Debug.Log("Run：" + value);
         Animate(PARAMETER_BOOL_RUN, value);
     }
 

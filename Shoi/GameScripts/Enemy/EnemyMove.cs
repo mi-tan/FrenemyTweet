@@ -33,11 +33,12 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
     {
         if (runFlag)
         {
-            // 移動アニメーション開始
+            // Runアニメーション開始
             enemyAnimationController.Run(true);
         }
         else
         {
+            // Walkアニメーション開始
             enemyAnimationController.Walk(true);
         }
 

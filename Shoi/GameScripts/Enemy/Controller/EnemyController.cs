@@ -92,7 +92,6 @@ public sealed class EnemyController : NormalEnemy
 
     private void Update()
     {
-
         // プレイヤーとの距離を計測
         playerDistance = Vector3.Distance(transform.position, gameManager.player.transform.position);
 
@@ -222,9 +221,7 @@ public sealed class EnemyController : NormalEnemy
 
     private void ChangeState(EnemyState state)
     {
-        
        // Debug.Log($"{gameObject}:{currentState} => {state}に変更");
-
         currentState = state;
     }
 

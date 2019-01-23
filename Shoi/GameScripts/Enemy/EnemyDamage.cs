@@ -22,6 +22,8 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// </summary>
     private int deathAnimationNum = 3;
 
+    private int useAnimationNum;
+
     private EnemyParameter enemyparameter;
     private EnemyAnimationController enemyAnimationController;
 
@@ -29,6 +31,9 @@ public sealed class EnemyDamage :　MonoBehaviour {
     {
         enemyparameter = GetComponent<EnemyParameter>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
+
+        // 使用するアニメーションを設定
+        useAnimationNum = Random.Range(0, deathAnimationNum);
     }
 
     public void TakeDamage(int damage)
@@ -60,18 +65,17 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// </summary>
     public void DeathEnemy()
     {
-        // 移動アニメーションを停止
-        enemyAnimationController.Run(false);
 
         // アニメーションを呼び出し
-        enemyAnimationController.Death(true);
-        enemyAnimationController.Type(Random.Range(0, deathAnimationNum));
+        enemyAnimationController.Death(useAnimationNum);
 
-        // 呼び出したアニメーションを停止
-        Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
-        {
-            enemyAnimationController.Death(false);
-        }).AddTo(gameObject);
+        //enemyAnimationController.Type(Random.Range(0, deathAnimationNum));
+        
+        //// 呼び出したアニメーションを停止
+        //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
+        //{
+        //    enemyAnimationController.Death(false);
+        //}).AddTo(gameObject);
 
     }
 

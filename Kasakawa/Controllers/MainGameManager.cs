@@ -36,7 +36,7 @@ public class MainGameManager : MonoBehaviour {
     [SerializeField]
     private float startWaitTime = 0.5f;
 
-
+    [SerializeField]
     private PlayerProvider[] players;
 
     private const string Start_Pos_Name = "PlayerStartPosition";

@@ -30,7 +30,7 @@ class Rifle : RangeWeapon
     /// <summary>
     /// 最大弾数
     /// </summary>
-    private int maxBulletNumber = 30;
+    private int maxBulletNumber = 3;
     public int GetMaxBulletNumber()
     {
         return maxBulletNumber;
@@ -39,7 +39,7 @@ class Rifle : RangeWeapon
     /// <summary>
     /// 弾数
     /// </summary>
-    private int bulletNumber = 30;
+    private int bulletNumber = 3;
     public int GetBulletNumber()
     {
         return bulletNumber;
@@ -52,7 +52,7 @@ class Rifle : RangeWeapon
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 1.47f;
+    const float RELOAD_TIME = 1.3f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;

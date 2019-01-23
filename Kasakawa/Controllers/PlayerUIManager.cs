@@ -55,16 +55,18 @@ public sealed class PlayerUIManager : MonoBehaviour
         }
     }
 
+    private int playerNum = 0;
+
     void Awake()
     {
 
         // プレイヤーのHPが変化した場合、表示を更新する
-        gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetHp())
+        gameManager.ObserveEveryValueChanged(_ => gameManager.GetPlayer(playerNum).GetHp())
             .Subscribe(hp => { UpdateHPValue(hp); });
 
         // プレイヤーの選択スキルが変化した場合、表示を更新する
-        gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetSelectSkill())
-            .Subscribe(skill => { UpdateSelectedSkillInfo(skill,gameManager.player.GetSkillNumber()); });
+        gameManager.ObserveEveryValueChanged(_ => gameManager.GetPlayer(playerNum).GetSelectSkill())
+            .Subscribe(skill => { UpdateSelectedSkillInfo(skill,gameManager.GetPlayer(playerNum).GetSkillNumber()); });
 
         // スキルクールタイムの表示更新
         this.UpdateAsObservable().Subscribe(_ => UpdateSkillCoolTime())
@@ -82,12 +84,12 @@ public sealed class PlayerUIManager : MonoBehaviour
     /// </summary>
     private void InitializePlayerUI()
     {
-        int playerHP = gameManager.player.GetHp();
+        int playerHP = gameManager.GetPlayer(playerNum).GetHp();
 
-        hpSlider.maxValue = gameManager.player.GetMaxHp();
+        hpSlider.maxValue = gameManager.GetPlayer(playerNum).GetMaxHp();
         UpdateHPValue(playerHP);
 
-        var skillList = gameManager.player.GetSkillList();
+        var skillList = gameManager.GetPlayer(playerNum).GetSkillList();
 
         // スキルアイコンをUIに表示
         for(int i= 0; i < skillList.Length; i++)
@@ -96,7 +98,7 @@ public sealed class PlayerUIManager : MonoBehaviour
         }
 
         // 現在のスキル情報を表示する
-        UpdateSelectedSkillInfo(gameManager.player.GetSelectSkill(),gameManager.player.GetSkillNumber());
+        UpdateSelectedSkillInfo(gameManager.GetPlayer(playerNum).GetSelectSkill(),gameManager.GetPlayer(playerNum).GetSkillNumber());
 
         UpdateUserIconImage();
 
@@ -139,10 +141,10 @@ public sealed class PlayerUIManager : MonoBehaviour
     {
 
         // スキルクールタイムの残り時間を取得する
-        var skillCoolTimes = gameManager.player.GetSkillCoolTimes();
+        var skillCoolTimes = gameManager.GetPlayer(playerNum).GetSkillCoolTimes();
 
         // スキルのクールタイムを取得する
-        var skillBaseTimes = gameManager.player.GetSkillBaseCoolTimes();
+        var skillBaseTimes = gameManager.GetPlayer(playerNum).GetSkillBaseCoolTimes();
 
         for (int i = 0;i < skillIconArray.Length; i++)
         {

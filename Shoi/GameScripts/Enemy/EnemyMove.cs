@@ -28,11 +28,18 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
         rigidbody = GetComponent<Rigidbody>();
     }
 
-
-    public void Move(Vector3 destination, float moveSpeed)
+    
+    public void Move(Vector3 destination, float moveSpeed, bool runFlag)
     {
-        // 移動アニメーション開始
-        enemyAnimationController.Run(true);
+        if (runFlag)
+        {
+            // 移動アニメーション開始
+            enemyAnimationController.Run(true);
+        }
+        else
+        {
+            enemyAnimationController.Walk(true);
+        }
 
         Vector3 lookVector = destination - transform.position;
         lookVector.y = 0;

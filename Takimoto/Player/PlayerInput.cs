@@ -109,7 +109,10 @@ public class PlayerInput : MonoBehaviour
             inputSelectSkill2,
             inputSelectSkill3);
 
+        // 回避
         iPlayerMove.UpdateDodge(
-            inputDodge);
+            inputDodge,
+            inputMoveHorizontal,
+            inputMoveVertical);
     }
 }

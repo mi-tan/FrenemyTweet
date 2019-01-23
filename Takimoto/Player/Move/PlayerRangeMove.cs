@@ -32,6 +32,13 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// </summary>
     private Quaternion moveQuaternion;
 
+    private bool isDodge = false;
+    private Coroutine recoveryDodgeCoroutine;
+    private Vector3 dodgePos = new Vector3();
+    const float DODGE_DISTANCE = 6f;
+    const float DODGE_SPEED = 2.5f;
+    const float DODGE_TIME = 0.68f;
+
 
     void Awake()
     {
@@ -89,9 +96,56 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         }
     }
 
-    public void UpdateDodge(bool inputDodge)
+    public void UpdateDodge(bool inputDodge, float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        {
+            // 移動位置に徐々に移動
+            transform.position = Vector3.Lerp(
+                transform.position, dodgePos, DODGE_SPEED * Time.deltaTime);
+        }
 
+        if (inputDodge)
+        {
+            if (!isDodge)
+            {
+                Debug.Log("回避");
+
+                if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
+                    playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK &&
+                    playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.RELOAD) { return; }
+
+                playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DODGE);
+
+                // 回避アニメーション再生
+                playerAnimationManager.SetTriggerDodge();
+
+                Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+
+                transform.rotation = Quaternion.LookRotation(moveDirection);
+                dodgePos = transform.position + transform.forward * DODGE_DISTANCE;
+
+                recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
+            }
+
+            isDodge = true;
+        }
+        else
+        {
+            isDodge = false;
+        }
+    }
+
+    private IEnumerator RecoveryDodge()
+    {
+        if (recoveryDodgeCoroutine != null) { yield break; }
+
+        yield return new WaitForSeconds(DODGE_TIME);
+
+        playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
+
+        recoveryDodgeCoroutine = null;
     }
 
     /// <summary>

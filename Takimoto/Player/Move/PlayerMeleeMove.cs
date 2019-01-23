@@ -29,13 +29,11 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     private Quaternion moveQuaternion;
 
     private bool isDodge = false;
-
     private Coroutine recoveryDodgeCoroutine;
-
     private Vector3 dodgePos = new Vector3();
-
-    const float DODGE_SPEED = 3f;
-    const float DODGE_TIME = 0.67f;
+    const float DODGE_DISTANCE = 6f;
+    const float DODGE_SPEED = 2.5f;
+    const float DODGE_TIME = 0.68f;
 
 
     void Awake()
@@ -91,7 +89,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
         }
     }
 
-    public void UpdateDodge(bool inputDodge)
+    public void UpdateDodge(bool inputDodge, float inputMoveHorizontal, float inputMoveVertical)
     {
         if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
@@ -113,7 +111,11 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
                 // 回避アニメーション再生
                 playerAnimationManager.SetTriggerDodge();
 
-                dodgePos = transform.position + transform.forward * 5;
+                Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+
+                transform.rotation = Quaternion.LookRotation(moveDirection);
+                dodgePos = transform.position + transform.forward * DODGE_DISTANCE;
 
                 recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
             }

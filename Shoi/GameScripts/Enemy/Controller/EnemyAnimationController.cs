@@ -16,6 +16,7 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     private const string PARAMETER_BOOL_RUN = "Run";
+    private const string PARAMETER_BOOL_Walk = "Walk";
     private const string PARAMETER_BOOL_ATTACK = "Attack";
     private const string PARAMETER_INT_Type = "Type";
 
@@ -33,12 +34,22 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動アニメーション制御
+    /// 移動（遅）アニメーション制御
+    /// </summary>
+    /// <param name="flag"></param>
+    public void Walk(bool value)
+    {
+        Debug.Log("Walk："+value);
+        Animate(PARAMETER_BOOL_Walk, value);
+    }
+
+    /// <summary>
+    /// 移動（早）アニメーション制御
     /// </summary>
     /// <param name="flag"></param>
     public void Run(bool value)
     {
-        //Debug.Log("Run");
+        Debug.Log("Run：" + value);
         Animate(PARAMETER_BOOL_RUN, value);
     }
 

@@ -8,6 +8,6 @@ using UnityEngine;
 public interface IEnemyMove {
 
 
-    void Move(Vector3 destination,float moveSpeed);
+    void Move(Vector3 destination, float moveSpeed, bool runFlag);
     //void MoveStop();
 }

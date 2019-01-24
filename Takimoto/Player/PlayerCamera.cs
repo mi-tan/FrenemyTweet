@@ -8,8 +8,12 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField]
-    private GameObject mainCameraPrefab;
-    private GameObject mainCamera;
+    private Camera mainCameraPrefab;
+    private Camera mainCamera;
+    public Camera GetMainCamera()
+    {
+        return mainCamera;
+    }
 
     /// <summary>
     /// カメラの初期位置

@@ -210,17 +210,17 @@ class Rifle : RangeWeapon
                     muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
 
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
-                    Ray ray = Camera.main.ScreenPointToRay(center);
+                    Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);
                     RaycastHit hit;
 
-                    Quaternion qua = new Quaternion();
+                    //Quaternion qua = new Quaternion();
 
                     if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
                     {
                         // 壁に当たった処理
 
-                        Vector3 vec = (hit.point - muzzleTrans.position).normalized;
-                        qua = Quaternion.LookRotation(vec);
+                        //Vector3 vec = (hit.point - muzzleTrans.position).normalized;
+                        //qua = Quaternion.LookRotation(vec);
 
                         GameObject g = Instantiate(bulletHitPrefab, hit.point, transform.rotation);
                         Destroy(g, 1f);
@@ -233,7 +233,7 @@ class Rifle : RangeWeapon
                     }
                     else
                     {
-                        Debug.LogWarning("Rayで照準位置が取得できていない(Laser)");
+                        Debug.LogWarning("Rayで照準位置が取得できていない(Rifle)");
                     }
                 }
             }

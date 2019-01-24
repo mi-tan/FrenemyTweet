@@ -73,6 +73,8 @@ public sealed class PlayerUIManager : MonoBehaviour
     [SerializeField]
     private Image weaponImage;
 
+    private WeaponBase playerWeapon;
+
     void Awake()
     {
 
@@ -92,6 +94,8 @@ public sealed class PlayerUIManager : MonoBehaviour
 
     private void Start()
     {
+
+        playerWeapon = gameManager.GetPlayer(playerNum).GetWeaponBase();
         InitializePlayerUI();
     }
 
@@ -214,6 +218,12 @@ public sealed class PlayerUIManager : MonoBehaviour
     private void UpdateWeaponIcon()
     {
         if (!weaponImage) { Debug.LogWarning("weaponImageが設定されていません"); return; }
+
+        var weaponIcon = gameManager.GetPlayer(playerNum).GetWeaponIcon();
+
+        if (!weaponIcon) { Debug.LogWarning("プレイヤーの武器アイコンが設定されていません"); return; }
+
+        weaponImage.sprite = weaponIcon;
     }
 
     /// <summary>

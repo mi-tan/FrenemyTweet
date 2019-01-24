@@ -42,10 +42,6 @@ class Sword : MeleeWeapon
     /// 移動中か
     /// </summary>
     private bool isMove = false;
-    /// <summary>
-    /// 移動位置
-    /// </summary>
-    private Vector3 movePosition;
 
     /// <summary>
     /// 攻撃角度に向く速度
@@ -89,6 +85,8 @@ class Sword : MeleeWeapon
     private Coroutine cancelableCoroutine;
     static readonly float[] CANCELABLE_TIME = { 0f, 0.4f, 0.4f, 0.6f };
 
+    private CharacterController characterController;
+
 
     void Awake()
     {
@@ -97,6 +95,7 @@ class Sword : MeleeWeapon
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
         attackCollision = swordCollider.gameObject.GetComponent<AttackCollision>();
+        characterController = GetComponent<CharacterController>();
 
         // 剣の当たり判定を初期化
         swordCollider.enabled = false;
@@ -140,24 +139,11 @@ class Sword : MeleeWeapon
             // 攻撃方向に向く
             FaceAttack(attackQuaternion);
 
+            time += Time.deltaTime;
+
             if (isMove)
             {
-                if (transform.position != movePosition)
-                {
-                    // 移動位置に徐々に移動
-                    transform.position = Vector3.Lerp(
-                        transform.position, movePosition, attackMoveParameter.MoveSpeed * Time.deltaTime);
-
-                    if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
-                    {
-                        // 初期化
-                        isAttack = false;
-
-                        time = 0f;
-                        isMove = false;
-                    }
-                }
-                else
+                if (time >= attackMoveParameter.MoveEndTime)
                 {
                     // 初期化
                     isAttack = false;
@@ -165,11 +151,14 @@ class Sword : MeleeWeapon
                     time = 0f;
                     isMove = false;
                 }
+                else
+                {
+                    characterController.Move(transform.forward * attackMoveParameter.MoveSpeed * Time.deltaTime);
+                }
             }
             else
             {
-                time += Time.deltaTime;
-                if (time >= attackMoveParameter.MoveTime)
+                if (time >= attackMoveParameter.MoveStartTime)
                 {
                     isMove = true;
                 }
@@ -234,7 +223,6 @@ class Sword : MeleeWeapon
         Quaternion temp = transform.rotation;
         transform.rotation = attackQuaternion;
 
-        movePosition = transform.position + transform.forward * attackMoveParameter.MoveDistance;
         transform.rotation = temp;
 
         if (stopComboCoroutine != null)

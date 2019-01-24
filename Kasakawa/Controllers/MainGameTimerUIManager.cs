@@ -13,6 +13,10 @@ public class MainGameTimerUIManager : MonoBehaviour
     [SerializeField]
     private Text timeText;
 
+    [Header("小数点以下表示用テキスト")]
+    [SerializeField]
+    private Text decimalText;
+
     void Awake()
     {
 
@@ -27,7 +31,17 @@ public class MainGameTimerUIManager : MonoBehaviour
     /// <param name="time"></param>
     public void ShowTimeCount(float time)
     {
-        timeText.text = $"Time : {time.ToString("f2")}";
+        //分を計算する
+        int minute = Mathf.FloorToInt(time / 60f);
+        //秒を計算する
+        int seconds = (int)(time % 60f);
+        //秒の小数点以下の数値を計算する
+        int secondsDecimal = (int)((time % 60f - seconds) * 100);
+
+        //string format = "d2";
+
+        timeText.text = $"{minute.ToString("00")}:{seconds.ToString("00")}";
+        decimalText.text = $".{secondsDecimal.ToString("00")}";
     }
 
 }

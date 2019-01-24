@@ -208,6 +208,8 @@ public class TwitterComponent : MonoBehaviour {
         isGetSentence = true;
         PINCodeCanvasAni.SetBool("EndFlag",true);
         authenticationText.text = "認証成功";
+
+        Debug.Log("認証成功");
     }
 
 

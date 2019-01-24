@@ -19,7 +19,7 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
     /// </summary>
     public AnalysisContainer Analysis(List<string> str)
     {
-        AnalysisContainer testContainer = new AnalysisContainer();
+        AnalysisContainer container = new AnalysisContainer();
         AnalysisContainer.CategoryRet categoryRet = new AnalysisContainer.CategoryRet();
 
         for (int index = 0; index < categoryData.Length; index++)
@@ -49,7 +49,6 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
                 }
             }
 
-
             // Debug.Log(dictionaly[i] + " は" + count[i] + "個ありました");
             Debug.Log(categoryData[index] + " は" + count + "個ありました");
             // マッチした名前を格納
@@ -57,10 +56,9 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
             // 名前がマッチした回数を格納
             categoryRet.thisNameNum = count;
             // 構造体を格納
-            testContainer.categoryRetList.Add(categoryRet);
+            container.categoryRetList.Add(categoryRet);
 
         }
-
-        return testContainer;
+        return container;
     }
 }

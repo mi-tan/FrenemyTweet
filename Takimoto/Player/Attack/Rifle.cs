@@ -53,8 +53,8 @@ class Rifle : RangeWeapon
     private Coroutine reloadCoroutine;
     const float RELOAD_TIME = 1.2f;
 
-    private Coroutine reloadCancelableCoroutine;
-    const float RELOAD_CANCELABLE_TIME = 0.3f;
+    private Coroutine cancelableCoroutine;
+    const float CANCELABLE_TIME = 0.1f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;
@@ -67,6 +67,8 @@ class Rifle : RangeWeapon
 
     [SerializeField]
     private GameObject muzzleFlash;
+
+    private bool isFirstBullet;
 
 
     void Awake()
@@ -92,6 +94,7 @@ class Rifle : RangeWeapon
             if (!isInput)
             {
                 isInput = true;
+                isFirstBullet = false;
             }
         }
         else
@@ -105,6 +108,11 @@ class Rifle : RangeWeapon
             StopCoroutine(reloadCoroutine);
             reloadCoroutine = null;
             playerStateManager.SetIsCancelable(false);
+        }
+
+        if(playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK)
+        {
+            isFirstBullet = false;
         }
 
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
@@ -199,6 +207,12 @@ class Rifle : RangeWeapon
 
                 if (time >= shotInterval)
                 {
+                    if (!isFirstBullet)
+                    {
+                        cancelableCoroutine = StartCoroutine(Cancelable());
+                        isFirstBullet = true;
+                    }
+
                     time = 0f;
 
                     //Debug.Log("弾発射");
@@ -248,7 +262,7 @@ class Rifle : RangeWeapon
     {
         if (reloadCoroutine != null) { yield break; }
 
-        reloadCancelableCoroutine =  StartCoroutine(ReloadCancelable());
+        cancelableCoroutine =  StartCoroutine(Cancelable());
 
         yield return new WaitForSeconds(RELOAD_TIME);
 
@@ -256,7 +270,6 @@ class Rifle : RangeWeapon
         {
             // プレイヤーの状態を行動可能に変更
             playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ACTABLE);
-            playerStateManager.SetIsCancelable(false);
 
             bulletNumber = maxBulletNumber;
         }
@@ -264,15 +277,17 @@ class Rifle : RangeWeapon
         reloadCoroutine = null;
     }
 
-    private IEnumerator ReloadCancelable()
+    private IEnumerator Cancelable()
     {
-        if (reloadCancelableCoroutine != null) { yield break; }
+        if (cancelableCoroutine != null) { yield break; }
 
-        yield return new WaitForSeconds(RELOAD_CANCELABLE_TIME);
+        playerStateManager.SetIsCancelable(false);
+
+        yield return new WaitForSeconds(CANCELABLE_TIME);
 
         playerStateManager.SetIsCancelable(true);
 
-        reloadCancelableCoroutine = null;
+        cancelableCoroutine = null;
     }
 
     private IEnumerator MuzzleFlash()

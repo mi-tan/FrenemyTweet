@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerProvider : CharacterBase
 {
@@ -8,6 +9,7 @@ public class PlayerProvider : CharacterBase
     private PlayerParameter playerParameter;
     private PlayerSkill playerSkill;
     private PlayerCamera playerCamera;
+    private WeaponBase weaponBase;
 
     [SerializeField]
     private MeshRenderer faceMat;
@@ -20,6 +22,7 @@ public class PlayerProvider : CharacterBase
         playerParameter = GetComponent<PlayerParameter>();
         playerSkill = GetComponent<PlayerSkill>();
         playerCamera = GetComponent<PlayerCamera>();
+        weaponBase = GetComponent<WeaponBase>();
     }
 
     private void Start()
@@ -116,5 +119,15 @@ public class PlayerProvider : CharacterBase
     public Camera GetMainCamera()
     {
         return playerCamera.GetMainCamera();
+    }
+
+    public WeaponBase GetWeaponBase()
+    {
+        return weaponBase;
+    }
+
+    public Image GetWeaponIcon()
+    {
+        return weaponBase.GetWeaponIcon();
     }
 }

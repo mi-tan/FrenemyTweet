@@ -34,10 +34,13 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
 
     private bool isDodge = false;
     private Coroutine recoveryDodgeCoroutine;
-    private Vector3 dodgePos = new Vector3();
-    const float DODGE_DISTANCE = 6f;
-    const float DODGE_SPEED = 2.5f;
+    const float DODGE_SPEED = 13f;
+    private float dodgeSpeed = 13f;
+    const float SLOW_POWER = 15f;
     const float DODGE_TIME = 0.68f;
+
+    private CharacterController characterController;
+    const float GRAVITY_POWER = 10f;
 
 
     void Awake()
@@ -45,6 +48,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         // コンポーネントを取得
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        characterController = GetComponent<CharacterController>();
 
         // 移動方向を初期化
         moveQuaternion = transform.rotation;
@@ -57,6 +61,13 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// <param name="inputMoveVertical">移動垂直入力</param>
     public void UpdateMove(float inputMoveHorizontal, float inputMoveVertical)
     {
+        // 重力
+        if (!characterController.isGrounded)
+        {
+            //Debug.Log("重力");
+            characterController.Move(-transform.up * GRAVITY_POWER * Time.deltaTime);
+        }
+
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
@@ -80,7 +91,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 moveQuaternion = Quaternion.LookRotation(moveDirection);
 
                 // 位置を移動
-                transform.position += moveDirection.normalized * MOVE_SPEED * Time.deltaTime;
+                characterController.Move(moveDirection.normalized * MOVE_SPEED * Time.deltaTime);
             }
             else
             {
@@ -101,16 +112,14 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
-            transform.position = Vector3.Lerp(
-                transform.position, dodgePos, DODGE_SPEED * Time.deltaTime);
+            dodgeSpeed = dodgeSpeed - Time.deltaTime * SLOW_POWER;
+            characterController.Move(transform.forward * dodgeSpeed * Time.deltaTime);
         }
 
         if (inputDodge)
         {
             if (!isDodge)
             {
-                Debug.Log("回避");
-
                 if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
                     (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK ||
                     !playerStateManager.GetIsCancelable()) &&
@@ -123,12 +132,21 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 playerAnimationManager.SetTriggerDodge();
 
                 Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-                Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+
+                Vector3 moveDirection = Vector3.zero;
+                if (inputMoveHorizontal == 0f && inputMoveVertical == 0f)
+                {
+                    moveDirection = transform.forward;
+                }
+                else
+                {
+                    moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+                }
 
                 transform.rotation = Quaternion.LookRotation(moveDirection);
-                dodgePos = transform.position + transform.forward * DODGE_DISTANCE;
-
                 recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
+
+                dodgeSpeed = DODGE_SPEED;
             }
 
             isDodge = true;

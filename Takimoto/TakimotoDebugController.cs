@@ -6,14 +6,16 @@ using UnityEngine.SceneManagement;
 public class TakimotoDebugController : MonoBehaviour {
     public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        SceneController.JumpSceneAsync(sceneName);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene("TakimotoDebugScene");
+            //SceneManager.LoadScene("TakimotoDebugScene");
+
+            SceneController.JumpSceneAsync("TakimotoDebugScene");
 
             // マウスを表示
             Cursor.visible = true;

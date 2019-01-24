@@ -28,23 +28,6 @@ class Rifle : RangeWeapon
     const float STANCE_MOVE_SPEED = 1.5f;
 
     /// <summary>
-    /// 最大弾数
-    /// </summary>
-    private int maxBulletNumber = 30;
-    public int GetMaxBulletNumber()
-    {
-        return maxBulletNumber;
-    }
-    /// <summary>
-    /// 弾数
-    /// </summary>
-    private int bulletNumber = 30;
-    public int GetBulletNumber()
-    {
-        return bulletNumber;
-    }
-
-    /// <summary>
     /// 発射間隔
     /// </summary>
     private float shotInterval = 0.107f;
@@ -70,6 +53,8 @@ class Rifle : RangeWeapon
 
     private bool isFirstBullet;
 
+    private CharacterController characterController;
+
 
     void Awake()
     {
@@ -77,6 +62,7 @@ class Rifle : RangeWeapon
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
@@ -194,7 +180,7 @@ class Rifle : RangeWeapon
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
-        transform.position += moveForward * STANCE_MOVE_SPEED * Time.deltaTime;
+        characterController.Move(moveForward * STANCE_MOVE_SPEED * Time.deltaTime);
     }
 
     void ShootBullet(bool isInput)

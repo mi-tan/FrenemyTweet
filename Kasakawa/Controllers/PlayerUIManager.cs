@@ -57,6 +57,22 @@ public sealed class PlayerUIManager : MonoBehaviour
 
     private int playerNum = 0;
 
+    [Header("銃の弾数を表示するキャンバス")]
+    [SerializeField]
+    private GameObject gunCanvas;
+
+    [Header("弾の弾数を表示するテキスト")]
+    [SerializeField]
+    private Text bulletText;
+
+    [Header("弾の最大数を表示するテキスト")]
+    [SerializeField]
+    private Text bulletMaxText;
+
+    [Header("武器のアイコン表示のイメージ")]
+    [SerializeField]
+    private Image weaponImage;
+
     void Awake()
     {
 
@@ -103,6 +119,12 @@ public sealed class PlayerUIManager : MonoBehaviour
         UpdateUserIconImage();
 
         UpdateUserIDText();
+
+        // 銃用キャンバスの初期設定をする
+        InitGunCanvas();
+
+        // 武器アイコンを更新する
+        UpdateWeaponIcon();
 
     }
 
@@ -168,11 +190,38 @@ public sealed class PlayerUIManager : MonoBehaviour
         userIconImage.texture = iconTexture;
     }
 
+    /// <summary>
+    /// ツイッターのID表示を更新する
+    /// </summary>
     private void UpdateUserIDText()
     {
         var userID = "@"+TwitterParameterManager.Instance.UserID;
 
         userIDText.text = userID;
+    }
+
+    /// <summary>
+    /// 銃用キャンバスの表示を初期化する
+    /// </summary>
+    private void InitGunCanvas()
+    {
+        if (!gunCanvas) { Debug.LogWarning("gunCanvasが設定されていません"); return; }
+    }
+
+    /// <summary>
+    /// 武器のアイコン表示を更新する
+    /// </summary>
+    private void UpdateWeaponIcon()
+    {
+        if (!weaponImage) { Debug.LogWarning("weaponImageが設定されていません"); return; }
+    }
+
+    /// <summary>
+    /// 弾数の表示を更新する
+    /// </summary>
+    private void UpdateBulletNumber(int bulletNumber)
+    {
+        if (!bulletText) { Debug.LogWarning("bulletTextが設定されていません"); return; }
     }
     
 }

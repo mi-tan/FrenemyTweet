@@ -28,23 +28,6 @@ class Rifle : RangeWeapon
     const float STANCE_MOVE_SPEED = 1.5f;
 
     /// <summary>
-    /// 最大弾数
-    /// </summary>
-    private int maxBulletNumber = 30;
-    public int GetMaxBulletNumber()
-    {
-        return maxBulletNumber;
-    }
-    /// <summary>
-    /// 弾数
-    /// </summary>
-    private int bulletNumber = 30;
-    public int GetBulletNumber()
-    {
-        return bulletNumber;
-    }
-
-    /// <summary>
     /// 発射間隔
     /// </summary>
     private float shotInterval = 0.107f;

@@ -11,4 +11,21 @@ abstract class RangeWeapon : WeaponBase
     {
         Debug.LogError("overrideされていない(RangeWeapon)");
     }
+
+    /// <summary>
+    /// 最大弾数
+    /// </summary>
+    protected int maxBulletNumber = 30;
+    public int GetMaxBulletNumber()
+    {
+        return maxBulletNumber;
+    }
+    /// <summary>
+    /// 弾数
+    /// </summary>
+    protected int bulletNumber = 30;
+    public int GetBulletNumber()
+    {
+        return bulletNumber;
+    }
 }

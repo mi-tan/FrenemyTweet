@@ -54,4 +54,17 @@ public class PlayerStateManager : MonoBehaviour
     {
         this.playerState = playerState;
     }
+
+    /// <summary>
+    /// 状態をキャンセルして、他の行動ができるか
+    /// </summary>
+    private bool isCancelable = false;
+    public bool GetIsCancelable()
+    {
+        return isCancelable;
+    }
+    public void SetIsCancelable(bool value)
+    {
+        isCancelable = value;
+    }
 }

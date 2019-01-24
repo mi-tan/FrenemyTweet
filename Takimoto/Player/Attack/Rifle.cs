@@ -35,7 +35,6 @@ class Rifle : RangeWeapon
     {
         return maxBulletNumber;
     }
-    [SerializeField]
     /// <summary>
     /// 弾数
     /// </summary>
@@ -52,7 +51,10 @@ class Rifle : RangeWeapon
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 1.47f;
+    const float RELOAD_TIME = 1.2f;
+
+    private Coroutine cancelableCoroutine;
+    const float CANCELABLE_TIME = 0.1f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;
@@ -66,6 +68,8 @@ class Rifle : RangeWeapon
     [SerializeField]
     private GameObject muzzleFlash;
 
+    private bool isFirstBullet;
+
 
     void Awake()
     {
@@ -77,6 +81,8 @@ class Rifle : RangeWeapon
 
     private void Start()
     {
+        bulletNumber = maxBulletNumber;
+
         // マズルフラッシュを非表示
         muzzleFlash.SetActive(false);
     }
@@ -88,6 +94,7 @@ class Rifle : RangeWeapon
             if (!isInput)
             {
                 isInput = true;
+                isFirstBullet = false;
             }
         }
         else
@@ -100,6 +107,12 @@ class Rifle : RangeWeapon
         {
             StopCoroutine(reloadCoroutine);
             reloadCoroutine = null;
+            playerStateManager.SetIsCancelable(false);
+        }
+
+        if(playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK)
+        {
+            isFirstBullet = false;
         }
 
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
@@ -194,6 +207,12 @@ class Rifle : RangeWeapon
 
                 if (time >= shotInterval)
                 {
+                    if (!isFirstBullet)
+                    {
+                        cancelableCoroutine = StartCoroutine(Cancelable());
+                        isFirstBullet = true;
+                    }
+
                     time = 0f;
 
                     //Debug.Log("弾発射");
@@ -205,17 +224,17 @@ class Rifle : RangeWeapon
                     muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
 
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
-                    Ray ray = Camera.main.ScreenPointToRay(center);
+                    Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);
                     RaycastHit hit;
 
-                    Quaternion qua = new Quaternion();
+                    //Quaternion qua = new Quaternion();
 
                     if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
                     {
                         // 壁に当たった処理
 
-                        Vector3 vec = (hit.point - muzzleTrans.position).normalized;
-                        qua = Quaternion.LookRotation(vec);
+                        //Vector3 vec = (hit.point - muzzleTrans.position).normalized;
+                        //qua = Quaternion.LookRotation(vec);
 
                         GameObject g = Instantiate(bulletHitPrefab, hit.point, transform.rotation);
                         Destroy(g, 1f);
@@ -228,7 +247,7 @@ class Rifle : RangeWeapon
                     }
                     else
                     {
-                        Debug.LogWarning("Rayで照準位置が取得できていない(Laser)");
+                        Debug.LogWarning("Rayで照準位置が取得できていない(Rifle)");
                     }
                 }
             }
@@ -243,6 +262,8 @@ class Rifle : RangeWeapon
     {
         if (reloadCoroutine != null) { yield break; }
 
+        cancelableCoroutine =  StartCoroutine(Cancelable());
+
         yield return new WaitForSeconds(RELOAD_TIME);
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.RELOAD)
@@ -254,6 +275,19 @@ class Rifle : RangeWeapon
         }
 
         reloadCoroutine = null;
+    }
+
+    private IEnumerator Cancelable()
+    {
+        if (cancelableCoroutine != null) { yield break; }
+
+        playerStateManager.SetIsCancelable(false);
+
+        yield return new WaitForSeconds(CANCELABLE_TIME);
+
+        playerStateManager.SetIsCancelable(true);
+
+        cancelableCoroutine = null;
     }
 
     private IEnumerator MuzzleFlash()

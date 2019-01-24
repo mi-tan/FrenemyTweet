@@ -7,6 +7,7 @@ public class PlayerProvider : CharacterBase
     private PlayerDamage playerDamage;
     private PlayerParameter playerParameter;
     private PlayerSkill playerSkill;
+    private PlayerCamera playerCamera;
 
     [SerializeField]
     private MeshRenderer faceMat;
@@ -18,6 +19,7 @@ public class PlayerProvider : CharacterBase
         playerDamage = GetComponent<PlayerDamage>();
         playerParameter = GetComponent<PlayerParameter>();
         playerSkill = GetComponent<PlayerSkill>();
+        playerCamera = GetComponent<PlayerCamera>();
     }
 
     private void Start()
@@ -109,5 +111,10 @@ public class PlayerProvider : CharacterBase
         if (!tex) { return; }
         faceMat.material.EnableKeyword("_MainTex");
         faceMat.material.SetTexture("_MainTex", tex);
+    }
+
+    public Camera GetMainCamera()
+    {
+        return playerCamera.GetMainCamera();
     }
 }

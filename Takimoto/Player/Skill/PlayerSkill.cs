@@ -59,6 +59,8 @@ public class PlayerSkill : MonoBehaviour
         return skillCoolTimes;
     }
 
+    private Camera mainCamera;
+
 
     void Awake()
     {
@@ -66,6 +68,11 @@ public class PlayerSkill : MonoBehaviour
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
+    }
+
+    private void Start()
+    {
+        mainCamera = playerProvider.GetMainCamera();
     }
 
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
@@ -168,7 +175,7 @@ public class PlayerSkill : MonoBehaviour
 
         isCreation = true;
 
-        skill.ActivateSkill(transform, skill.SkillCreationPos);
+        skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera);
     }
 
     /// <summary>

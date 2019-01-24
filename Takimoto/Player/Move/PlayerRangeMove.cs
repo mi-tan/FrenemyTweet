@@ -112,8 +112,10 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 Debug.Log("回避");
 
                 if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
-                    playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK &&
-                    playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.RELOAD) { return; }
+                    (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK ||
+                    !playerStateManager.GetIsCancelable()) &&
+                    (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.RELOAD ||
+                    !playerStateManager.GetIsCancelable())) { return; }
 
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DODGE);
 

@@ -86,6 +86,9 @@ class Sword : MeleeWeapon
     [SerializeField]
     private RoundedUp roundedUp;
 
+    private Coroutine cancelableCoroutine;
+    static readonly float[] CANCELABLE_TIME = { 0f, 0.4f, 0.4f, 0.6f };
+
 
     void Awake()
     {
@@ -107,6 +110,31 @@ class Sword : MeleeWeapon
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        {
+            // 初期化
+            isAttack = false;
+            time = 0f;
+            isMove = false;
+            combo = 0;
+
+            if (stopComboCoroutine != null)
+            {
+                StopCoroutine(stopComboCoroutine);
+                stopComboCoroutine = null;
+            }
+
+            if (maxComboCoroutine != null)
+            {
+                StopCoroutine(maxComboCoroutine);
+                maxComboCoroutine = null;
+            }
+
+            attackDelayCoroutine = null;
+
+            EndAttack();
+        }
+
         if (isAttack)
         {
             // 攻撃方向に向く
@@ -184,6 +212,13 @@ class Sword : MeleeWeapon
 
         // 通常攻撃アニメーションを再生
         playerAnimationManager.SetTriggerAttack();
+
+        if(cancelableCoroutine != null)
+        {
+            StopCoroutine(cancelableCoroutine);
+            cancelableCoroutine = null;
+        }
+        cancelableCoroutine = StartCoroutine(Cancelable());
 
         Vector3 attackDirection = Vector3.Scale(
             Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
@@ -325,5 +360,19 @@ class Sword : MeleeWeapon
         if (trail == null) { return; }
         // 軌跡無効
         trail.Emit = false;
+    }
+
+
+    private IEnumerator Cancelable()
+    {
+        if (cancelableCoroutine != null) { yield break; }
+
+        playerStateManager.SetIsCancelable(false);
+
+        yield return new WaitForSeconds(CANCELABLE_TIME[combo]);
+
+        playerStateManager.SetIsCancelable(true);
+
+        cancelableCoroutine = null;
     }
 }

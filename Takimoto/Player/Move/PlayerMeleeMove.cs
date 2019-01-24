@@ -114,7 +114,16 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
                 playerAnimationManager.SetTriggerDodge();
 
                 Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-                Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+
+                Vector3 moveDirection = Vector3.zero;
+                if (inputMoveHorizontal == 0f && inputMoveVertical == 0f)
+                {
+                    moveDirection = transform.forward;
+                }
+                else
+                {
+                    moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+                }
 
                 transform.rotation = Quaternion.LookRotation(moveDirection);
                 dodgePos = transform.position + transform.forward * DODGE_DISTANCE;

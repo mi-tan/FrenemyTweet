@@ -11,8 +11,8 @@ public abstract class WeaponBase : MonoBehaviour, IPlayerAttack
     }
 
     [SerializeField]
-    private Image weaponIcon;
-    public Image GetWeaponIcon()
+    private Sprite weaponIcon;
+    public Sprite GetWeaponIcon()
     {
         return weaponIcon;
     }

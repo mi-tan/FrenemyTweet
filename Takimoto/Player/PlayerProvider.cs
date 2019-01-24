@@ -126,7 +126,7 @@ public class PlayerProvider : CharacterBase
         return weaponBase;
     }
 
-    public Image GetWeaponIcon()
+    public Sprite GetWeaponIcon()
     {
         return weaponBase.GetWeaponIcon();
     }

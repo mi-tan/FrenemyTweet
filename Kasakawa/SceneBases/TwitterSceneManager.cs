@@ -41,7 +41,7 @@ public class TwitterSceneManager : MonoBehaviour {
         {
             // プレイヤーの種類を表示する
             // playerTypeText.text = PlayerParameterManager.Instance.PlayerHP.ToString();
-            string display = "キミは" + playerType.getType + "だね";
+            string display = "あなたは" + playerType.getType + "です";
             playerTypeText.text = display;
         }
 

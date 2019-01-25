@@ -60,6 +60,7 @@ public class TwitterComponent : MonoBehaviour {
     public void OnClickTimeLine()
     {
         isGetSentence = false;
+        Debug.Log("tweetN=" + getTweetNum);
         StartCoroutine(Twitter.API.GetUserTimeline(getTweetNum, m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
               new Twitter.GetUserTimelineCallback(this.OnGetUserTimeline)));
     }

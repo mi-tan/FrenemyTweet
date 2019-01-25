@@ -12,7 +12,7 @@ public class PlayerProvider : CharacterBase
     private WeaponBase weaponBase;
 
     [SerializeField]
-    private MeshRenderer faceMat;
+    private SkinnedMeshRenderer faceMat;
 
 
     void Awake()

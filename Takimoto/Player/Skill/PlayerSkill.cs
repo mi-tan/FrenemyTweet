@@ -61,6 +61,9 @@ public class PlayerSkill : MonoBehaviour
 
     private Camera mainCamera;
 
+    [SerializeField]
+    private GameObject testSkillHitEffect;
+
 
     void Awake()
     {
@@ -73,6 +76,11 @@ public class PlayerSkill : MonoBehaviour
     private void Start()
     {
         mainCamera = playerProvider.GetMainCamera();
+
+        // 仮エフェクト設定
+        if (testSkillHitEffect == null) { return; }
+        skillList[0].SetHitEffect(testSkillHitEffect);
+        skillList[1].SetHitEffect(testSkillHitEffect);
     }
 
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)

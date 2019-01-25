@@ -43,6 +43,7 @@ public class Laser : PlayerSkillBase
         //AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerTrans.rotation);
         // ダメージ計算
         attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;
+        attackCollision.SetHitEffect = hitEffect;
         Destroy(attackCollision.gameObject, destroyTime);
     }
 }

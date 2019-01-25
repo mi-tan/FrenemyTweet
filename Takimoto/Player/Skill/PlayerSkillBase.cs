@@ -132,4 +132,10 @@ public abstract class PlayerSkillBase : ScriptableObject
     {
         playerAttackPower = value;
     }
+
+    protected GameObject hitEffect;
+    public void SetHitEffect(GameObject effect)
+    {
+        hitEffect = effect;
+    }
 }

@@ -15,6 +15,7 @@ public class PlayerTypeAnalysis : MonoBehaviour {
     AnalysisSentence analysisSentence;
 
     private string categoryName = "";
+    private int muiNum;
 
     /// <summary>
     /// プレイヤーのタイプを判断
@@ -22,12 +23,12 @@ public class PlayerTypeAnalysis : MonoBehaviour {
     /// <param name="container"></param>
     public void TypeReveal(AnalysisContainer container)
     {
-        Debug.Log("長さ" + container.categoryRetList.Count);
+        muiNum = analysisSentence.getSentenceLength;
 
         // 使用するデータ
         AnalysisContainer.CategoryRet useContainer = container.categoryRetList[ReturnMostLengthCategoryNum(container)];
 
-        if (useContainer.thisNameNum < analysisSentence.getMui)
+        if (useContainer.thisNameNum < muiNum)
         {
             categoryName = "無為";
         }
@@ -35,10 +36,10 @@ public class PlayerTypeAnalysis : MonoBehaviour {
         {
             categoryName = useContainer.categoryName;
         }
-        
+
 
         // 冗長
-        if (useContainer.redundancyFlag)
+        if (useContainer.redundancyFlag == true)
         {
             if (categoryName == "善意")
             {
@@ -94,14 +95,15 @@ public class PlayerTypeAnalysis : MonoBehaviour {
         // 現在一番長いカテゴリ番号
         int mostLongCategoryNum = 0;
 
-        var a = container;
-
         for (int index = 0; index < container.categoryRetList.Count; index++)
         {
             //Debug.Log("名前：" + container.categoryRetList[index].categoryName +
             //          "　量：" + container.categoryRetList[index].thisNameNum);
+            //Debug.Log("コンテナ" + index+"："+ muiNum + "-" + container.categoryRetList[index].thisNameNum);
+            muiNum -= container.categoryRetList[index].thisNameNum;
 
-            if(mostLongNum <= container.categoryRetList[index].thisNameNum)
+
+            if (mostLongNum <= container.categoryRetList[index].thisNameNum)
             {
                 mostLongNum = container.categoryRetList[index].thisNameNum;
                 mostLongCategoryNum = index;

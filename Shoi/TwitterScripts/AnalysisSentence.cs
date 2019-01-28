@@ -14,18 +14,18 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
     /// <summary>
     /// 長い文章の基準値
     /// </summary>
-    [SerializeField]
+    [SerializeField, Tooltip("長い文章の基準値")]
     private int redundancyCriteria = 20;
     /// <summary>
     /// 長い文章のほうが多いと判断する割合
     /// </summary>
-    [SerializeField, Range(0, 1)]
+    [SerializeField, Range(0, 1), Tooltip("長い文章のほうが多いと判断する割合")]
     private float redundancyRatio = 0.5f;
 
-    private int mui = 0;
-    public int getMui
+    private int sentenceLength = 0;
+    public int getSentenceLength
     {
-        get { return mui; }
+        get { return sentenceLength; }
     }
 
     private string[] dictionaly = new string[100];
@@ -37,6 +37,9 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
     {
         AnalysisContainer container = new AnalysisContainer();
         AnalysisContainer.CategoryRet categoryRet = new AnalysisContainer.CategoryRet();
+
+        // リストの長さを保持
+        sentenceLength = str.Count;
 
         for (int index = 0; index < categoryData.Length; index++)
         {
@@ -50,18 +53,22 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
 
             string sentence = "";
 
-            Regex regex = new Regex("@[0-9,a-z,_]{0,} ");
-
+            // リプライをはじく正規表現を作成
+            Regex regex = new Regex("@[0-9,a-z,\\w]{0,} ");
+            
             for (int i = 0; i < dictionaly.Length; i++)
             {
                 for (int j = 0; j < str.Count; j++)
                 {
                     // 正規表現
                     sentence = regex.Replace(str[j], "");
-                    // Debug.Log($"@を消した後　= {sentence}");
+                   // Debug.Log($"@を消した後　= {sentence}");
+                    
+                    // 情報更新
+                    str[j] = sentence;
 
                     // 指定した文字が存在するかどうか取得する
-                    MatchCollection matche = Regex.Matches(sentence, dictionaly[i]);
+                    MatchCollection matche = Regex.Matches(str[j], dictionaly[i]);
 
                     int count = 0;
                     foreach (Match m in matche)
@@ -69,10 +76,10 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
                         count++;
                     }
 
-                    if (count == 0)
-                    {
-                        mui++;
-                    }
+                    //if (count == 0)
+                    //{
+                    //    mui++;
+                    //}
                     matchNum += count;
                 }
             }
@@ -83,34 +90,39 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
             categoryRet.categoryName = categoryData[index].getCategoryName;
             // 名前がマッチした回数を格納
             categoryRet.thisNameNum = matchNum;
-            // 構造体を格納
-            container.categoryRetList.Add(categoryRet);
 
+            //// 構造体を格納
+            //container.categoryRetList.Add(categoryRet);
         }
 
         // 冗長な文章の数
         int redundancyNum = 0;
         for (int i = 0; i < str.Count; i++)
         {
-            Debug.Log(str[i] + "：" + str[i].Length);
+            //Debug.Log(str[i].Length + " > " + redundancyCriteria);
 
-            if (str[i].Length <= redundancyCriteria)
+            // 基準値よりも長いものがあった場合カウントする
+            if (str[i].Length >= redundancyCriteria)
             {
                 redundancyNum++;
             }
         }
-
-        // Debug.Log("長かったもの：" + redundancyNum + " 基準：" + str.Count * redundancyRatio);
-
         // 長いものが多いか判定
+
+        //Debug.Log(redundancyNum + " : " + str.Count +" * "+ redundancyRatio+" = "+ str.Count * redundancyRatio);
         if (redundancyNum > str.Count * redundancyRatio)
         {
+            // 長いものが多い
             categoryRet.redundancyFlag = true;
         }
         else
         {
+            // 短いものが多い
             categoryRet.redundancyFlag = false;
         }
+
+        // 構造体を格納
+        container.categoryRetList.Add(categoryRet);
 
         return container;
     }

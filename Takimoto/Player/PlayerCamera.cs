@@ -50,6 +50,13 @@ public class PlayerCamera : MonoBehaviour
     /// </summary>
     private float rotationVerticalSpeed = 200f;
 
+    private bool isAim = false;
+    public void SetIsAim(bool value)
+    {
+        isAim = value;
+    }
+    private float aimSpeed = 1f / 3f;
+
     /// <summary>
     /// 角度上限
     /// </summary>
@@ -104,6 +111,26 @@ public class PlayerCamera : MonoBehaviour
 
         // カメラの中心点を更新
         centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
+
+        float mouseXSpeed = 0f;
+        float mouseYSpeed = 0f;
+        float rotationHorizontalSpeed = 0f;
+        float rotationVerticalSpeed = 0f;
+
+        if (isAim)
+        {
+            mouseXSpeed = this.mouseXSpeed * aimSpeed;
+            mouseYSpeed = this.mouseYSpeed * aimSpeed;
+            rotationHorizontalSpeed = this.rotationHorizontalSpeed * aimSpeed;
+            rotationVerticalSpeed = this.rotationVerticalSpeed * aimSpeed;
+        }
+        else
+        {
+            mouseXSpeed = this.mouseXSpeed;
+            mouseYSpeed = this.mouseYSpeed;
+            rotationHorizontalSpeed = this.rotationHorizontalSpeed;
+            rotationVerticalSpeed = this.rotationVerticalSpeed;
+        }
 
         mainCamera.transform.RotateAround(
             transform.position,

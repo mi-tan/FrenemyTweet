@@ -11,6 +11,7 @@ class Rifle : RangeWeapon
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
     private PlayerProvider playerProvider;
+    private PlayerCamera playerCamera;
 
     /// <summary>
     /// 入力中か
@@ -63,6 +64,7 @@ class Rifle : RangeWeapon
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
         characterController = GetComponent<CharacterController>();
+        playerCamera = GetComponent<PlayerCamera>();
     }
 
     private void Start()
@@ -89,6 +91,8 @@ class Rifle : RangeWeapon
         {
             isInput = false;
         }
+
+        playerCamera.SetIsAim(isInput);
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE &&
             reloadCoroutine != null)

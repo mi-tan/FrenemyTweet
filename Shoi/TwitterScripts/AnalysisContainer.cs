@@ -17,5 +17,6 @@ public class AnalysisContainer {
     public struct CategoryRet{
         public string categoryName;
         public int thisNameNum;
+        public bool redundancyFlag;
     }
 }

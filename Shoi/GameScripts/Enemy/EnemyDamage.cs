@@ -16,32 +16,48 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// <summary>
     /// ダメージアニメーションの数
     /// </summary>
-    private int damageAnimationNum = 4;
+    private int damageAnimationNum = 3;
+    /// <summary>
+    /// 死亡アニメーションの数
+    /// </summary>
+    private int deathAnimationNum = 3;
+
+    private int useAnimationNum;
 
     private EnemyParameter enemyparameter;
-    private EnemyAnimationController animationController;
+    private EnemyAnimationController enemyAnimationController;
 
     private void Awake()
     {
         enemyparameter = GetComponent<EnemyParameter>();
-        animationController = GetComponent<EnemyAnimationController>();
+        enemyAnimationController = GetComponent<EnemyAnimationController>();
+
+        // 使用するアニメーションを設定
+        useAnimationNum = Random.Range(0, deathAnimationNum);
     }
 
     public void TakeDamage(int damage)
     {
-        int randNum = Random.Range(1, damageAnimationNum);
         // HPを減らす
         enemyparameter.hp -= damage;
-        // 被ダメージ時のアニメーション再生
-        animationController.TakeDamage(true);
-        animationController.Type(randNum);
-
-        Observable.TimerFrame(animationController.GetFlagOffFrame).Subscribe(_ =>
-        {
-            // 被ダメージ時のアニメーション停止
-            animationController.TakeDamage(false);
-        }).AddTo(gameObject);
         Debug.Log($"受けたダメージ： {damage}");
+    }
+
+    /// <summary>
+    /// 被ダメージ時のアニメーション再生
+    /// </summary>
+    public void TakeDamageAnimation()
+    {
+        int randNum = Random.Range(0, damageAnimationNum);
+        // 被ダメージ時のアニメーション再生
+        enemyAnimationController.TakeDamage(randNum);
+        //enemyAnimationController.Type(randNum);
+        
+        //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
+        //{
+        //    // 被ダメージ時のアニメーション停止
+        //    enemyAnimationController.TakeDamage(false);
+        //}).AddTo(gameObject);
     }
 
     /// <summary>
@@ -49,7 +65,25 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// </summary>
     public void DeathEnemy()
     {
-        Debug.Log("敵死亡");
-        Destroy(transform.gameObject);
+
+        // アニメーションを呼び出し
+        enemyAnimationController.Death(useAnimationNum);
+
+        //enemyAnimationController.Type(Random.Range(0, deathAnimationNum));
+        
+        //// 呼び出したアニメーションを停止
+        //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
+        //{
+        //    enemyAnimationController.Death(false);
+        //}).AddTo(gameObject);
+
+    }
+
+    /// <summary>
+    /// オブジェクトを削除
+    /// </summary>
+    public void DestroyEnemy()
+    {
+        Destroy(gameObject);
     }
 }

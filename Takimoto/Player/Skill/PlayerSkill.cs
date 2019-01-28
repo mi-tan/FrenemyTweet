@@ -59,6 +59,11 @@ public class PlayerSkill : MonoBehaviour
         return skillCoolTimes;
     }
 
+    private Camera mainCamera;
+
+    [SerializeField]
+    private GameObject testSkillHitEffect;
+
 
     void Awake()
     {
@@ -68,8 +73,20 @@ public class PlayerSkill : MonoBehaviour
         playerProvider = GetComponent<PlayerProvider>();
     }
 
+    private void Start()
+    {
+        mainCamera = playerProvider.GetMainCamera();
+
+        // 仮エフェクト設定
+        if (testSkillHitEffect == null) { return; }
+        skillList[0].SetHitEffect(testSkillHitEffect);
+        skillList[1].SetHitEffect(testSkillHitEffect);
+    }
+
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
         // スキル切り替え
         ChangeSkill(
             inputSelectSkill1,
@@ -168,7 +185,9 @@ public class PlayerSkill : MonoBehaviour
 
         isCreation = true;
 
-        skill.ActivateSkill(transform, skill.SkillCreationPos);
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { yield break; }
+
+        skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera);
     }
 
     /// <summary>

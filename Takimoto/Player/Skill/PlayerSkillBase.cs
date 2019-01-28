@@ -125,11 +125,17 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
-    public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos);
+    public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera);
 
     protected int playerAttackPower = 0;
     public void SetPlayerAttackPower(int value)
     {
         playerAttackPower = value;
+    }
+
+    protected GameObject hitEffect;
+    public void SetHitEffect(GameObject effect)
+    {
+        hitEffect = effect;
     }
 }

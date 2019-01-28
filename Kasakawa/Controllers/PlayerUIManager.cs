@@ -55,16 +55,36 @@ public sealed class PlayerUIManager : MonoBehaviour
         }
     }
 
+    private int playerNum = 0;
+
+    [Header("銃の弾数を表示するキャンバス")]
+    [SerializeField]
+    private GameObject gunCanvasObject;
+
+    [Header("弾の弾数を表示するテキスト")]
+    [SerializeField]
+    private Text bulletText;
+
+    [Header("弾の最大数を表示するテキスト")]
+    [SerializeField]
+    private Text bulletMaxText;
+
+    [Header("武器のアイコン表示のイメージ")]
+    [SerializeField]
+    private Image weaponImage;
+
+    private WeaponBase playerWeapon;
+
     void Awake()
     {
 
         // プレイヤーのHPが変化した場合、表示を更新する
-        gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetHp())
+        gameManager.ObserveEveryValueChanged(_ => gameManager.GetPlayer(playerNum).GetHp())
             .Subscribe(hp => { UpdateHPValue(hp); });
 
         // プレイヤーの選択スキルが変化した場合、表示を更新する
-        gameManager.ObserveEveryValueChanged(_ => gameManager.player.GetSelectSkill())
-            .Subscribe(skill => { UpdateSelectedSkillInfo(skill,gameManager.player.GetSkillNumber()); });
+        gameManager.ObserveEveryValueChanged(_ => gameManager.GetPlayer(playerNum).GetSelectSkill())
+            .Subscribe(skill => { UpdateSelectedSkillInfo(skill,gameManager.GetPlayer(playerNum).GetSkillNumber()); });
 
         // スキルクールタイムの表示更新
         this.UpdateAsObservable().Subscribe(_ => UpdateSkillCoolTime())
@@ -74,6 +94,8 @@ public sealed class PlayerUIManager : MonoBehaviour
 
     private void Start()
     {
+
+        playerWeapon = gameManager.GetPlayer(playerNum).GetWeaponBase();
         InitializePlayerUI();
     }
 
@@ -82,12 +104,12 @@ public sealed class PlayerUIManager : MonoBehaviour
     /// </summary>
     private void InitializePlayerUI()
     {
-        int playerHP = gameManager.player.GetHp();
+        int playerHP = gameManager.GetPlayer(playerNum).GetHp();
 
-        hpSlider.maxValue = gameManager.player.GetMaxHp();
+        hpSlider.maxValue = gameManager.GetPlayer(playerNum).GetMaxHp();
         UpdateHPValue(playerHP);
 
-        var skillList = gameManager.player.GetSkillList();
+        var skillList = gameManager.GetPlayer(playerNum).GetSkillList();
 
         // スキルアイコンをUIに表示
         for(int i= 0; i < skillList.Length; i++)
@@ -96,11 +118,17 @@ public sealed class PlayerUIManager : MonoBehaviour
         }
 
         // 現在のスキル情報を表示する
-        UpdateSelectedSkillInfo(gameManager.player.GetSelectSkill(),gameManager.player.GetSkillNumber());
+        UpdateSelectedSkillInfo(gameManager.GetPlayer(playerNum).GetSelectSkill(),gameManager.GetPlayer(playerNum).GetSkillNumber());
 
         UpdateUserIconImage();
 
         UpdateUserIDText();
+
+        // 銃用キャンバスの初期設定をする
+        InitGunCanvas();
+
+        // 武器アイコンを更新する
+        UpdateWeaponIcon();
 
     }
 
@@ -139,10 +167,10 @@ public sealed class PlayerUIManager : MonoBehaviour
     {
 
         // スキルクールタイムの残り時間を取得する
-        var skillCoolTimes = gameManager.player.GetSkillCoolTimes();
+        var skillCoolTimes = gameManager.GetPlayer(playerNum).GetSkillCoolTimes();
 
         // スキルのクールタイムを取得する
-        var skillBaseTimes = gameManager.player.GetSkillBaseCoolTimes();
+        var skillBaseTimes = gameManager.GetPlayer(playerNum).GetSkillBaseCoolTimes();
 
         for (int i = 0;i < skillIconArray.Length; i++)
         {
@@ -166,11 +194,79 @@ public sealed class PlayerUIManager : MonoBehaviour
         userIconImage.texture = iconTexture;
     }
 
+    /// <summary>
+    /// ツイッターのID表示を更新する
+    /// </summary>
     private void UpdateUserIDText()
     {
         var userID = "@"+TwitterParameterManager.Instance.UserID;
 
         userIDText.text = userID;
+    }
+
+    /// <summary>
+    /// 銃用キャンバスの表示を初期化する
+    /// </summary>
+    private void InitGunCanvas()
+    {
+        if (!gunCanvasObject) { Debug.LogWarning("gunCanvasが設定されていません"); return; }
+
+        var weapon = gameManager.GetPlayer(playerNum).GetWeaponBase();
+
+        // プレイヤーの武器クラスが銃の場合
+        if(weapon is RangeWeapon)
+        {
+            var gun = weapon as RangeWeapon;
+            // 銃キャンバス表示
+            gunCanvasObject.SetActive(true);
+            // 最大弾数表示を更新
+            UpdateMaxBulletNumber(gun.GetMaxBulletNumber());
+
+            // 弾数表示を初期化
+            UpdateBulletNumber(gun.GetBulletNumber());
+
+            // 弾数の表示を更新する
+            gun.ObserveEveryValueChanged(_ => gun.GetBulletNumber())
+                .Subscribe(bullet => { UpdateBulletNumber(bullet); })
+                .AddTo(gameObject);
+
+
+        }
+        else
+        {
+            gunCanvasObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// 武器のアイコン表示を更新する
+    /// </summary>
+    private void UpdateWeaponIcon()
+    {
+        if (!weaponImage) { Debug.LogWarning("weaponImageが設定されていません"); return; }
+
+        var weaponIcon = gameManager.GetPlayer(playerNum).GetWeaponIcon();
+
+        if (!weaponIcon) { Debug.LogWarning("プレイヤーの武器アイコンが設定されていません"); return; }
+
+        weaponImage.sprite = weaponIcon;
+    }
+
+    /// <summary>
+    /// 弾数の表示を更新する
+    /// </summary>
+    private void UpdateBulletNumber(int bulletNumber)
+    {
+        if (!bulletText) { Debug.LogWarning("bulletTextが設定されていません"); return; }
+
+        bulletText.text = bulletNumber.ToString("000");
+    }
+
+    private void UpdateMaxBulletNumber(int bulletNumber)
+    {
+        if (!bulletMaxText) { Debug.LogWarning("bulletMaxTextが設定されていません"); return; }
+
+        bulletMaxText.text = bulletNumber.ToString("000");
     }
     
 }

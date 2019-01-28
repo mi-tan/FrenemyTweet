@@ -6,31 +6,28 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/Attack/Move")]
 public class AttackMoveParameter : ScriptableObject
 {
-    [Header("移動時間")]
+    [Header("移動開始時間")]
     [SerializeField]
-    private float moveTime;
+    private float moveStartTime;
     /// <summary>
     /// 移動時間
     /// </summary>
-    public float MoveTime
+    public float MoveStartTime
     {
         get
         {
-            return moveTime;
+            return moveStartTime;
         }
     }
 
-    [Header("移動距離")]
+    [Header("移動終了時間")]
     [SerializeField]
-    private float moveDistance;
-    /// <summary>
-    /// 移動距離
-    /// </summary>
-    public float MoveDistance
+    private float moveEndTime;
+    public float MoveEndTime
     {
         get
         {
-            return moveDistance;
+            return moveEndTime;
         }
     }
 

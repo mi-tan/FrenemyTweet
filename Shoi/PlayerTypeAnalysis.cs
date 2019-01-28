@@ -1,0 +1,112 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerTypeAnalysis : MonoBehaviour {
+
+    [SerializeField]
+    private TwitterSceneManager twitterSceneManager;
+    [SerializeField]
+    private PlayerType[] playerType;
+
+    private int lengthCriteria;
+
+    [SerializeField]
+    AnalysisSentence analysisSentence;
+
+    private string categoryName = "";
+
+    /// <summary>
+    /// プレイヤーのタイプを判断
+    /// </summary>
+    /// <param name="container"></param>
+    public void TypeReveal(AnalysisContainer container)
+    {
+        Debug.Log("長さ" + container.categoryRetList.Count);
+
+        // 使用するデータ
+        AnalysisContainer.CategoryRet useContainer = container.categoryRetList[ReturnMostLengthCategoryNum(container)];
+
+        if (useContainer.thisNameNum < analysisSentence.getMui)
+        {
+            categoryName = "無為";
+        }
+        else
+        {
+            categoryName = useContainer.categoryName;
+        }
+        
+
+        // 冗長
+        if (useContainer.redundancyFlag)
+        {
+            if (categoryName == "善意")
+            {
+                // リア充
+                twitterSceneManager.SetPlayerType = playerType[0];
+                Debug.Log("リア充");
+            }
+            else if (categoryName == "悪意")
+            {
+                // ネット弁慶
+                twitterSceneManager.SetPlayerType = playerType[1];
+                Debug.Log("ネット弁慶");
+            }
+            else if (categoryName == "無為")
+            {
+                // サイコパス
+                twitterSceneManager.SetPlayerType = playerType[2];
+                Debug.Log("サイコパス");
+            }
+        }
+        // 簡潔
+        else
+        {
+            if (categoryName == "善意")
+                {
+                    // 陽キャ
+                    twitterSceneManager.SetPlayerType = playerType[3];
+                Debug.Log("陽キャ");
+            }
+            else if (categoryName == "悪意")
+                {
+                    // 陰キャ
+                    twitterSceneManager.SetPlayerType = playerType[4];
+                Debug.Log("陰キャ");
+            }
+            else if (categoryName == "無為")
+                {
+                    // 怠け者
+                    twitterSceneManager.SetPlayerType = playerType[5];
+                Debug.Log("怠け者");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 一番長いカテゴリの番号を返す
+    /// </summary>
+    /// <param name="container"></param>
+    private int ReturnMostLengthCategoryNum(AnalysisContainer container)
+    {
+        // 現在一番長いもの
+        int mostLongNum = 0;
+        // 現在一番長いカテゴリ番号
+        int mostLongCategoryNum = 0;
+
+        var a = container;
+
+        for (int index = 0; index < container.categoryRetList.Count; index++)
+        {
+            //Debug.Log("名前：" + container.categoryRetList[index].categoryName +
+            //          "　量：" + container.categoryRetList[index].thisNameNum);
+
+            if(mostLongNum <= container.categoryRetList[index].thisNameNum)
+            {
+                mostLongNum = container.categoryRetList[index].thisNameNum;
+                mostLongCategoryNum = index;
+            }
+        }
+        return mostLongCategoryNum;
+    }
+}

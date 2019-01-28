@@ -8,8 +8,12 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField]
-    private GameObject mainCameraPrefab;
-    private GameObject mainCamera;
+    private Camera mainCameraPrefab;
+    private Camera mainCamera;
+    public Camera GetMainCamera()
+    {
+        return mainCamera;
+    }
 
     /// <summary>
     /// カメラの初期位置
@@ -45,6 +49,13 @@ public class PlayerCamera : MonoBehaviour
     /// カメラ垂直コントローラ感度
     /// </summary>
     private float rotationVerticalSpeed = 200f;
+
+    private bool isAim = false;
+    public void SetIsAim(bool value)
+    {
+        isAim = value;
+    }
+    private float aimSpeed = 1f / 3f;
 
     /// <summary>
     /// 角度上限
@@ -101,6 +112,26 @@ public class PlayerCamera : MonoBehaviour
         // カメラの中心点を更新
         centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
 
+        float mouseXSpeed = 0f;
+        float mouseYSpeed = 0f;
+        float rotationHorizontalSpeed = 0f;
+        float rotationVerticalSpeed = 0f;
+
+        if (isAim)
+        {
+            mouseXSpeed = this.mouseXSpeed * aimSpeed;
+            mouseYSpeed = this.mouseYSpeed * aimSpeed;
+            rotationHorizontalSpeed = this.rotationHorizontalSpeed * aimSpeed;
+            rotationVerticalSpeed = this.rotationVerticalSpeed * aimSpeed;
+        }
+        else
+        {
+            mouseXSpeed = this.mouseXSpeed;
+            mouseYSpeed = this.mouseYSpeed;
+            rotationHorizontalSpeed = this.rotationHorizontalSpeed;
+            rotationVerticalSpeed = this.rotationVerticalSpeed;
+        }
+
         mainCamera.transform.RotateAround(
             transform.position,
             Vector3.up,
@@ -129,8 +160,10 @@ public class PlayerCamera : MonoBehaviour
 
         Vector3 test = centerPoint - mainCamera.transform.forward * initialDistance;
 
+        //if (Physics.Linecast(centerPoint, test, out hit, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
+        
         // 障害物の前にカメラを移動
-        if (Physics.Linecast(centerPoint, test, out hit, LayerMask.GetMask("Field")))
+        if (Physics.Linecast(centerPoint, test, out hit))
         {
             distance = Vector3.Distance(centerPoint, hit.point);
 

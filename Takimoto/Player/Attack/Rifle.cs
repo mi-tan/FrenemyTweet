@@ -11,6 +11,7 @@ class Rifle : RangeWeapon
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
     private PlayerProvider playerProvider;
+    private PlayerCamera playerCamera;
 
     /// <summary>
     /// 入力中か
@@ -28,30 +29,16 @@ class Rifle : RangeWeapon
     const float STANCE_MOVE_SPEED = 1.5f;
 
     /// <summary>
-    /// 最大弾数
-    /// </summary>
-    private int maxBulletNumber = 30;
-    public int GetMaxBulletNumber()
-    {
-        return maxBulletNumber;
-    }
-    /// <summary>
-    /// 弾数
-    /// </summary>
-    private int bulletNumber = 30;
-    public int GetBulletNumber()
-    {
-        return bulletNumber;
-    }
-
-    /// <summary>
     /// 発射間隔
     /// </summary>
     private float shotInterval = 0.107f;
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 2.2f;
+    const float RELOAD_TIME = 1.2f;
+
+    private Coroutine cancelableCoroutine;
+    const float CANCELABLE_TIME = 0.2f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;
@@ -65,6 +52,10 @@ class Rifle : RangeWeapon
     [SerializeField]
     private GameObject muzzleFlash;
 
+    private bool isFirstBullet;
+
+    private CharacterController characterController;
+
 
     void Awake()
     {
@@ -72,21 +63,28 @@ class Rifle : RangeWeapon
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
+        characterController = GetComponent<CharacterController>();
+        playerCamera = GetComponent<PlayerCamera>();
     }
 
     private void Start()
     {
+        bulletNumber = maxBulletNumber;
+
         // マズルフラッシュを非表示
         muzzleFlash.SetActive(false);
     }
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
         if (inputAttack >= 1)
         {
             if (!isInput)
             {
                 isInput = true;
+                isFirstBullet = false;
             }
         }
         else
@@ -94,26 +92,43 @@ class Rifle : RangeWeapon
             isInput = false;
         }
 
-        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.SKILL &&
-            playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.RELOAD) { return; }
+        playerCamera.SetIsAim(isInput);
 
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE &&
+            reloadCoroutine != null)
+        {
+            StopCoroutine(reloadCoroutine);
+            reloadCoroutine = null;
+            playerStateManager.SetIsCancelable(false);
+        }
+
+        if(playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK)
+        {
+            isFirstBullet = false;
+
+            // マズルフラッシュを非表示
+            muzzleFlash.SetActive(false);
+        }
+
+        if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&
+            playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK) { return; }
 
         // 通常攻撃アニメーションを再生
         playerAnimationManager.SetBoolAttack(isInput);
 
         if (isInput)
         {
+            Vector3 attackDirection = Vector3.Scale(
+                Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+            attackQuaternion = Quaternion.LookRotation(attackDirection);
+
+            // 攻撃方向に向く
+            FaceAttack(attackQuaternion);
+
             if (bulletNumber > 0)
             {
                 // プレイヤーの状態を攻撃中に変更
                 playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.ATTACK);
-
-                Vector3 attackDirection = Vector3.Scale(
-                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-                attackQuaternion = Quaternion.LookRotation(attackDirection);
-
-                // 攻撃方向に向く
-                FaceAttack(attackQuaternion);
 
                 // 構え移動
                 StanceMove(inputMoveHorizontal, inputMoveVertical);
@@ -174,7 +189,7 @@ class Rifle : RangeWeapon
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
-        transform.position += moveForward * STANCE_MOVE_SPEED * Time.deltaTime;
+        characterController.Move(moveForward * STANCE_MOVE_SPEED * Time.deltaTime);
     }
 
     void ShootBullet(bool isInput)
@@ -187,6 +202,12 @@ class Rifle : RangeWeapon
 
                 if (time >= shotInterval)
                 {
+                    if (!isFirstBullet)
+                    {
+                        cancelableCoroutine = StartCoroutine(Cancelable());
+                        isFirstBullet = true;
+                    }
+
                     time = 0f;
 
                     //Debug.Log("弾発射");
@@ -198,17 +219,17 @@ class Rifle : RangeWeapon
                     muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
 
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
-                    Ray ray = Camera.main.ScreenPointToRay(center);
+                    Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);
                     RaycastHit hit;
 
-                    Quaternion qua = new Quaternion();
+                    //Quaternion qua = new Quaternion();
 
                     if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
                     {
                         // 壁に当たった処理
 
-                        Vector3 vec = (hit.point - muzzleTrans.position).normalized;
-                        qua = Quaternion.LookRotation(vec);
+                        //Vector3 vec = (hit.point - muzzleTrans.position).normalized;
+                        //qua = Quaternion.LookRotation(vec);
 
                         GameObject g = Instantiate(bulletHitPrefab, hit.point, transform.rotation);
                         Destroy(g, 1f);
@@ -221,7 +242,7 @@ class Rifle : RangeWeapon
                     }
                     else
                     {
-                        Debug.LogWarning("Rayで照準位置が取得できていない(Laser)");
+                        Debug.LogWarning("Rayで照準位置が取得できていない(Rifle)");
                     }
                 }
             }
@@ -236,6 +257,8 @@ class Rifle : RangeWeapon
     {
         if (reloadCoroutine != null) { yield break; }
 
+        cancelableCoroutine =  StartCoroutine(Cancelable());
+
         yield return new WaitForSeconds(RELOAD_TIME);
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.RELOAD)
@@ -247,6 +270,19 @@ class Rifle : RangeWeapon
         }
 
         reloadCoroutine = null;
+    }
+
+    private IEnumerator Cancelable()
+    {
+        if (cancelableCoroutine != null) { yield break; }
+
+        playerStateManager.SetIsCancelable(false);
+
+        yield return new WaitForSeconds(CANCELABLE_TIME);
+
+        playerStateManager.SetIsCancelable(true);
+
+        cancelableCoroutine = null;
     }
 
     private IEnumerator MuzzleFlash()

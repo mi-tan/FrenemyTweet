@@ -16,10 +16,16 @@ public class TwitterComponent : MonoBehaviour {
     ImageDownloder _imageDownLoder;
     public Twitter.AccessTokenResponse sendIcon;
 
-
     [SerializeField]
     TwitterComponent tc;
 
+    [SerializeField]
+    Animator PINCodeCanvasAni;
+
+    [SerializeField]
+    TutorialImageChanger tutorialImageChanger;
+    [SerializeField]
+    private Text authenticationText;
 
     private const string CONSUMER_KEY = "uAWdP7574vZXG95E3YxCxdePq";
     private const string CONSUMER_SECRET = "NIMvj4ImnUfZKFXtDB4GEdYSIA4K6NOHwDG6cZCOf6O0XGfMYm";
@@ -45,12 +51,16 @@ public class TwitterComponent : MonoBehaviour {
     private List<string> sentenceList = new List<string>();
     public List<string> getSentenceList { get { return sentenceList; } }
 
-
+    private void Start()
+    {
+        authenticationText.text = "PINを入力してください";
+    }
 
     // タイムラインを取得
     public void OnClickTimeLine()
     {
         isGetSentence = false;
+        Debug.Log("tweetN=" + getTweetNum);
         StartCoroutine(Twitter.API.GetUserTimeline(getTweetNum, m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse,
               new Twitter.GetUserTimelineCallback(this.OnGetUserTimeline)));
     }
@@ -58,6 +68,7 @@ public class TwitterComponent : MonoBehaviour {
     // ピンコードを取得
     public void OnClickGetPINButon()
     {
+        tutorialImageChanger.NextTexture();
         StartCoroutine(Twitter.API.GetRequestToken(CONSUMER_KEY, CONSUMER_SECRET,
             new Twitter.RequestTokenCallback(this.OnRequestTokenCallback)));
     }
@@ -65,13 +76,27 @@ public class TwitterComponent : MonoBehaviour {
     // ピンコードを認証
     public void AuthPINButon(string myPIN)
     {
+        if (m_RequestTokenResponse == null)
+        {
+            authenticationText.text = "認証ボタンが押されてませんが？";
+            return;
+        }
+
+        authenticationText.text = "認証中...";
+
+        Twitter.AccessTokenCallback callBack = ((x, y) =>
+        {
+            OnAccessTokenCallback(x, y);
+        });
+
         StartCoroutine(Twitter.API.GetAccessToken(CONSUMER_KEY, CONSUMER_SECRET, m_RequestTokenResponse.Token, myPIN,
-            new Twitter.AccessTokenCallback(this.OnAccessTokenCallback)));
+            callBack));
     }
 
     // アイコンを取得
     public void OnClickIcon()
     {
+
         StartCoroutine(Twitter.API.GetUserIcon(m_AccessTokenResponse.UserId, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse, 
               new Twitter.GetUserIconCallback(this.OnGetUserIcon)));
     }
@@ -136,7 +161,10 @@ public class TwitterComponent : MonoBehaviour {
         }
         else
         {
+            authenticationText.text = "認証失敗";
             print("OnAccessTokenCallback - failed.");
+            tutorialImageChanger.BackTexture();
+            
         }
     }
 
@@ -179,6 +207,10 @@ public class TwitterComponent : MonoBehaviour {
             }
         }
         isGetSentence = true;
+        PINCodeCanvasAni.SetBool("EndFlag",true);
+        authenticationText.text = "認証成功";
+
+        Debug.Log("認証成功");
     }
 
 

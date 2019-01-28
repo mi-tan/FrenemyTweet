@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerProvider : CharacterBase
 {
     private PlayerDamage playerDamage;
     private PlayerParameter playerParameter;
     private PlayerSkill playerSkill;
+    private PlayerCamera playerCamera;
+    private WeaponBase weaponBase;
 
     [SerializeField]
-    private MeshRenderer faceMat;
+    private SkinnedMeshRenderer faceMat;
 
 
     void Awake()
@@ -18,6 +21,8 @@ public class PlayerProvider : CharacterBase
         playerDamage = GetComponent<PlayerDamage>();
         playerParameter = GetComponent<PlayerParameter>();
         playerSkill = GetComponent<PlayerSkill>();
+        playerCamera = GetComponent<PlayerCamera>();
+        weaponBase = GetComponent<WeaponBase>();
     }
 
     private void Start()
@@ -109,5 +114,20 @@ public class PlayerProvider : CharacterBase
         if (!tex) { return; }
         faceMat.material.EnableKeyword("_MainTex");
         faceMat.material.SetTexture("_MainTex", tex);
+    }
+
+    public Camera GetMainCamera()
+    {
+        return playerCamera.GetMainCamera();
+    }
+
+    public WeaponBase GetWeaponBase()
+    {
+        return weaponBase;
+    }
+
+    public Sprite GetWeaponIcon()
+    {
+        return weaponBase.GetWeaponIcon();
     }
 }

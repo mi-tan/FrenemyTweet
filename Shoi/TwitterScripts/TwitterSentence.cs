@@ -13,6 +13,8 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     private GameObject inputPINField;
     //[SerializeField]
     //private GameObject obj;
+    [SerializeField]
+    private PlayerTypeAnalysis playerTypeAnalysis;
 
     private IAnalysis iAnalysis;
     private TwitterComponent twitterHandler;
@@ -43,26 +45,16 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
 
         twitterHandler.AuthPINButon(myPIN);
         while (!twitterHandler.getIsSentence)
-            yield return new WaitForSeconds(0.01f);
+        {
+            yield return null;
+        }
+        
 
         // ツイッターの文章を取得
         tweetList = twitterHandler.getSentenceList;
-        yield return null;
+        // 取得した結果を送る
+        playerTypeAnalysis.TypeReveal(GetSentence());
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GetSentence();
-            //Debug.Log("Push!!!");
-            //for (int i = 0; i < tweetList.Count; i++)
-            //{
-            //    Debug.Log("要素数["+i+"]："+tweetList[i]);
-            //}
-        }
-    }
-
 
     public AnalysisContainer GetSentence()
     {

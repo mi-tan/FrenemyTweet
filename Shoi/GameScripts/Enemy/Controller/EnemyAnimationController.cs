@@ -16,9 +16,16 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     private const string PARAMETER_BOOL_RUN = "Run";
+    private const string PARAMETER_BOOL_Walk = "Walk";
     private const string PARAMETER_BOOL_ATTACK = "Attack";
-    private const string PARAMETER_BOOL_TAKEDAMAGE = "TakeDamage";
     private const string PARAMETER_INT_Type = "Type";
+
+    private const string ANIMATION_DEATH_A = "Death_A";
+    private const string ANIMATION_DEATH_B = "Death_B";
+    private const string ANIMATION_DEATH_C = "Death_C";
+    private const string ANIMATION_DAMAGE_A = "Damage_A";
+    private const string ANIMATION_DAMAGE_B = "Damage_B";
+    private const string ANIMATION_DAMAGE_C = "Damage_C";
 
     private void Awake()
     {
@@ -27,12 +34,20 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動アニメーション制御
+    /// 移動（遅）アニメーション制御
+    /// </summary>
+    /// <param name="flag"></param>
+    public void Walk(bool value)
+    {
+        Animate(PARAMETER_BOOL_Walk, value);
+    }
+
+    /// <summary>
+    /// 移動（早）アニメーション制御
     /// </summary>
     /// <param name="flag"></param>
     public void Run(bool value)
     {
-        //Debug.Log("Run");
         Animate(PARAMETER_BOOL_RUN, value);
     }
 
@@ -49,9 +64,23 @@ public class EnemyAnimationController : MonoBehaviour
     /// <summary>
     /// 被ダメージ時のアニメーション制御
     /// </summary>
-    public void TakeDamage(bool value)
+    public void TakeDamage(int value)
     {
-        Animate(PARAMETER_BOOL_TAKEDAMAGE, value);
+        //Animate(PARAMETER_BOOL_TAKEDAMAGE, value);
+        if (value == 0) { enemyAnimator.CrossFade(ANIMATION_DAMAGE_A, 0.5f); }
+        if (value == 1) { enemyAnimator.CrossFade(ANIMATION_DAMAGE_B, 0.5f); }
+        if (value == 2) { enemyAnimator.CrossFade(ANIMATION_DAMAGE_C, 0.5f); }
+    }
+
+    /// <summary>
+    /// 被ダメージ時のアニメーション制御
+    /// </summary>
+    public void Death(int value)
+    {
+        if (value == 0) { enemyAnimator.CrossFade(ANIMATION_DEATH_A, 0.5f); }
+        if (value == 1) { enemyAnimator.CrossFade(ANIMATION_DEATH_B, 0.5f); }
+        if (value == 2) { enemyAnimator.CrossFade(ANIMATION_DEATH_C, 0.5f); }
+
     }
 
     /// <summary>

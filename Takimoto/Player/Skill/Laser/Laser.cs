@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Laser")]
 public class Laser : PlayerSkillBase
 {
-    private PlayerProvider playerProvider;
-
     [Header("スキルの攻撃力")]
     [SerializeField]
     private int skillAttackPower = 100;
@@ -15,7 +13,8 @@ public class Laser : PlayerSkillBase
     [SerializeField]
     private float destroyTime = 2.4f;
 
-    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos)
+
+    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera)
     {
         //Debug.Log("レーザー生成");
         Vector3 pos = 
@@ -25,7 +24,7 @@ public class Laser : PlayerSkillBase
             playerTrans.forward * skillCreationPos.z;
 
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
-        Ray ray = Camera.main.ScreenPointToRay(center);
+        Ray ray = mainCamera.ScreenPointToRay(center);
         RaycastHit hit;
 
         Quaternion qua = new Quaternion();
@@ -41,8 +40,10 @@ public class Laser : PlayerSkillBase
         }
 
         AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
+        //AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerTrans.rotation);
         // ダメージ計算
         attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;
+        attackCollision.SetHitEffect = hitEffect;
         Destroy(attackCollision.gameObject, destroyTime);
     }
 }

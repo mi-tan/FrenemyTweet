@@ -10,7 +10,7 @@ public class BlackHole : PlayerSkillBase
     private float destroyTime = 2.4f;
 
 
-    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos)
+    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera)
     {
         //Debug.Log("ブラックホール生成");
         Vector3 pos =
@@ -20,7 +20,7 @@ public class BlackHole : PlayerSkillBase
             playerTrans.forward * skillCreationPos.z;
 
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
-        Ray ray = Camera.main.ScreenPointToRay(center);
+        Ray ray = mainCamera.ScreenPointToRay(center);
         RaycastHit hit;
 
         Quaternion qua = new Quaternion();

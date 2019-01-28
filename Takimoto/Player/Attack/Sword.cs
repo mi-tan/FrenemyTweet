@@ -25,7 +25,7 @@ class Sword : MeleeWeapon
     /// </summary>
     const int MAX_COMBO = 3;
 
-    const float ATTACK_DELAY_TIME = 0.25f;
+    const float ATTACK_DELAY_TIME = 0.35f;
     const float STOP_COMBO_TIME = 0.65f;
     const float MAX_COMBO_TIME = 1.1f;
 
@@ -42,10 +42,6 @@ class Sword : MeleeWeapon
     /// 移動中か
     /// </summary>
     private bool isMove = false;
-    /// <summary>
-    /// 移動位置
-    /// </summary>
-    private Vector3 movePosition;
 
     /// <summary>
     /// 攻撃角度に向く速度
@@ -86,6 +82,11 @@ class Sword : MeleeWeapon
     [SerializeField]
     private RoundedUp roundedUp;
 
+    private Coroutine cancelableCoroutine;
+    static readonly float[] CANCELABLE_TIME = { 0f, 0.4f, 0.4f, 0.6f };
+
+    private CharacterController characterController;
+
 
     void Awake()
     {
@@ -94,6 +95,7 @@ class Sword : MeleeWeapon
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
         attackCollision = swordCollider.gameObject.GetComponent<AttackCollision>();
+        characterController = GetComponent<CharacterController>();
 
         // 剣の当たり判定を初期化
         swordCollider.enabled = false;
@@ -107,29 +109,47 @@ class Sword : MeleeWeapon
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH)
+        {
+            EndAttack();
+            return;
+        }
+
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        {
+            // 初期化
+            isAttack = false;
+            time = 0f;
+            isMove = false;
+            combo = 0;
+
+            if (stopComboCoroutine != null)
+            {
+                StopCoroutine(stopComboCoroutine);
+                stopComboCoroutine = null;
+            }
+
+            if (maxComboCoroutine != null)
+            {
+                StopCoroutine(maxComboCoroutine);
+                maxComboCoroutine = null;
+            }
+
+            attackDelayCoroutine = null;
+
+            EndAttack();
+        }
+
         if (isAttack)
         {
             // 攻撃方向に向く
             FaceAttack(attackQuaternion);
 
+            time += Time.deltaTime;
+
             if (isMove)
             {
-                if (transform.position != movePosition)
-                {
-                    // 移動位置に徐々に移動
-                    transform.position = Vector3.Lerp(
-                        transform.position, movePosition, attackMoveParameter.MoveSpeed * Time.deltaTime);
-
-                    if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.ACTABLE)
-                    {
-                        // 初期化
-                        isAttack = false;
-
-                        time = 0f;
-                        isMove = false;
-                    }
-                }
-                else
+                if (time >= attackMoveParameter.MoveEndTime)
                 {
                     // 初期化
                     isAttack = false;
@@ -137,11 +157,14 @@ class Sword : MeleeWeapon
                     time = 0f;
                     isMove = false;
                 }
+                else
+                {
+                    characterController.Move(transform.forward * attackMoveParameter.MoveSpeed * Time.deltaTime);
+                }
             }
             else
             {
-                time += Time.deltaTime;
-                if (time >= attackMoveParameter.MoveTime)
+                if (time >= attackMoveParameter.MoveStartTime)
                 {
                     isMove = true;
                 }
@@ -185,6 +208,13 @@ class Sword : MeleeWeapon
         // 通常攻撃アニメーションを再生
         playerAnimationManager.SetTriggerAttack();
 
+        if(cancelableCoroutine != null)
+        {
+            StopCoroutine(cancelableCoroutine);
+            cancelableCoroutine = null;
+        }
+        cancelableCoroutine = StartCoroutine(Cancelable());
+
         Vector3 attackDirection = Vector3.Scale(
             Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
@@ -199,9 +229,6 @@ class Sword : MeleeWeapon
         Quaternion temp = transform.rotation;
         transform.rotation = attackQuaternion;
 
-        roundedUp.SetPosition(transform.position + transform.forward * attackMoveParameter.MoveDistance + transform.forward);
-
-        movePosition = transform.position + transform.forward * attackMoveParameter.MoveDistance;
         transform.rotation = temp;
 
         if (stopComboCoroutine != null)
@@ -327,5 +354,19 @@ class Sword : MeleeWeapon
         if (trail == null) { return; }
         // 軌跡無効
         trail.Emit = false;
+    }
+
+
+    private IEnumerator Cancelable()
+    {
+        if (cancelableCoroutine != null) { yield break; }
+
+        playerStateManager.SetIsCancelable(false);
+
+        yield return new WaitForSeconds(CANCELABLE_TIME[combo]);
+
+        playerStateManager.SetIsCancelable(true);
+
+        cancelableCoroutine = null;
     }
 }

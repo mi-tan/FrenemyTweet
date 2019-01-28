@@ -67,6 +67,8 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
 
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
         // 移動方向に向く
         FaceMove(moveQuaternion);
 
@@ -102,7 +104,9 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
     public void UpdateDodge(bool inputDodge, float inputMoveHorizontal, float inputMoveVertical)
     {
-        if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
             dodgeSpeed = dodgeSpeed - Time.deltaTime * SLOW_POWER;

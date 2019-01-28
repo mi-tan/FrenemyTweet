@@ -7,7 +7,7 @@ public class PlayerParameter : MonoBehaviour
     /// <summary>
     /// 最大HP
     /// </summary>
-    public int MaxHp { get; private set; } = 1;
+    public int MaxHp { get; private set; } = 100;
 
     public void SetMaxHp(int value)
     {
@@ -17,7 +17,7 @@ public class PlayerParameter : MonoBehaviour
     /// <summary>
     /// 現在のHP
     /// </summary>
-    public int Hp { get; private set; } = 1;
+    public int Hp { get; private set; } = 100;
 
     public void SetHp(int value)
     {

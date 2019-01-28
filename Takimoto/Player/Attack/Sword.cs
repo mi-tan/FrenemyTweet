@@ -109,6 +109,12 @@ class Sword : MeleeWeapon
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH)
+        {
+            EndAttack();
+            return;
+        }
+
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 初期化

@@ -8,7 +8,7 @@ public class PlayerDamage : MonoBehaviour
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
 
-    private CharacterController characterController;
+    //private CharacterController characterController;
 
 
     void Awake()
@@ -17,7 +17,7 @@ public class PlayerDamage : MonoBehaviour
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
 
-        characterController = GetComponent<CharacterController>();
+        //characterController = GetComponent<CharacterController>();
     }
 
     public void Damage(int damage)
@@ -30,7 +30,7 @@ public class PlayerDamage : MonoBehaviour
             // プレイヤーの状態を死亡中に
             playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DEATH);
             playerAnimationManager.SetTriggerDeath();
-            characterController.enabled = false;
+            //characterController.enabled = false;
         }
 
         //Debug.Log("プレイヤーに" + damage + "ダメージ");

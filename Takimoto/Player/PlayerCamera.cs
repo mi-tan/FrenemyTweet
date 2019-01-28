@@ -160,8 +160,10 @@ public class PlayerCamera : MonoBehaviour
 
         Vector3 test = centerPoint - mainCamera.transform.forward * initialDistance;
 
+        //if (Physics.Linecast(centerPoint, test, out hit, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
+        
         // 障害物の前にカメラを移動
-        if (Physics.Linecast(centerPoint, test, out hit, LayerMask.GetMask("Field")))
+        if (Physics.Linecast(centerPoint, test, out hit))
         {
             distance = Vector3.Distance(centerPoint, hit.point);
 

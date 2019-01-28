@@ -57,8 +57,6 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     /// <param name="inputMoveVertical">移動垂直入力</param>
     public void UpdateMove(float inputMoveHorizontal, float inputMoveVertical)
     {
-        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
-
         // 重力
         if (!characterController.isGrounded)
         {
@@ -68,6 +66,8 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
 
         // 移動方向に向く
         FaceMove(moveQuaternion);

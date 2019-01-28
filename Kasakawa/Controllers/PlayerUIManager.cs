@@ -59,7 +59,7 @@ public sealed class PlayerUIManager : MonoBehaviour
 
     [Header("銃の弾数を表示するキャンバス")]
     [SerializeField]
-    private GameObject gunCanvas;
+    private GameObject gunCanvasObject;
 
     [Header("弾の弾数を表示するテキスト")]
     [SerializeField]
@@ -209,7 +209,33 @@ public sealed class PlayerUIManager : MonoBehaviour
     /// </summary>
     private void InitGunCanvas()
     {
-        if (!gunCanvas) { Debug.LogWarning("gunCanvasが設定されていません"); return; }
+        if (!gunCanvasObject) { Debug.LogWarning("gunCanvasが設定されていません"); return; }
+
+        var weapon = gameManager.GetPlayer(playerNum).GetWeaponBase();
+
+        // プレイヤーの武器クラスが銃の場合
+        if(weapon is RangeWeapon)
+        {
+            var gun = weapon as RangeWeapon;
+            // 銃キャンバス表示
+            gunCanvasObject.SetActive(true);
+            // 最大弾数表示を更新
+            UpdateMaxBulletNumber(gun.GetMaxBulletNumber());
+
+            // 弾数表示を初期化
+            UpdateBulletNumber(gun.GetBulletNumber());
+
+            // 弾数の表示を更新する
+            gun.ObserveEveryValueChanged(_ => gun.GetBulletNumber())
+                .Subscribe(bullet => { UpdateBulletNumber(bullet); })
+                .AddTo(gameObject);
+
+
+        }
+        else
+        {
+            gunCanvasObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -232,6 +258,15 @@ public sealed class PlayerUIManager : MonoBehaviour
     private void UpdateBulletNumber(int bulletNumber)
     {
         if (!bulletText) { Debug.LogWarning("bulletTextが設定されていません"); return; }
+
+        bulletText.text = bulletNumber.ToString("000");
+    }
+
+    private void UpdateMaxBulletNumber(int bulletNumber)
+    {
+        if (!bulletMaxText) { Debug.LogWarning("bulletMaxTextが設定されていません"); return; }
+
+        bulletMaxText.text = bulletNumber.ToString("000");
     }
     
 }

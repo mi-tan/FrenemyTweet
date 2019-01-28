@@ -38,7 +38,7 @@ class Rifle : RangeWeapon
     const float RELOAD_TIME = 1.2f;
 
     private Coroutine cancelableCoroutine;
-    const float CANCELABLE_TIME = 0.1f;
+    const float CANCELABLE_TIME = 0.2f;
 
     private Coroutine muzzleFlashCoroutine;
     const float MUZZLE_FLASH_TIME = 0.04f;
@@ -105,6 +105,9 @@ class Rifle : RangeWeapon
         if(playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK)
         {
             isFirstBullet = false;
+
+            // マズルフラッシュを非表示
+            muzzleFlash.SetActive(false);
         }
 
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ACTABLE &&

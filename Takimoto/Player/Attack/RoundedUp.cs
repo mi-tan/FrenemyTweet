@@ -17,6 +17,6 @@ public class RoundedUp : MonoBehaviour
         Rigidbody rb = other.GetComponent<Rigidbody>();
 
         rb.AddForce(transform.forward * power, ForceMode.VelocityChange);
-        Debug.Log("飛ばす");
+        //Debug.Log("飛ばす");
     }
 }

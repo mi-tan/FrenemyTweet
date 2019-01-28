@@ -32,6 +32,10 @@ public class PlayerStateManager : MonoBehaviour
         /// 回避中
         /// </summary>
         DODGE,
+        /// <summary>
+        /// 死亡中
+        /// </summary>
+        DEATH,
     }
     /// <summary>
     /// 現在のプレイヤーの状態
@@ -52,6 +56,8 @@ public class PlayerStateManager : MonoBehaviour
     /// <returns></returns>
     public void SetPlayerState(PlayerState playerState)
     {
+        if (this.playerState == PlayerState.DEATH) { return; }
+
         this.playerState = playerState;
     }
 

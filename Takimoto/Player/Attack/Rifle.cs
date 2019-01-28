@@ -75,6 +75,8 @@ class Rifle : RangeWeapon
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
         if (inputAttack >= 1)
         {
             if (!isInput)

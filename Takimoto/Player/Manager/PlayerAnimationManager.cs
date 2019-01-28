@@ -35,6 +35,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private const string PARAMETER_TRIGGER_RELOAD = "Reload";
     private const string PARAMETER_TIRGGER_DODGE = "Dodge";
+    private const string PARAMETER_TRIGGER_DEATH = "Death";
 
 
     void Awake()
@@ -118,5 +119,10 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SetTriggerDodge()
     {
         playerAnimator.SetTrigger(PARAMETER_TIRGGER_DODGE);
+    }
+
+    public void SetTriggerDeath()
+    {
+        playerAnimator.SetTrigger(PARAMETER_TRIGGER_DEATH);
     }
 }

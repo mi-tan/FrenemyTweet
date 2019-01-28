@@ -57,6 +57,8 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     /// <param name="inputMoveVertical">移動垂直入力</param>
     public void UpdateMove(float inputMoveHorizontal, float inputMoveVertical)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
         // 重力
         if (!characterController.isGrounded)
         {
@@ -102,7 +104,9 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
     public void UpdateDodge(bool inputDodge, float inputMoveHorizontal, float inputMoveVertical)
     {
-        if(playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
             dodgeSpeed = dodgeSpeed - Time.deltaTime * SLOW_POWER;

@@ -85,6 +85,8 @@ public class PlayerSkill : MonoBehaviour
 
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)
     {
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
+
         // スキル切り替え
         ChangeSkill(
             inputSelectSkill1,
@@ -182,6 +184,8 @@ public class PlayerSkill : MonoBehaviour
         yield return new WaitForSeconds(skillCreationTime);
 
         isCreation = true;
+
+        if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { yield break; }
 
         skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera);
     }

@@ -9,14 +9,30 @@ public class TitleManager : MonoBehaviour {
 
     [SerializeField]
     private string nextSceneName = "";
-	
-	// Update is called once per frame
-	void Update ()
+
+    [SerializeField]
+    TextContoller _textcontoller;
+
+    bool keyflag = false;
+
+
+	public void Update ()
     {
-        // 何かしらキーが押された時
-        if (Input.anyKeyDown)
+        if (_textcontoller.endFlag == true)
         {
-            SceneController.JumpSceneAsync(nextSceneName);
+
+            if (keyflag == false)
+            {
+                keyflag = true;
+            }
+            else
+            {
+                // 何かしらキーが押された時
+                if (Input.anyKeyDown)
+                {
+                    SceneController.JumpSceneAsync(nextSceneName);
+                }
+            }
         }
 	}
 }

@@ -17,7 +17,7 @@ public class TextContoller : MonoBehaviour {
     // 一文字にかける時間
     float intervalForCharDisplay = 0.1f;
 
-    bool endFlag = false;
+    public bool endFlag = false;
 
     // 現在表示している文章番号
     private int currentSentenceNum = 0;
@@ -42,6 +42,7 @@ public class TextContoller : MonoBehaviour {
         if (IsDisplayComplete() && endFlag == false)
         {
             endFlag = true;
+
         }else if (endFlag == false)
         {
             // ボタンが押された
@@ -55,6 +56,7 @@ public class TextContoller : MonoBehaviour {
         if(endFlag == true)
         {
             _Canvas.GetComponent<Animator>().SetTrigger("MouseMove");
+            Debug.Log(endFlag);
         }
 
         // 表示される文字数を計算
@@ -68,6 +70,7 @@ public class TextContoller : MonoBehaviour {
             lastUpdateCharCount = displayCharCount;
         }
     }
+
 
 
 

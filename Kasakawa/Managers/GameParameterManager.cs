@@ -32,6 +32,12 @@ public class GameParameterManager : SingletonMonoBehaviour<GameParameterManager>
         Rifle
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void SetStageSceneName(string name)
     {
         stageSceneName = name;

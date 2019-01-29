@@ -10,7 +10,8 @@ using System;
 /// <summary>
 /// ゲーム中の管理クラス
 /// </summary>
-public class MainGameManager : MonoBehaviour {
+public class MainGameManager : MonoBehaviour
+{
 
     // イベントを登録するインスタンス
     private Subject<Unit> startSubject = new Subject<Unit>();
@@ -62,8 +63,14 @@ public class MainGameManager : MonoBehaviour {
         // サブシーンを読み込む
         foreach (var sceneName in subSceneNames)
         {
-           await SceneController.AddSceneAsync(sceneName);
+            await SceneController.AddSceneAsync(sceneName);
         }
+
+        // ステージを読み込む
+        await SceneController.AddSceneAsync(GameParameterManager.Instance.StageSceneName);
+
+        // ステージのマップを読み込む
+        await SceneController.AddSceneAsync(StageSceneManager.Instance.StageMapSceneName);
 
         // プレイヤーのパラメータを設定する
         InitPlayerParameter();
@@ -78,7 +85,7 @@ public class MainGameManager : MonoBehaviour {
         Observable.Timer(System.TimeSpan.FromSeconds(startWaitTime))
             .Subscribe(_ =>
             {
-                
+
                 // ゲーム開始時のイベントを実行
                 startSubject.OnNext(Unit.Default);
 
@@ -109,7 +116,7 @@ public class MainGameManager : MonoBehaviour {
             player.SetPlayerAttackPower(PlayerParameterManager.Instance.AttackPower);
         }
 
-        
+
     }
 
     private void InitPlayerPosition()
@@ -132,7 +139,7 @@ public class MainGameManager : MonoBehaviour {
     /// <returns></returns>
     public PlayerProvider GetPlayer(int num)
     {
-        if(num >= players.Length)
+        if (num >= players.Length)
         {
             Debug.LogWarning("その番号のプレイヤーは存在しません");
         }

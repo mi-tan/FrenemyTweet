@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameParameterManager : SingletonMonoBehaviour<GameParameterManager>
 {
 
-    private string stageSceneName = "";
+    private string stageSceneName = "Stage_1";
 
     public string StageSceneName
     {

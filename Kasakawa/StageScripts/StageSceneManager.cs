@@ -4,7 +4,7 @@ using UnityEngine;
 using Zenject;
 using UniRx;
 
-public sealed class StageSceneManager : MonoBehaviour {
+public sealed class StageSceneManager : SingletonMonoBehaviour<StageSceneManager> {
 
     [Inject]
     private MainGameManager gameManager;
@@ -20,8 +20,24 @@ public sealed class StageSceneManager : MonoBehaviour {
         }
     }
 
-    void Awake ()
+    /// <summary>
+    /// ステージマップのシーン名
+    /// </summary>
+    [SerializeField]
+    private string stageMapSceneName = "";
+
+    public string StageMapSceneName
     {
+        get
+        {
+            return stageMapSceneName;
+        }
+    }
+
+    protected override void Awake ()
+    {
+        base.Awake();
+
         // 全ての敵を無効化
         EnemyManager.DisableAllEnemy();
         // ゲーム開始時に敵を有効化する

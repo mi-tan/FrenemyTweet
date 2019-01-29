@@ -57,6 +57,17 @@ public sealed class PlayerUIManager : MonoBehaviour
 
     private int playerNum = 0;
 
+    /// <summary>
+    /// 情報を表示するプレイヤーの番号
+    /// </summary>
+    public int PlayerNum
+    {
+        get
+        {
+            return playerNum;
+        }
+    }
+
     [Header("銃の弾数を表示するキャンバス")]
     [SerializeField]
     private GameObject gunCanvasObject;

@@ -24,12 +24,12 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     /// </summary>
     private List<string> tweetList = new List<string>();
 
-
     //private void Start()
     //{
     //    iAnalysis = obj.GetComponent<IAnalysis>();
     //    GetSentence();
     //}
+
     public void OnClickAuthPINButon()
     {
         StartCoroutine(CallAuthPINButon());
@@ -48,8 +48,8 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
         {
             yield return null;
         }
-        
 
+        Debug.Log("文章取得");
         // ツイッターの文章を取得
         tweetList = twitterHandler.getSentenceList;
         // 取得した結果を送る
@@ -59,7 +59,9 @@ public class TwitterSentence : MonoBehaviour, IGetSentence
     public AnalysisContainer GetSentence()
     {
         if (iAnalysis == null)
+        {
             iAnalysis = GetComponent<IAnalysis>();
+        }
 
         return iAnalysis.Analysis(tweetList);
     }

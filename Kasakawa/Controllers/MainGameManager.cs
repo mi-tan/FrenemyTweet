@@ -36,10 +36,25 @@ public class MainGameManager : MonoBehaviour {
     [SerializeField]
     private float startWaitTime = 0.5f;
 
+    private PlayerProvider[] players = new PlayerProvider[MAX_PLAYER];
+
+    [Header("PlayerTypeに対応するプレハブを登録")]
     [SerializeField]
-    private PlayerProvider[] players;
+    private PlayerProvider[] playerPrefabs;
+
+    [Header("PlayerTypeの確認用(処理には関係なし)")]
+    [SerializeField]
+    private GameParameterManager.PlayerType playerType;
 
     private const string Start_Pos_Name = "PlayerStartPosition";
+
+    private const int MAX_PLAYER = 1;
+
+    private void Awake()
+    {
+        // プレイヤータイプに応じたプレハブを生成する
+        players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+    }
 
     // Use this for initialization
     private async void Start()

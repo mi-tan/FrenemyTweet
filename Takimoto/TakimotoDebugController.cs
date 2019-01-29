@@ -3,39 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TakimotoDebugController : MonoBehaviour {
-    private bool stop = false;
+public class TakimotoDebugController : MonoBehaviour
+{
+    //private bool stop = false;
 
-    public void LoadScene(string sceneName)
+    public void LoadSwordPlayer()
     {
-        SceneController.JumpSceneAsync(sceneName);
+        GameParameterManager.Instance.SetPlayerType(GameParameterManager.PlayerType.Sword);
+
+        SceneController.JumpSceneAsync("MainGameScene");
+    }
+
+    public void LoadRiflePlayer()
+    {
+        GameParameterManager.Instance.SetPlayerType(GameParameterManager.PlayerType.Rifle);
+
+        SceneController.JumpSceneAsync("MainGameScene");
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            //SceneManager.LoadScene("TakimotoDebugScene");
-
-            SceneController.JumpSceneAsync("TakimotoDebugScene");
-
-            // マウスを表示
+            // マウス表示
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+
+            SceneController.JumpSceneAsync("TestWeaponSelect");
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (stop)
-            {
-                stop = false;
-                Time.timeScale = 1f;
-            }
-            else
-            {
-                stop = true;
-                Time.timeScale = 0f;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    if (stop)
+        //    {
+        //        stop = false;
+        //        Time.timeScale = 1f;
+        //    }
+        //    else
+        //    {
+        //        stop = true;
+        //        Time.timeScale = 0f;
+        //    }
+        //}
     }
 }

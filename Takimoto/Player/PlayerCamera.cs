@@ -55,7 +55,7 @@ public class PlayerCamera : MonoBehaviour
     {
         isAim = value;
     }
-    private float aimSpeed = 1f / 3f;
+    private float aimSpeed = 1f / 2f;
 
     /// <summary>
     /// 角度上限

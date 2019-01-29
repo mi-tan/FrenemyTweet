@@ -21,7 +21,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// <summary>
     /// 移動速度
     /// </summary>
-    const float MOVE_SPEED = 5f;
+    const float MOVE_SPEED = 5.5f;
     /// <summary>
     /// 攻撃時の移動速度
     /// </summary>

@@ -32,6 +32,13 @@ public class MainGameManager : MonoBehaviour
     public float TimeCount { get; private set; } = 0f;
 
     /// <summary>
+    /// 必要なシーンがすべて読み込まれた時に呼ばれる
+    /// </summary>
+    public Subject<Unit> OnLoadSceneCompleted { get; } = new Subject<Unit>();
+
+    public Subject<Unit> OnGameEnd { get;} = new Subject<Unit>();
+
+    /// <summary>
     /// ステージ開始の待ち時間
     /// </summary>
     [SerializeField]
@@ -50,6 +57,11 @@ public class MainGameManager : MonoBehaviour
     private const string Start_Pos_Name = "PlayerStartPosition";
 
     private const int MAX_PLAYER = 1;
+
+    [SerializeField]
+    private Animator loadCanvasAnimator;
+
+    private const string LOAD_ANIM_END_PARAM = "End";
 
     private void Awake()
     {
@@ -72,6 +84,14 @@ public class MainGameManager : MonoBehaviour
         // ステージのマップを読み込む
         await SceneController.AddSceneAsync(StageSceneManager.Instance.StageMapSceneName);
 
+        // シーン読み込み完了イベントを発行
+        OnLoadSceneCompleted.OnNext(Unit.Default);
+
+        OnLoadSceneCompleted.Dispose();
+
+        // ロードキャンバスをフェードさせる
+        loadCanvasAnimator.SetTrigger(LOAD_ANIM_END_PARAM);
+
         // プレイヤーのパラメータを設定する
         InitPlayerParameter();
 
@@ -88,6 +108,8 @@ public class MainGameManager : MonoBehaviour
 
                 // ゲーム開始時のイベントを実行
                 startSubject.OnNext(Unit.Default);
+
+                startSubject.Dispose();
 
                 // 時間をカウントする(毎フレーム)
                 (this).UpdateAsObservable()

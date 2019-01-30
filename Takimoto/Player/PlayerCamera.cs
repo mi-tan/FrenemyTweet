@@ -88,6 +88,7 @@ public class PlayerCamera : MonoBehaviour
     {
         // カメラ回転
         RotateCamera(mouseX, mouseY, rotationHorizontal, rotationVertical);
+
         // カメラ移動
         MoveCamera();
     }
@@ -160,10 +161,8 @@ public class PlayerCamera : MonoBehaviour
 
         Vector3 test = centerPoint - mainCamera.transform.forward * initialDistance;
 
-        //if (Physics.Linecast(centerPoint, test, out hit, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
-        
         // 障害物の前にカメラを移動
-        if (Physics.Linecast(centerPoint, test, out hit))
+        if (Physics.Linecast(centerPoint, test, out hit, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
         {
             distance = Vector3.Distance(centerPoint, hit.point);
 
@@ -179,5 +178,22 @@ public class PlayerCamera : MonoBehaviour
         Debug.DrawLine(centerPoint, test, Color.red);
 
         mainCamera.transform.position = centerPoint - mainCamera.transform.forward * distance;
+    }
+
+    public IEnumerator ShakeCamera(float shakeTime, float shakeX, float shakeY)
+    {
+        float time = 0f;
+
+        while (shakeTime > time)
+        {
+            float x = mainCamera.transform.position.x + Random.Range(-shakeX, shakeX);
+            float y = mainCamera.transform.position.y + Random.Range(-shakeY, shakeY);
+
+            mainCamera.transform.position = new Vector3(x, y, mainCamera.transform.position.z);
+
+            time += Time.deltaTime;
+
+            yield return null;
+        }
     }
 }

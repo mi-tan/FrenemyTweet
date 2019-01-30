@@ -56,6 +56,10 @@ class Rifle : RangeWeapon
 
     private CharacterController characterController;
 
+    private float shakeTime = 0.1f;
+    private float shakeX = 0.01f;
+    private float shakeY = 0.02f;
+
 
     void Awake()
     {
@@ -214,9 +218,10 @@ class Rifle : RangeWeapon
 
                     bulletNumber--;
 
-                    //Debug.Log("弾数：" + bulletNumber);
-
                     muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
+
+                    // カメラを揺らす
+                    StartCoroutine(playerCamera.ShakeCamera(shakeTime, shakeX, shakeY));
 
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
                     Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);

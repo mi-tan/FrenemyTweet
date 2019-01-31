@@ -115,7 +115,7 @@ class Sword : MeleeWeapon
         // 攻撃が当たった時のイベントを登録
         attackCollision.OnAttackCollision.Subscribe((_) =>
         {
-            StartCoroutine(playerCamera.ShakeCamera(shakeTime, shakeX, shakeY));
+            playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
         }).AddTo(gameObject);
     }
 

@@ -221,7 +221,7 @@ class Rifle : RangeWeapon
                     muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
 
                     // カメラを揺らす
-                    StartCoroutine(playerCamera.ShakeCamera(shakeTime, shakeX, shakeY));
+                    playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
 
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
                     Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);

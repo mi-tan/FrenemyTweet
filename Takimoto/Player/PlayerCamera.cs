@@ -180,7 +180,7 @@ public class PlayerCamera : MonoBehaviour
         mainCamera.transform.position = centerPoint - mainCamera.transform.forward * distance;
     }
 
-    public IEnumerator ShakeCamera(float shakeTime, float shakeX, float shakeY)
+    private IEnumerator DoShake(float shakeTime, float shakeX, float shakeY)
     {
         float time = 0f;
 
@@ -195,5 +195,10 @@ public class PlayerCamera : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void ShakeCamera(float shakeTime, float shakeX, float shakeY)
+    {
+        StartCoroutine(DoShake(shakeTime, shakeX, shakeY));
     }
 }

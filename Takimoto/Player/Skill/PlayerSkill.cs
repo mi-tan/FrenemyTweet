@@ -7,6 +7,7 @@ public class PlayerSkill : MonoBehaviour
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
     private PlayerProvider playerProvider;
+    private PlayerCamera playerCamera;
 
     private int skillNumber = 0;
     /// <summary>
@@ -71,6 +72,7 @@ public class PlayerSkill : MonoBehaviour
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
+        playerCamera = GetComponent<PlayerCamera>();
     }
 
     private void Start()
@@ -187,7 +189,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { yield break; }
 
-        skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera);
+        skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera, playerCamera);
     }
 
     /// <summary>

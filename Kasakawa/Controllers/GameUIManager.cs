@@ -24,10 +24,10 @@ public class GameUIManager : MonoBehaviour
         gameManager.OnGameStart.Subscribe(_ => {
             ActiveStartUI();
 
-            // 一定時間後に開始時UIを非表示にする
-            Observable.Timer(System.TimeSpan.FromSeconds(startUITime))
-                .Subscribe(x => DisableStartUI())
-                .AddTo(gameObject);
+            //// 一定時間後に開始時UIを非表示にする
+            //Observable.Timer(System.TimeSpan.FromSeconds(startUITime))
+            //    .Subscribe(x => DisableStartUI())
+            //    .AddTo(gameObject);
 
         })
             .AddTo(gameObject);

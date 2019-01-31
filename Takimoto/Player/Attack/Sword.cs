@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 /// <summary>
 /// 剣
@@ -10,6 +11,7 @@ class Sword : MeleeWeapon
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
     private PlayerProvider playerProvider;
+    private PlayerCamera playerCamera;
 
     /// <summary>
     /// 入力中か
@@ -87,6 +89,10 @@ class Sword : MeleeWeapon
 
     private CharacterController characterController;
 
+    private float shakeTime = 0.15f;
+    private float shakeX = 0.05f;
+    private float shakeY = 0.015f;
+
 
     void Awake()
     {
@@ -96,6 +102,7 @@ class Sword : MeleeWeapon
         playerProvider = GetComponent<PlayerProvider>();
         attackCollision = swordCollider.gameObject.GetComponent<AttackCollision>();
         characterController = GetComponent<CharacterController>();
+        playerCamera = GetComponent<PlayerCamera>();
 
         // 剣の当たり判定を初期化
         swordCollider.enabled = false;
@@ -105,6 +112,11 @@ class Sword : MeleeWeapon
     {
         if (hitEffect == null) { return; }
         attackCollision.SetHitEffect = hitEffect;
+        // 攻撃が当たった時のイベントを登録
+        attackCollision.OnAttackCollision.Subscribe((_) =>
+        {
+            playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
+        }).AddTo(gameObject);
     }
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)

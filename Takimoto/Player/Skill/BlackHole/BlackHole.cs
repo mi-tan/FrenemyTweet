@@ -10,7 +10,7 @@ public class BlackHole : PlayerSkillBase
     private float destroyTime = 2.4f;
 
 
-    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera)
+    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera, PlayerCamera playerCamera)
     {
         //Debug.Log("ブラックホール生成");
         Vector3 pos =

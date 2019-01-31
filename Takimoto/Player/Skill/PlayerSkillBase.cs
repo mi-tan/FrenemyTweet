@@ -125,7 +125,7 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
-    public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera);
+    public abstract void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera, PlayerCamera playerCamera);
 
     protected int playerAttackPower = 0;
     public void SetPlayerAttackPower(int value)

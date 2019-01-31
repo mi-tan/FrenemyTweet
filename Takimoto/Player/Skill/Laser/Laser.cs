@@ -13,8 +13,12 @@ public class Laser : PlayerSkillBase
     [SerializeField]
     private float destroyTime = 2.4f;
 
+    private float shakeTime = 2f;
+    private float shakeX = 0.06f;
+    private float shakeY = 0.06f;
 
-    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera)
+
+    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera, PlayerCamera playerCamera)
     {
         //Debug.Log("レーザー生成");
         Vector3 pos = 
@@ -45,5 +49,8 @@ public class Laser : PlayerSkillBase
         attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;
         attackCollision.SetHitEffect = hitEffect;
         Destroy(attackCollision.gameObject, destroyTime);
+
+        // カメラを揺らす
+        playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
     }
 }

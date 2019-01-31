@@ -17,7 +17,6 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
     private const float FACE_SPEED = 0.3f;
 
     private EnemyAnimationController enemyAnimationController;
-    private Rigidbody rigidbody;
 
     //　攻撃した後のフリーズ時間
     //private float FREEZE_TIME = 0.3f;
@@ -25,7 +24,6 @@ public sealed class EnemyMove : MonoBehaviour, IEnemyMove
     private void Awake()
     {
         enemyAnimationController = GetComponent<EnemyAnimationController>();
-        rigidbody = GetComponent<Rigidbody>();
     }
 
     

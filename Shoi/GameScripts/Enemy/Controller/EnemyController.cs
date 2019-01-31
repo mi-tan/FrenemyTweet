@@ -22,6 +22,7 @@ public sealed class EnemyController : NormalEnemy
     [Inject]
     private MainGameManager gameManager;
 
+
     /// <summary>
     /// 初期位置
     /// </summary>
@@ -81,7 +82,8 @@ public sealed class EnemyController : NormalEnemy
         startPosition = transform.position;
         // HP初期化
         enemyParameter.hp = enemyParameter.getMaxHP;
-        
+        // エフェクト設定
+        enemyDamage.setDeathEffect = enemyParameter.deathEffect;
 
         // 武器のコライダー制御
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
@@ -94,7 +96,6 @@ public sealed class EnemyController : NormalEnemy
     {
         // プレイヤーとの距離を計測
         playerDistance = Vector3.Distance(transform.position, gameManager.GetPlayer(0).transform.position);
-
 
         if (currentState == EnemyState.Walk || currentState == EnemyState.Wait)
         {

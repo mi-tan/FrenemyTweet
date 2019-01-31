@@ -97,7 +97,6 @@ public sealed class AttackCollision : MonoBehaviour {
             eventData: null,
             functor: (iDamage, eventData) => iDamage.TakeDamage(attackPower)
         );
-       
     }
 
     /// <summary>

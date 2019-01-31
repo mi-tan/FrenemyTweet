@@ -21,6 +21,15 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// 死亡アニメーションの数
     /// </summary>
     private int deathAnimationNum = 3;
+    /// <summary>
+    /// 死亡時のエフェクト
+    /// </summary>
+    private GameObject deathEffect;
+
+    public GameObject setDeathEffect
+    {
+        set { deathEffect = value; }
+    }
 
     private int useAnimationNum;
 
@@ -84,6 +93,15 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// </summary>
     public void DestroyEnemy()
     {
+        if (deathEffect == null)
+        {
+            Debug.LogWarning("死亡時のエフェクトが設定されていません");
+        }
+        else
+        {
+            // 死亡エフェクト生成
+            Instantiate(deathEffect, transform.position, transform.rotation);
+        }
         Destroy(gameObject);
     }
 }

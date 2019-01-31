@@ -11,13 +11,14 @@ public sealed class SceneController
 
     //private const string playSceneName = "MainGameSample";
 
-    /// <summary>
-    /// 指定したシーンに飛ぶ(非同期)
-    /// </summary>
-    /// <param name="sceneName"></param>
-	public static AsyncOperation JumpSceneAsync(int sceneNum)
+    private const string LOAD_SCENE_NAME = "LoadScene";
+
+    private static string nextSceneName = "Title";
+
+
+    private static AsyncOperation JumpLoadScene()
     {
-        return SceneManager.LoadSceneAsync(sceneNum);
+        return SceneManager.LoadSceneAsync(LOAD_SCENE_NAME);
     }
 
     /// <summary>
@@ -26,7 +27,18 @@ public sealed class SceneController
     /// <param name="sceneName"></param>
 	public static AsyncOperation JumpSceneAsync(string sceneName)
     {
-        return SceneManager.LoadSceneAsync(sceneName);
+        nextSceneName = sceneName;
+        //return SceneManager.LoadSceneAsync(sceneName);
+        return JumpLoadScene();
+    }
+
+    /// <summary>
+    /// 次のシーンに飛ぶ
+    /// </summary>
+    /// <returns></returns>
+    public static AsyncOperation JumpNextScene()
+    {
+        return SceneManager.LoadSceneAsync(nextSceneName);
     }
 
     /// <summary>
@@ -61,7 +73,7 @@ public sealed class SceneController
     /// </summary>
     public static AsyncOperation ReloadSceneAsync()
     {
-        return JumpSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        return JumpSceneAsync(SceneManager.GetActiveScene().name);
     }
 
     //public static void LoadPlaySceneAsync()

@@ -12,6 +12,8 @@ public class PlayerParameterManager : SingletonMonoBehaviour<PlayerParameterMana
     private int playerHP = 50;
     private int attackPower = 50;
 
+    private float moveSpeed = 3.5f;
+
     public int PlayerHP
     {
         get
@@ -28,18 +30,41 @@ public class PlayerParameterManager : SingletonMonoBehaviour<PlayerParameterMana
         }
     }
 
+    public float MoveSpeed
+    {
+        get
+        {
+            return moveSpeed;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
     }
 
-    public void CalcStatus()
+    public void SetPlayerAttack(int power)
     {
-        // HPをランダムに決定する
-        playerHP = UnityEngine.Random.Range(0, 100);
-
-        // 攻撃力をランダムに決定する
-        attackPower = UnityEngine.Random.Range(0, 100);
+        attackPower = power;
     }
+
+    public void SetPlayerHP(int hp)
+    {
+        playerHP = hp;
+    }
+
+    public void SetPlayerMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+
+    //public void CalcStatus()
+    //{
+    //    // HPをランダムに決定する
+    //    playerHP = UnityEngine.Random.Range(0, 100);
+
+    //    // 攻撃力をランダムに決定する
+    //    attackPower = UnityEngine.Random.Range(0, 100);
+    //}
 }

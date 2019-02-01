@@ -133,6 +133,9 @@ public class MainGameManager : MonoBehaviour
             // HPをセットする
             player.SetHp(PlayerParameterManager.Instance.PlayerHP);
 
+            // 移動速度をセットする
+            player.SetMoveSpeed(PlayerParameterManager.Instance.MoveSpeed);
+
             // 基礎攻撃力をセットする
             player.SetBasicAttackPower(PlayerParameterManager.Instance.AttackPower);
 

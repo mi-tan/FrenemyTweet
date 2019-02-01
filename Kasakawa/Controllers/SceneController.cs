@@ -28,6 +28,11 @@ public sealed class SceneController
 	public static AsyncOperation JumpSceneAsync(string sceneName)
     {
         nextSceneName = sceneName;
+
+        //カーソル表示
+        Cursor.visible = true;
+        // マウスのロックを解除
+        Cursor.lockState = CursorLockMode.None;
         //return SceneManager.LoadSceneAsync(sceneName);
         return JumpLoadScene();
     }

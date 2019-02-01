@@ -68,7 +68,7 @@ public sealed class StageSceneManager : SingletonMonoBehaviour<StageSceneManager
     /// </summary>
     public void ClearStage()
     {
-        GameParameterManager.Instance.SetNextStage();
-        SceneController.ReloadSceneAsync();
+        GameParameterManager.Instance.JumpNextStage();
+        //SceneController.ReloadSceneAsync();
     }
 }

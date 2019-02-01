@@ -36,7 +36,9 @@ public class MainGameManager : MonoBehaviour
     /// </summary>
     public Subject<Unit> OnLoadSceneCompleted { get; } = new Subject<Unit>();
 
-    public Subject<Unit> OnGameEnd { get;} = new Subject<Unit>();
+    public Subject<Unit> OnGameOver { get; } = new Subject<Unit>();
+
+    //public Subject<Unit> OnGameEnd { get;} = new Subject<Unit>();
 
     /// <summary>
     /// ステージ開始の待ち時間
@@ -67,6 +69,9 @@ public class MainGameManager : MonoBehaviour
     {
         // プレイヤータイプに応じたプレハブを生成する
         players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+
+        // プレイヤーのパラメータを設定する
+        InitPlayerParameter();
     }
 
     // Use this for initialization
@@ -91,9 +96,6 @@ public class MainGameManager : MonoBehaviour
 
         // ロードキャンバスをフェードさせる
         loadCanvasAnimator.SetTrigger(LOAD_ANIM_END_PARAM);
-
-        // プレイヤーのパラメータを設定する
-        InitPlayerParameter();
 
         InitPlayerPosition();
 
@@ -175,6 +177,6 @@ public class MainGameManager : MonoBehaviour
 
     public void OnDeathPlayer(PlayerProvider player)
     {
-
+        OnGameOver.OnNext(Unit.Default);
     }
 }

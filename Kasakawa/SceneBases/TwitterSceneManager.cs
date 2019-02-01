@@ -9,12 +9,12 @@ public class TwitterSceneManager : MonoBehaviour {
     private string gameSceneName = "";
     [SerializeField]
     private Text playerTypeText;
-    //[SerializeField]
-    //private Text hpText;
-    //[SerializeField]
-    //private Text attackText;
-    //[SerializeField]
-    //private Text moveSpeedText;
+    [SerializeField]
+    private Text hpText;
+    [SerializeField]
+    private Text attackText;
+    [SerializeField]
+    private Text moveSpeedText;
     [SerializeField]
     private Slider hpSlider;
     [SerializeField]
@@ -96,28 +96,39 @@ public class TwitterSceneManager : MonoBehaviour {
         {
             // プレイヤーのHPを表示する
             // hpText.text = PlayerParameterManager.Instance.PlayerHP.ToString();
-            //hpText.text = getHP.ToString();
             hpSlider.value = getHP;
-
             PlayerParameterManager.Instance.SetPlayerHP(getHP);
+
+            if (hpText)
+            {
+                hpText.text = getHP.ToString();
+            }
         }
 
         if (attackSlider)
         {
             // プレイヤーの攻撃力を表示する
             // attackText.text = PlayerParameterManager.Instance.AttackPower.ToString();
-            //attackText.text = getAttack.ToString();
             attackSlider.value = getAttack;
             PlayerParameterManager.Instance.SetPlayerAttack(getAttack);
+
+            if (attackText)
+            {
+                attackText.text = getAttack.ToString();
+            }
         }
 
         if (moveSpeedSlider)
         {
             // プレイヤーの移動速度を表示する
             // moveSpeedText.text = PlayerParameterManager.Instance.AttackPower.ToString();
-            //moveSpeedText.text = getMoveSpeed.ToString();
             moveSpeedSlider.value = getMoveSpeed;
             PlayerParameterManager.Instance.SetPlayerMoveSpeed(getMoveSpeed);
+
+            if (moveSpeedText)
+            {
+                moveSpeedText.text = getMoveSpeed.ToString();
+            }
         }
     }
 }

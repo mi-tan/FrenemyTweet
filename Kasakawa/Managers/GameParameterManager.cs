@@ -37,6 +37,8 @@ public class GameParameterManager : SingletonMonoBehaviour<GameParameterManager>
 
     private int currentStageNum = 0;
 
+    private const string RESULT_SCENE_NAME = "Result";
+
     protected override void Awake()
     {
         base.Awake();
@@ -55,15 +57,18 @@ public class GameParameterManager : SingletonMonoBehaviour<GameParameterManager>
         spawnPlayerType = type;
     }
 
-    public void SetNextStage()
+    public void JumpNextStage()
     {
         currentStageNum++;
         if (currentStageNum >= stageData.StageList.Length)
         {
             Debug.Log("最終ステージです");
+            //SetCurrentStageName();
+            SceneController.JumpSceneAsync(RESULT_SCENE_NAME);
             return;
         }
         SetCurrentStageName();
+        SceneController.ReloadSceneAsync();
     }
 
     public void ResetStage()

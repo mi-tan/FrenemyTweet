@@ -97,22 +97,17 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
                             count++;
                         }
                     }
-
                     matchNum += count;
                 }
-
             }
 
             // マッチした名前を格納
             categoryRet.categoryName = categoryData[index].getCategoryName;
             // 名前がマッチした回数を格納
             categoryRet.thisNameNum = matchNum;
-            // カテゴリ格納
+            // 構造体を格納
             container.categoryRetList.Add(categoryRet);
-
-            Debug.Log(categoryRet.categoryName + "：" + categoryRet.thisNameNum);
-            //// 構造体を格納
-            //container.categoryRetList.Add(categoryRet);
+            //Debug.Log(categoryRet.categoryName + "：" + categoryRet.thisNameNum);
         }
 
         // 冗長な文章の数

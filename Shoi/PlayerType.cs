@@ -12,11 +12,11 @@ public class PlayerType : ScriptableObject
     /// <summary>
     /// 最大値
     /// </summary>
-    private const int maxValue = 90;
+    private const int maxValue = 140;
     /// <summary>
     /// 最小値
     /// </summary>
-    private const int minValue = 11;
+    private const int minValue = 60;
     /// <summary>
     /// 差分値
     /// </summary>
@@ -26,8 +26,8 @@ public class PlayerType : ScriptableObject
     private int hp;
     [SerializeField,Range(minValue, maxValue)]
     private int attackValue;
-    [SerializeField,Range(minValue, maxValue)]
-    private int moveSpeed;
+    [SerializeField, Range(1, 5)]
+    private float moveSpeed;
 
 
     public string getType
@@ -45,8 +45,8 @@ public class PlayerType : ScriptableObject
         get { return Random.Range(attackValue - differenceValue, attackValue + differenceValue); }
     }
 
-    public int getMoveSpeed
+    public float getMoveSpeed
     {
-        get { return Random.Range(moveSpeed - differenceValue, moveSpeed + differenceValue); }
+        get { return moveSpeed; }
     }
 }

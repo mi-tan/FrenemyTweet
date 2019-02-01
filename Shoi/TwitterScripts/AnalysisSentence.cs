@@ -8,6 +8,11 @@ using System.Text.RegularExpressions;
 /// </summary>
 public class AnalysisSentence : MonoBehaviour, IAnalysis
 {
+    /// <summary>
+    /// はじく単語を集めたデータ
+    /// </summary>
+    [SerializeField]
+    private CategoryData breakCategoryData;
 
     [SerializeField]
     private CategoryData[] categoryData;
@@ -67,30 +72,45 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
                     // 情報更新
                     str[j] = sentence;
 
-                    // 指定した文字が存在するかどうか取得する
+                    // 文字検索
                     MatchCollection matche = Regex.Matches(str[j], dictionaly[i]);
 
                     int count = 0;
                     foreach (Match m in matche)
                     {
-                        count++;
+                        int tes = 0;
+                        Debug.Log("match");
+                        string[] breakDictionaly = breakCategoryData.ReturnDictionary();
+                        for (int b = 0; b < breakDictionaly.Length; b++)
+                        {
+                            // 文字検索
+                            MatchCollection breackWordMatche = Regex.Matches(str[j], breakDictionaly[b]);
+
+                            foreach (Match bm in breackWordMatche)
+                            {
+                                tes++;
+                            }
+                        }
+
+                        if (tes == 0)
+                        {
+                            count++;
+                        }
                     }
 
-                    //if (count == 0)
-                    //{
-                    //    mui++;
-                    //}
                     matchNum += count;
                 }
+
             }
-            // Debug.Log(dictionaly[i] + " は" + count[i] + "個ありました");
-            // Debug.Log(categoryData[index] + " は" + count + "個ありました");
 
             // マッチした名前を格納
             categoryRet.categoryName = categoryData[index].getCategoryName;
             // 名前がマッチした回数を格納
             categoryRet.thisNameNum = matchNum;
+            // カテゴリ格納
+            container.categoryRetList.Add(categoryRet);
 
+            Debug.Log(categoryRet.categoryName + "：" + categoryRet.thisNameNum);
             //// 構造体を格納
             //container.categoryRetList.Add(categoryRet);
         }

@@ -99,7 +99,7 @@ public class PlayerTypeAnalysis : MonoBehaviour {
         {
             Debug.Log("名前：" + container.categoryRetList[index].categoryName +
                       "　量：" + container.categoryRetList[index].thisNameNum);
-            Debug.Log("コンテナ" + index + "：" + muiNum + "-" + container.categoryRetList[index].thisNameNum);
+            //Debug.Log("コンテナ" + index + "：" + muiNum + "-" + container.categoryRetList[index].thisNameNum);
             muiNum -= container.categoryRetList[index].thisNameNum;
 
 

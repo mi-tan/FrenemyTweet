@@ -172,4 +172,9 @@ public class MainGameManager : MonoBehaviour
     {
         return players;
     }
+
+    public void OnDeathPlayer(PlayerProvider player)
+    {
+
+    }
 }

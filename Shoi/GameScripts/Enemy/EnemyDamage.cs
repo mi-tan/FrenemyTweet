@@ -74,7 +74,6 @@ public sealed class EnemyDamage :　MonoBehaviour {
     /// </summary>
     public void DeathEnemy()
     {
-
         // アニメーションを呼び出し
         enemyAnimationController.Death(useAnimationNum);
 

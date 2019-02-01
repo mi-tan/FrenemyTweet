@@ -130,4 +130,14 @@ public class PlayerProvider : CharacterBase
     {
         return weaponBase.GetWeaponIcon();
     }
+
+    public float GetMoveSpeed()
+    {
+        return playerParameter.MoveSpeed;
+    }
+
+    public void SetMoveSpeed(float value)
+    {
+        playerParameter.SetMoveSpeed(value);
+    }
 }

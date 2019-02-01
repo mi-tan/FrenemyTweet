@@ -9,6 +9,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
 {
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
+    private PlayerProvider playerProvider;
 
     /// <summary>
     /// 入力の遊び値
@@ -18,14 +19,6 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     /// 移動方向に向く速度
     /// </summary>
     const float FACE_SPEED = 1500f;
-    /// <summary>
-    /// 移動速度
-    /// </summary>
-    const float MOVE_SPEED = 5.5f;
-    /// <summary>
-    /// 攻撃時の移動速度
-    /// </summary>
-    const float ATTACK_MOVE_SPEED = 1f;
 
     /// <summary>
     /// 移動方向
@@ -49,6 +42,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         characterController = GetComponent<CharacterController>();
+        playerProvider = GetComponent<PlayerProvider>();
 
         // 移動方向を初期化
         moveQuaternion = transform.rotation;
@@ -93,7 +87,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 moveQuaternion = Quaternion.LookRotation(moveDirection);
 
                 // 位置を移動
-                characterController.Move(moveDirection.normalized * MOVE_SPEED * Time.deltaTime);
+                characterController.Move(moveDirection.normalized * playerProvider.GetMoveSpeed() * Time.deltaTime);
             }
             else
             {

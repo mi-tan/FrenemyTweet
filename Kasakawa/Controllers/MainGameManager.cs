@@ -183,6 +183,11 @@ public class MainGameManager : MonoBehaviour
 
     public void OnDeathPlayer(PlayerProvider player)
     {
+        //カーソル表示
+        Cursor.visible = true;
+        // マウスのロックを解除
+        Cursor.lockState = CursorLockMode.None;
+
         OnGameOver.OnNext(Unit.Default);
     }
 }

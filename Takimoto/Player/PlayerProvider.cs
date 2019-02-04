@@ -10,6 +10,7 @@ public class PlayerProvider : CharacterBase
     private PlayerSkill playerSkill;
     private PlayerCamera playerCamera;
     private WeaponBase weaponBase;
+    private MainGameManager mainGameManager;
 
     [SerializeField]
     private SkinnedMeshRenderer faceMat;
@@ -23,6 +24,7 @@ public class PlayerProvider : CharacterBase
         playerSkill = GetComponent<PlayerSkill>();
         playerCamera = GetComponent<PlayerCamera>();
         weaponBase = GetComponent<WeaponBase>();
+        mainGameManager = GetComponent<MainGameManager>();
     }
 
     private void Start()
@@ -139,5 +141,10 @@ public class PlayerProvider : CharacterBase
     public void SetMoveSpeed(float value)
     {
         playerParameter.SetMoveSpeed(value);
+    }
+
+    public void OnDeathPlayer()
+    {
+        mainGameManager.OnDeathPlayer(this);
     }
 }

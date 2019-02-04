@@ -100,7 +100,7 @@ public class PlayerSkill : MonoBehaviour
             if (!isCreation)
             {
                 Vector3 attackDirection = Vector3.Scale(
-                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                    playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
                 attackQuaternion = Quaternion.LookRotation(attackDirection);
             }
 

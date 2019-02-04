@@ -30,6 +30,7 @@ public class PlayerDamage : MonoBehaviour
             // プレイヤーの状態を死亡中に
             playerStateManager.SetPlayerState(PlayerStateManager.PlayerState.DEATH);
             playerAnimationManager.SetTriggerDeath();
+            playerProvider.OnDeathPlayer();
             //characterController.enabled = false;
         }
 

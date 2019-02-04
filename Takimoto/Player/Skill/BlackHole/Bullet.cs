@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
 {
     private AttackCollision attackCollision;
     [SerializeField]
-    private Inhole blackHole;
+    private GameObject hitObject;
 
     [SerializeField]
     private float bulletSpeed;
@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
         attackCollision = GetComponent<AttackCollision>();
 
         attackCollision.OnAttackCollision
-            .Subscribe(_ => { CreateBlackHole(); })
+            .Subscribe(_ => { CreateHitObject(); })
             .AddTo(gameObject);
     }
 
@@ -28,11 +28,11 @@ public class Bullet : MonoBehaviour
         transform.position += transform.forward * bulletSpeed * Time.deltaTime;
     }
 
-    void CreateBlackHole()
+    void CreateHitObject()
     {
-        if (blackHole)
+        if (hitObject)
         {
-            Instantiate(blackHole, transform.position, transform.rotation);
+            Instantiate(hitObject, transform.position, transform.rotation);
         }
 
         Destroy(gameObject);

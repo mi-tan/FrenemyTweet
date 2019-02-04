@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Zenject;
 public class PlayerProvider : CharacterBase
 {
     private PlayerDamage playerDamage;
@@ -10,6 +10,7 @@ public class PlayerProvider : CharacterBase
     private PlayerSkill playerSkill;
     private PlayerCamera playerCamera;
     private WeaponBase weaponBase;
+    [Inject]
     private MainGameManager mainGameManager;
 
     [SerializeField]
@@ -23,8 +24,7 @@ public class PlayerProvider : CharacterBase
         playerParameter = GetComponent<PlayerParameter>();
         playerSkill = GetComponent<PlayerSkill>();
         playerCamera = GetComponent<PlayerCamera>();
-        weaponBase = GetComponent<WeaponBase>();
-        mainGameManager = GetComponent<MainGameManager>();
+        weaponBase = GetComponent<WeaponBase>();        
     }
 
     private void Start()

@@ -62,8 +62,8 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
             characterController.Move(-transform.up * GRAVITY_POWER * Time.deltaTime);
         }
 
-        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+        Vector3 cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 moveDirection = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
 
@@ -129,7 +129,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 // 回避アニメーション再生
                 playerAnimationManager.SetTriggerDodge();
 
-                Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                Vector3 cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
 
                 Vector3 moveDirection = Vector3.zero;
                 if (inputMoveHorizontal == 0f && inputMoveVertical == 0f)
@@ -138,7 +138,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 }
                 else
                 {
-                    moveDirection = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+                    moveDirection = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
                 }
 
                 transform.rotation = Quaternion.LookRotation(moveDirection);

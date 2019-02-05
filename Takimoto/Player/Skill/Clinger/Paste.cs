@@ -6,6 +6,8 @@ public class Paste : MonoBehaviour
 {
     private bool isPaste = false;
     private Light pointLight;
+    private Transform pasteObject;
+    private Vector3 offset = Vector3.zero;
 
 
     private void Awake()
@@ -42,12 +44,16 @@ public class Paste : MonoBehaviour
 
         isPaste = true;
 
-        Vector3 scale = other.gameObject.transform.localScale;
-        transform.parent = other.gameObject.transform;
-        Vector3 size = new Vector3(
-            transform.localScale.x / scale.x,
-            transform.localScale.y / scale.y,
-            transform.localScale.z / scale.z);
-        transform.localScale = size;
+        pasteObject = other.gameObject.transform;
+        offset = transform.position - pasteObject.transform.position;
+    }
+
+    private void LateUpdate()
+    {
+        if(pasteObject == null) { return; }
+
+        Vector3 newPos = transform.position;
+        newPos = pasteObject.transform.position + offset;
+        transform.position = newPos;
     }
 }

@@ -279,5 +279,5 @@ public sealed class PlayerUIManager : MonoBehaviour
 
         bulletMaxText.text = bulletNumber.ToString("000");
     }
-    
+
 }

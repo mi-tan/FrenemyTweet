@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Zenject;
 public class PlayerProvider : CharacterBase
 {
     private PlayerDamage playerDamage;
@@ -10,9 +10,27 @@ public class PlayerProvider : CharacterBase
     private PlayerSkill playerSkill;
     private PlayerCamera playerCamera;
     private WeaponBase weaponBase;
+    [Inject]
+    private MainGameManager mainGameManager;
 
     [SerializeField]
     private SkinnedMeshRenderer faceMat;
+
+    private IPlayerAttack iPlayerAttack;
+
+    public enum Weapon
+    {
+        NONE = 0,
+        /// <summary>
+        /// 剣
+        /// </summary>
+        SWORD,
+        /// <summary>
+        /// 銃
+        /// </summary>
+        RIFLE,
+    }
+    private Weapon weapon = Weapon.NONE;
 
 
     void Awake()
@@ -23,11 +41,29 @@ public class PlayerProvider : CharacterBase
         playerSkill = GetComponent<PlayerSkill>();
         playerCamera = GetComponent<PlayerCamera>();
         weaponBase = GetComponent<WeaponBase>();
+
+        iPlayerAttack = GetComponent<IPlayerAttack>();
     }
 
     private void Start()
     {
+        if (iPlayerAttack is Sword)
+        {
+            //Debug.Log("剣");
+            weapon = Weapon.SWORD;
+        }
+        else if (iPlayerAttack is Rifle)
+        {
+            //Debug.Log("銃");
+            weapon = Weapon.RIFLE;
+        }
+
         SetFaceTexture(TwitterParameterManager.Instance.IconTexture);
+    }
+
+    public Weapon GetWeapon()
+    {
+        return weapon;
     }
 
     public override void TakeDamage(int damage)
@@ -116,6 +152,11 @@ public class PlayerProvider : CharacterBase
         faceMat.material.SetTexture("_MainTex", tex);
     }
 
+    public PlayerCamera GetPlayerCamera()
+    {
+        return playerCamera;
+    }
+
     public Camera GetMainCamera()
     {
         return playerCamera.GetMainCamera();
@@ -139,5 +180,10 @@ public class PlayerProvider : CharacterBase
     public void SetMoveSpeed(float value)
     {
         playerParameter.SetMoveSpeed(value);
+    }
+
+    public void OnDeathPlayer()
+    {
+        mainGameManager.OnDeathPlayer(this);
     }
 }

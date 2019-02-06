@@ -7,7 +7,6 @@ public class PlayerSkill : MonoBehaviour
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
     private PlayerProvider playerProvider;
-    private PlayerCamera playerCamera;
 
     private int skillNumber = 0;
     /// <summary>
@@ -60,8 +59,6 @@ public class PlayerSkill : MonoBehaviour
         return skillCoolTimes;
     }
 
-    private Camera mainCamera;
-
     [SerializeField]
     private GameObject testSkillHitEffect;
 
@@ -72,13 +69,10 @@ public class PlayerSkill : MonoBehaviour
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerProvider = GetComponent<PlayerProvider>();
-        playerCamera = GetComponent<PlayerCamera>();
     }
 
     private void Start()
     {
-        mainCamera = playerProvider.GetMainCamera();
-
         // 仮エフェクト設定
         if (testSkillHitEffect == null) { return; }
         skillList[0].SetHitEffect(testSkillHitEffect);
@@ -100,7 +94,7 @@ public class PlayerSkill : MonoBehaviour
             if (!isCreation)
             {
                 Vector3 attackDirection = Vector3.Scale(
-                    Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                    playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
                 attackQuaternion = Quaternion.LookRotation(attackDirection);
             }
 
@@ -189,7 +183,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { yield break; }
 
-        skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera, playerCamera);
+        skill.ActivateSkill(playerProvider, skill.SkillCreationPos);
     }
 
     /// <summary>

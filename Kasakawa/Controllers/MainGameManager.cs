@@ -38,7 +38,8 @@ public class MainGameManager : MonoBehaviour
 
     public Subject<Unit> OnGameOver { get; } = new Subject<Unit>();
 
-    //public Subject<Unit> OnGameEnd { get;} = new Subject<Unit>();
+    [Inject]
+    DiContainer container;
 
     /// <summary>
     /// ステージ開始の待ち時間
@@ -69,6 +70,8 @@ public class MainGameManager : MonoBehaviour
     {
         // プレイヤータイプに応じたプレハブを生成する
         players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+
+        container.InjectGameObject(players[0].gameObject);
 
         // プレイヤーのパラメータを設定する
         InitPlayerParameter();
@@ -180,6 +183,11 @@ public class MainGameManager : MonoBehaviour
 
     public void OnDeathPlayer(PlayerProvider player)
     {
+        //カーソル表示
+        Cursor.visible = true;
+        // マウスのロックを解除
+        Cursor.lockState = CursorLockMode.None;
+
         OnGameOver.OnNext(Unit.Default);
     }
 }

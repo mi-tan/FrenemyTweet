@@ -201,4 +201,15 @@ public class PlayerCamera : MonoBehaviour
     {
         StartCoroutine(DoShake(shakeTime, shakeX, shakeY));
     }
+
+    public void CaptureTarget(Transform targetTransform)
+    {
+        //Debug.Log("ターゲットを捕捉");
+        mainCamera.transform.LookAt(targetTransform.position + targetTransform.up);
+    }
+
+    public void DestroyCamera()
+    {
+        Destroy(mainCamera.gameObject);
+    }
 }

@@ -14,11 +14,16 @@ public class GameUIManager : MonoBehaviour
     private GameObject startUI;
 
     [SerializeField]
+    private GameObject gameOverUI;
+
+    [SerializeField]
     private float startUITime = 1f;
 
     void Awake()
     {
-        startUI.SetActive(false);
+        DisableStartUI();
+
+        DisableGameOverUI();
 
         // ゲーム開始時に開始時UIを登録する
         gameManager.OnGameStart.Subscribe(_ => {
@@ -30,6 +35,9 @@ public class GameUIManager : MonoBehaviour
             //    .AddTo(gameObject);
 
         })
+            .AddTo(gameObject);
+
+        gameManager.OnGameOver.Subscribe(_ => ActiveGameOverUI())
             .AddTo(gameObject);
         
     }
@@ -48,6 +56,26 @@ public class GameUIManager : MonoBehaviour
     private void DisableStartUI()
     {
         startUI.SetActive(false);
+    }
+
+    private void ActiveGameOverUI()
+    {
+        gameOverUI.SetActive(true);
+    }
+
+    private void DisableGameOverUI()
+    {
+        gameOverUI.SetActive(false);
+    }
+
+    public void Retry()
+    {
+        SceneController.ReloadSceneAsync();
+    }
+
+    public void BackTitle()
+    {
+        SceneController.JumpSceneAsync("Title");
     }
 
 }

@@ -10,7 +10,6 @@ using System;
 /// </summary>
 public sealed class EnemyController : NormalEnemy
 {
-
     private IEnemyMove iEnemyMove;
     private IEnemyAttack iEnemyAttack;
     private EnemyDamage enemyDamage;

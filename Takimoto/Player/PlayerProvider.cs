@@ -16,6 +16,22 @@ public class PlayerProvider : CharacterBase
     [SerializeField]
     private SkinnedMeshRenderer faceMat;
 
+    private IPlayerAttack iPlayerAttack;
+
+    public enum Weapon
+    {
+        NONE = 0,
+        /// <summary>
+        /// 剣
+        /// </summary>
+        SWORD,
+        /// <summary>
+        /// 銃
+        /// </summary>
+        RIFLE,
+    }
+    private Weapon weapon = Weapon.NONE;
+
 
     void Awake()
     {
@@ -24,12 +40,30 @@ public class PlayerProvider : CharacterBase
         playerParameter = GetComponent<PlayerParameter>();
         playerSkill = GetComponent<PlayerSkill>();
         playerCamera = GetComponent<PlayerCamera>();
-        weaponBase = GetComponent<WeaponBase>();        
+        weaponBase = GetComponent<WeaponBase>();
+
+        iPlayerAttack = GetComponent<IPlayerAttack>();
     }
 
     private void Start()
     {
+        if (iPlayerAttack is Sword)
+        {
+            //Debug.Log("剣");
+            weapon = Weapon.SWORD;
+        }
+        else if (iPlayerAttack is Rifle)
+        {
+            //Debug.Log("銃");
+            weapon = Weapon.RIFLE;
+        }
+
         SetFaceTexture(TwitterParameterManager.Instance.IconTexture);
+    }
+
+    public Weapon GetWeapon()
+    {
+        return weapon;
     }
 
     public override void TakeDamage(int damage)
@@ -116,6 +150,11 @@ public class PlayerProvider : CharacterBase
         if (!tex) { return; }
         faceMat.material.EnableKeyword("_MainTex");
         faceMat.material.SetTexture("_MainTex", tex);
+    }
+
+    public PlayerCamera GetPlayerCamera()
+    {
+        return playerCamera;
     }
 
     public Camera GetMainCamera()

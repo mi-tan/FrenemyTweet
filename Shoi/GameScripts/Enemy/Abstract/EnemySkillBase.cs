@@ -52,7 +52,7 @@ public abstract class EnemySkillBase : ScriptableObject
         get { return skillChantFrame; }
     }
 
-    [Header("スキルアニメーション")]
+    [Header("スキル使用時アニメーション")]
     [SerializeField]
     private AnimationClip skillAnimation;
     /// <summary>
@@ -64,7 +64,7 @@ public abstract class EnemySkillBase : ScriptableObject
     }
 
 
-    [Header("スキルアニメーション速度")]
+    [Header("アニメーション速度")]
     [SerializeField]
     private float skillAnimationSpeed;
     /// <summary>
@@ -75,7 +75,7 @@ public abstract class EnemySkillBase : ScriptableObject
         get { return skillAnimationSpeed; }
     }
 
-    [Header("スキルプレハブ")]
+    [Header("エフェクトプレハブ")]
     /// <summary>
     /// スキルプレハブ
     /// </summary>
@@ -92,6 +92,10 @@ public abstract class EnemySkillBase : ScriptableObject
     {
         get { return skillRecoveryTime; }
     }
+
+    [Header("使用するエリア")]
+    [SerializeField]
+    protected GameObject useAreaObj;
 
     /// <summary>
     /// スキル発動処理

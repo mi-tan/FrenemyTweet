@@ -13,9 +13,9 @@ public class Clone : PlayerSkillBase
     //[SerializeField]
     //private float destroyTime = 2.4f;
 
-    private float shakeTime = 2f;
-    private float shakeX = 0.06f;
-    private float shakeY = 0.06f;
+    //private float shakeTime = 2f;
+    //private float shakeX = 0.06f;
+    //private float shakeY = 0.06f;
 
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)

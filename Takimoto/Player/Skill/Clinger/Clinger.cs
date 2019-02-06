@@ -5,17 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Clinger")]
 public class Clinger : PlayerSkillBase
 {
-    [Header("スキルの攻撃力")]
-    [SerializeField]
-    private int skillAttackPower = 100;
+    //[Header("スキルの攻撃力")]
+    //[SerializeField]
+    //private int skillAttackPower = 100;
 
     [Header("消去時間")]
     [SerializeField]
     private float destroyTime = 2.4f;
 
-    private float shakeTime = 2f;
-    private float shakeX = 0.06f;
-    private float shakeY = 0.06f;
+    //private float shakeTime = 2f;
+    //private float shakeX = 0.06f;
+    //private float shakeY = 0.06f;
 
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)

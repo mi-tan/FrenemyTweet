@@ -18,17 +18,17 @@ public class Clinger : PlayerSkillBase
     private float shakeY = 0.06f;
 
 
-    public override void ActivateSkill(Transform playerTrans, Vector3 skillCreationPos, Camera mainCamera, PlayerCamera playerCamera)
+    public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)
     {
         //Debug.Log("レーザー生成");
-        Vector3 pos = 
-            playerTrans.position + 
-            playerTrans.right * skillCreationPos.x +
-            playerTrans.up * skillCreationPos.y +
-            playerTrans.forward * skillCreationPos.z;
+        Vector3 pos =
+            playerProvider.transform.position +
+            playerProvider.transform.right * skillCreationPos.x +
+            playerProvider.transform.up * skillCreationPos.y +
+            playerProvider.transform.forward * skillCreationPos.z;
 
         Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
-        Ray ray = mainCamera.ScreenPointToRay(center);
+        Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);
         RaycastHit hit;
 
         Quaternion qua = new Quaternion();

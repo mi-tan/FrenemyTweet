@@ -66,10 +66,6 @@ public class PlayerCamera : MonoBehaviour
     /// </summary>
     const float ANGLE_LOWER_LIMIT = 25f;
 
-    private IPlayerAttack iPlayerAttack;
-    [SerializeField]
-    private Sword sword;
-
 
     void Awake()
     {
@@ -86,13 +82,6 @@ public class PlayerCamera : MonoBehaviour
         // マウスを非表示
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-        iPlayerAttack = GetComponent<IPlayerAttack>();
-
-        if(iPlayerAttack == sword)
-        {
-
-        }
     }
 
     public void UpdateCamera(float mouseX, float mouseY, float rotationHorizontal, float rotationVertical)
@@ -217,5 +206,10 @@ public class PlayerCamera : MonoBehaviour
     {
         //Debug.Log("ターゲットを捕捉");
         mainCamera.transform.LookAt(targetTransform.position + targetTransform.up);
+    }
+
+    public void DestroyCamera()
+    {
+        Destroy(mainCamera.gameObject);
     }
 }

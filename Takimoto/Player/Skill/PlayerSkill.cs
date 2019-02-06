@@ -189,7 +189,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { yield break; }
 
-        skill.ActivateSkill(transform, skill.SkillCreationPos, mainCamera, playerCamera);
+        skill.ActivateSkill(playerProvider, skill.SkillCreationPos);
     }
 
     /// <summary>

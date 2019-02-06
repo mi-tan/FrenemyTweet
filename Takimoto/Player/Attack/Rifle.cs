@@ -123,7 +123,7 @@ class Rifle : RangeWeapon
         if (isInput)
         {
             Vector3 attackDirection = Vector3.Scale(
-                Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+                playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
             attackQuaternion = Quaternion.LookRotation(attackDirection);
 
             // 攻撃方向に向く
@@ -190,8 +190,8 @@ class Rifle : RangeWeapon
     {
         if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK) { return; }
 
-        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveForward = cameraForward * inputMoveVertical + Camera.main.transform.right * inputMoveHorizontal;
+        Vector3 cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 moveForward = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
 
         characterController.Move(moveForward * STANCE_MOVE_SPEED * Time.deltaTime);
     }

@@ -7,10 +7,6 @@ public class PlayerBotInput : MonoBehaviour
     private enum BotState
     {
         /// <summary>
-        /// 停止中
-        /// </summary>
-        IDLE,
-        /// <summary>
         /// 敵を探索中
         /// </summary>
         SEARCH_ENEMY,
@@ -24,6 +20,20 @@ public class PlayerBotInput : MonoBehaviour
         BATTLE,
     }
     private BotState botState = BotState.SEARCH_ENEMY;
+
+    private enum Weapon
+    {
+        NONE = 0,
+        /// <summary>
+        /// 剣
+        /// </summary>
+        SWORD,
+        /// <summary>
+        /// 銃
+        /// </summary>
+        RIFLE,
+    }
+    private Weapon weapon = Weapon.NONE;
 
     private IPlayerMove iPlayerMove;
     private IPlayerAttack iPlayerAttack;
@@ -44,11 +54,11 @@ public class PlayerBotInput : MonoBehaviour
     private bool inputDodge = false;
 
     private GameObject target;
-    private float searchDistance = 10f;
-    private float rangeSize = 5f;
 
     private Coroutine attackComboCoroutine;
     private int comboNum = 3;
+
+    private float[] attackRange = new float[] { 0f, 2f, 10f };
 
 
     void Awake()
@@ -58,14 +68,30 @@ public class PlayerBotInput : MonoBehaviour
         iPlayerAttack = GetComponent<IPlayerAttack>();
         playerCamera = GetComponent<PlayerCamera>();
         playerSkill = GetComponent<PlayerSkill>();
+
+        SetWeapon();
+    }
+
+    void SetWeapon()
+    {
+        if (iPlayerAttack is Sword)
+        {
+            //Debug.Log("剣");
+            weapon = Weapon.SWORD;
+        }
+        else if (iPlayerAttack is Rifle)
+        {
+            //Debug.Log("銃");
+            weapon = Weapon.RIFLE;
+        }
     }
 
     void TransitionState(BotState nextState)
     {
-        ResetInput();
-
         //Debug.Log(botState + " → " + nextState);
         botState = nextState;
+
+        ResetInput();
     }
 
     void ResetInput()
@@ -130,21 +156,41 @@ public class PlayerBotInput : MonoBehaviour
 
         inputMoveVertical = 1f;
 
-        RaycastHit hit1;
-        if (Physics.SphereCast(transform.position - transform.forward * (searchDistance + rangeSize / 2), rangeSize,
-            transform.forward, out hit1, searchDistance, LayerMask.GetMask("Enemy")))
+        if (target)
         {
-            //Debug.Log("ターゲット捕捉");
-            target = hit1.transform.gameObject;
             TransitionState(BotState.APPROACH);
         }
 
         Ray ray = new Ray(transform.position + transform.up, transform.forward);
         RaycastHit hit2;
-        if(Physics.Raycast(ray, out hit2, 1f, LayerMask.GetMask("Field")))
+        if (Physics.Raycast(ray, out hit2, 1f, LayerMask.GetMask("Field")))
         {
-            Debug.Log("壁に衝突");
+            //Debug.Log("壁に衝突");
+            playerCamera.DestroyCamera();
             Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(target) { return; }
+
+        string layerName = LayerMask.LayerToName(other.gameObject.layer);
+
+        if(layerName == "Enemy")
+        {
+            target = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!target) { return; }
+
+        if (other.gameObject == target)
+        {
+            target = null;
+            TransitionState(BotState.SEARCH_ENEMY);
         }
     }
 
@@ -167,13 +213,9 @@ public class PlayerBotInput : MonoBehaviour
             playerCamera.CaptureTarget(target.transform);
 
             float distance = Vector3.Distance(transform.position, target.transform.position);
-            if (distance <= 2f)
+            if (distance <= attackRange[(int)weapon])
             {
                 TransitionState(BotState.BATTLE);
-            }
-            else if (distance >= searchDistance + rangeSize / 2)
-            {
-                TransitionState(BotState.SEARCH_ENEMY);
             }
         }
         else
@@ -186,26 +228,46 @@ public class PlayerBotInput : MonoBehaviour
     {
         if (botState != BotState.BATTLE) { return; }
 
-        if (attackComboCoroutine == null)
+        if (target != null)
         {
-            attackComboCoroutine = StartCoroutine(AttackCombo());
-        }
-        //Debug.Log("戦闘中");
+            playerCamera.CaptureTarget(target.transform);
 
-        if (target == null)
+            Attack();
+            //Debug.Log("戦闘中");
+        }
+        else
         {
             TransitionState(BotState.SEARCH_ENEMY);
         }
     }
 
-    private IEnumerator AttackCombo()
+    void Attack()
+    {
+        switch ((int)weapon)
+        {
+            // 剣
+            case 1:
+                if (attackComboCoroutine == null)
+                {
+                    attackComboCoroutine = StartCoroutine(SwordAttackCombo());
+                }
+                break;
+
+            // 銃
+            case 2:
+                inputAttack = 1f;
+                break;
+        }
+    }
+
+    private IEnumerator SwordAttackCombo()
     {
         for (int i = 0; i < comboNum; i++)
         {
             inputAttack = 1f;
             yield return new WaitForSeconds(0.1f);
             inputAttack = 0f;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.4f);
         }
 
         TransitionState(BotState.SEARCH_ENEMY);

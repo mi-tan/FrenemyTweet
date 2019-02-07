@@ -27,9 +27,7 @@ public class Recovery : PlayerSkillBase
             playerProvider.transform.up * skillCreationPos.y +
             playerProvider.transform.forward * skillCreationPos.z;
 
-        AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerProvider.transform.rotation);
-        CreateClone createClone = attackCollision.GetComponent<CreateClone>();
-        createClone.Create((int)playerProvider.GetWeapon());
+        Instantiate(skillPrefab, pos, playerProvider.transform.rotation);
 
         // カメラを揺らす
         //playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);

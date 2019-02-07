@@ -186,4 +186,9 @@ public class PlayerProvider : CharacterBase
     {
         mainGameManager.OnDeathPlayer(this);
     }
+
+    public void SetSkyBox(Skybox value)
+    {
+        playerCamera.SetSkyBox(value);
+    }
 }

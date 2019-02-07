@@ -67,6 +67,7 @@ public class PlayerCamera : MonoBehaviour
     const float ANGLE_LOWER_LIMIT = 25f;
 
     private Skybox skyBox;
+    private Material skyBoxMat;
 
 
     void Awake()
@@ -88,9 +89,9 @@ public class PlayerCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void SetSkyBox(Skybox value)
+    public void SetSkyBox(Material skyBoxMat)
     {
-        skyBox = value;
+        skyBox.material = skyBoxMat;
     }
 
     public void UpdateCamera(float mouseX, float mouseY, float rotationHorizontal, float rotationVertical)

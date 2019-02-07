@@ -13,10 +13,15 @@ public class AcquisitionPlayers : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.name);
+        // Debug.Log(other.name);
         PlayerProvider playerProvider = other.GetComponent<PlayerProvider>();
         // プレイヤー以外をここで除外
-        if (playerProvider == null) { Debug.Log(other.gameObject+"を除外"); return; }
+        if (playerProvider == null)
+        {
+            // Debug.Log(other.gameObject+"を除外");
+            return;
+        }
+        // 取得するべきプレイヤーか判断するフラグ
         bool playerAddFlag = true;
 
         for (int i = 0; attackArea.GetAcquisitionPlayerList.Count > i; i++)
@@ -24,7 +29,7 @@ public class AcquisitionPlayers : MonoBehaviour {
             // もうすでに取得しているプレイヤーであれば除外
             if (attackArea.GetAcquisitionPlayerList[i].gameObject == other.gameObject)
             {
-                Debug.Log("もう登録されてるよ！");
+                // Debug.Log("もう登録されてるよ！");
                 playerAddFlag = false;
                 break;
             }
@@ -32,7 +37,7 @@ public class AcquisitionPlayers : MonoBehaviour {
 
         if (playerAddFlag)
         {
-            Debug.Log(other.gameObject + "を追加");
+            // Debug.Log(other.gameObject + "を追加");
             // 追加
             attackArea.AddAcquisitonPlayerList = other.gameObject;
         }

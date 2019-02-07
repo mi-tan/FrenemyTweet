@@ -25,7 +25,7 @@ public class PlayerParameter : MonoBehaviour
     /// <summary>
     /// 基礎攻撃力
     /// </summary>
-    public int BasicAttackPower { get; private set; } = 1;
+    public int BasicAttackPower { get; private set; } = 10;
     public void SetBasicAttackPower(int value)
     {
         BasicAttackPower = value;
@@ -34,7 +34,7 @@ public class PlayerParameter : MonoBehaviour
     /// <summary>
     /// 現在のプレイヤーの攻撃力
     /// </summary>
-    public int PlayerAttackPower { get; private set; } = 1;  
+    public int PlayerAttackPower { get; private set; } = 10;  
     public void SetPlayerAttackPower(int value)
     {
         PlayerAttackPower = value;
@@ -43,7 +43,7 @@ public class PlayerParameter : MonoBehaviour
     /// <summary>
     /// プレイヤーの移動速度
     /// </summary>
-    public float MoveSpeed { get; private set; } = 6f;
+    public float MoveSpeed { get; private set; } = 4f;
     public void SetMoveSpeed(float value)
     {
         MoveSpeed = value;

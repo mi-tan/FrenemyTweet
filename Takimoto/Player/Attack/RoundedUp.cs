@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RoundedUp : MonoBehaviour
 {
+    [SerializeField]
     private float power = 12f;
 
     private Vector3 pos;

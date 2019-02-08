@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class Area : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
+    private PlayerProvider[] player;
 }

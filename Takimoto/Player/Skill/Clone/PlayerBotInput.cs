@@ -53,7 +53,7 @@ public class PlayerBotInput : MonoBehaviour
     private bool inputSelectSkill3 = false;
     private bool inputDodge = false;
 
-    private GameObject target;
+    private List<GameObject> targets = new List<GameObject>();
 
     private Coroutine attackComboCoroutine;
     private int comboNum = 3;
@@ -107,7 +107,9 @@ public class PlayerBotInput : MonoBehaviour
 
     void TransitionState(BotState nextState)
     {
-        //Debug.Log(botState + " → " + nextState);
+        if(botState == nextState) { return; }
+
+        Debug.Log(botState + " → " + nextState);
         botState = nextState;
 
         ResetInput();
@@ -131,6 +133,16 @@ public class PlayerBotInput : MonoBehaviour
 
     void Update()
     {
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i] == null)
+            {
+                targets.RemoveAt(i);
+                i--;
+            }
+        }
+
+
         SearchEnemy();
         Approach();
         Battle();
@@ -175,7 +187,7 @@ public class PlayerBotInput : MonoBehaviour
 
         inputMoveVertical = 1f;
 
-        if (target)
+        if (targets.Count > 0)
         {
             TransitionState(BotState.APPROACH);
         }
@@ -190,27 +202,52 @@ public class PlayerBotInput : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (target) { return; }
-
         string layerName = LayerMask.LayerToName(other.gameObject.layer);
 
-        if (layerName == "Enemy")
+        // レイヤーがEnemyではなかったら、この先の処理を行わない
+        if (layerName != "Enemy") { return; }
+
+        bool isOverlap = false;
+
+        if (targets.Count > 0)
         {
-            target = other.gameObject;
+            foreach (GameObject target in targets)
+            {
+                if (target == other.gameObject)
+                {
+                    isOverlap = true;
+                }
+            }
         }
+
+        // 既にリストに含まれていたら、この先の処理を行わない
+        if (isOverlap) { return; }
+
+        targets.Add(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!target) { return; }
+        string layerName = LayerMask.LayerToName(other.gameObject.layer);
 
-        if (other.gameObject == target)
+        // レイヤーがEnemyではなかったら、この先の処理を行わない
+        if (layerName != "Enemy") { return; }
+
+        int num = -1;
+
+        for (int i = 0; i < targets.Count; i++)
         {
-            target = null;
-            TransitionState(BotState.SEARCH_ENEMY);
+            if (targets[i] == other.gameObject)
+            {
+                num = i;
+            }
         }
+
+        if (num < 0) { return; }
+
+        targets.RemoveAt(num);
     }
 
     //private void OnDrawGizmos()
@@ -222,24 +259,36 @@ public class PlayerBotInput : MonoBehaviour
 
     void Approach()
     {
-        if (botState != BotState.APPROACH) { return; }
-
-        if (target != null)
+        if (targets.Count > 0)
         {
             //Debug.Log("ターゲットに接近中");
 
-            inputMoveVertical = 1f;
-            playerCamera.CaptureTarget(target.transform);
+            int targetNum = 0;
+            float targetDistance = 100f;
 
-            float distance = Vector3.Distance(transform.position, target.transform.position);
-            if (distance <= attackRange[(int)weapon])
+            // 一番近くにいる敵をリストの先頭にする
+            for (int i = 0; i < targets.Count; i++)
+            {
+                float td = Vector3.Distance(transform.position, targets[i].transform.position);
+
+                if (targetDistance > td)
+                {
+                    targetNum = i;
+                    targetDistance = td;
+
+                    GameObject temp = targets[0];
+                    targets[0] = targets[i];
+                    targets[i] = temp;
+                }
+            }
+
+            inputMoveVertical = 1f;
+            playerCamera.CaptureTarget(targets[0].transform);
+
+            if (targetDistance <= attackRange[(int)weapon])
             {
                 TransitionState(BotState.BATTLE);
             }
-        }
-        else
-        {
-            TransitionState(BotState.SEARCH_ENEMY);
         }
     }
 
@@ -247,12 +296,36 @@ public class PlayerBotInput : MonoBehaviour
     {
         if (botState != BotState.BATTLE) { return; }
 
-        if (target != null)
+        if (targets.Count > 0)
         {
-            playerCamera.CaptureTarget(target.transform);
+            playerCamera.CaptureTarget(targets[0].transform);
 
             Attack();
             //Debug.Log("戦闘中");
+
+            int targetNum = 0;
+            float targetDistance = 100f;
+
+            // 一番近くにいる敵をリストの先頭にする
+            for (int i = 0; i < targets.Count; i++)
+            {
+                float td = Vector3.Distance(transform.position, targets[i].transform.position);
+
+                if (targetDistance > td)
+                {
+                    targetNum = i;
+                    targetDistance = td;
+
+                    GameObject temp = targets[0];
+                    targets[0] = targets[i];
+                    targets[i] = temp;
+                }
+            }
+
+            if (targetDistance > attackRange[(int)weapon])
+            {
+                TransitionState(BotState.SEARCH_ENEMY);
+            }
         }
         else
         {

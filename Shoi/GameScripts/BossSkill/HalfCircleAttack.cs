@@ -92,7 +92,7 @@ public class HalfCircleAttack : EnemySkillBase
                 eventData: null,
                 functor: (iDamage, eventData) => iDamage.TakeDamage(getAtackPower)
             );
-            Debug.Log("半径攻撃：" + attackPlayers[index].gameObject + "へ" + getAtackPower + "ダメージ");
+            Debug.Log("半径攻撃：【" + attackPlayers[index].gameObject.name + "】へ【" + getAtackPower + "】ダメージ");
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UniRx;
+using UnityEngine.EventSystems;
 
-[CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/SurroundingAttack")]
-public class SurroundingAttack : EnemySkillBase {
+
+[CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/CrossAttack")]
+public class CrossAttack : EnemySkillBase
+{
 
     private GameObject instantAreaObject;
     /// <summary>
@@ -51,7 +53,7 @@ public class SurroundingAttack : EnemySkillBase {
                 eventData: null,
                 functor: (iDamage, eventData) => iDamage.TakeDamage(getAtackPower)
             );
-            Debug.Log("周辺攻撃：【" + attackPlayers[index].gameObject + "】へ【" + getAtackPower + "】ダメージ");
+            Debug.Log("十字攻撃：【" + attackPlayers[index].gameObject + "】へ【" + getAtackPower + "】ダメージ");
         }
     }
 }

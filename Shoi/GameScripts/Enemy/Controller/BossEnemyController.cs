@@ -94,6 +94,7 @@ public class BossEnemyController : BossEnemy {
         }else if(currentState == BossEnemyState.Death)
         {
             Debug.Log("しにました");
+            gameManager.EndGame();
         }
 	}
 

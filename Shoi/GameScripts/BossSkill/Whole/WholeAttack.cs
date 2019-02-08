@@ -40,16 +40,16 @@ public class WholeAttack : EnemySkillBase
         for (int index = 0; players.Length > index; index++)
         {
             RaycastHit hit;
-            // 足元より少し上からRayを出したいので + 1
+            // 足元からRayを出さないように+1
             Vector3 playerPos = new Vector3(players[index].transform.position.x, players[index].transform.position.y + 1, players[index].transform.position.z);
-            // ターゲットとの差分
+            // ターゲットオブジェクトとの差分
             Vector3 temp = playerPos - thisPos;
             // 差分を正規化して方向ベクトルを求める
             Vector3 normal = temp.normalized;
 
             if (Physics.Raycast(thisPos, normal, out hit))
             {
-               　// Debug.DrawRay(thisPos, normal, Color.red);
+                Debug.DrawRay(thisPos, normal, Color.red);
 
                 if (hit.transform.gameObject == players[index].gameObject)
                 {
@@ -57,7 +57,7 @@ public class WholeAttack : EnemySkillBase
                 }
                 else
                 {
-                    // ターゲット以外を見つけた
+                    // TargetObject以外を見つけた
                     Debug.Log(hit.transform.gameObject.name + "が間にある");
                 }
             }

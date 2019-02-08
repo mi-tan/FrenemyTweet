@@ -60,6 +60,8 @@ public class PlayerBotInput : MonoBehaviour
 
     private float[] attackRange = new float[] { 0f, 2f, 10f };
 
+    private float disappearTime = 15f;
+
 
     void Awake()
     {
@@ -70,6 +72,23 @@ public class PlayerBotInput : MonoBehaviour
         playerSkill = GetComponent<PlayerSkill>();
 
         SetWeapon();
+    }
+
+    void Start()
+    {
+        StartCoroutine(Disappear(disappearTime));
+    }
+
+    private IEnumerator Disappear(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Disappear();
+    }
+
+    void Disappear()
+    {
+        Destroy(gameObject);
     }
 
     void SetWeapon()
@@ -88,7 +107,9 @@ public class PlayerBotInput : MonoBehaviour
 
     void TransitionState(BotState nextState)
     {
-        //Debug.Log(botState + " → " + nextState);
+        if(botState == nextState) { return; }
+
+        Debug.Log(botState + " → " + nextState);
         botState = nextState;
 
         ResetInput();
@@ -120,6 +141,7 @@ public class PlayerBotInput : MonoBehaviour
                 i--;
             }
         }
+
 
         SearchEnemy();
         Approach();
@@ -176,7 +198,7 @@ public class PlayerBotInput : MonoBehaviour
         {
             //Debug.Log("壁に衝突");
             playerCamera.DestroyCamera();
-            Destroy(gameObject);
+            Disappear();
         }
     }
 
@@ -237,8 +259,6 @@ public class PlayerBotInput : MonoBehaviour
 
     void Approach()
     {
-        if (botState != BotState.APPROACH) { return; }
-
         if (targets.Count > 0)
         {
             //Debug.Log("ターゲットに接近中");
@@ -269,10 +289,6 @@ public class PlayerBotInput : MonoBehaviour
             {
                 TransitionState(BotState.BATTLE);
             }
-        }
-        else
-        {
-            TransitionState(BotState.SEARCH_ENEMY);
         }
     }
 

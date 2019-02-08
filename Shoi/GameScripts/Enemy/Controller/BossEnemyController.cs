@@ -13,7 +13,7 @@ public class BossEnemyController : BossEnemy {
     private IEnemyAttack iEnemyAttack;
     private BossParameter bossParameter;
     private EnemyDamage enemyDamage;
-    private EnemyAnimationController enemyAnimationController;
+
     [SerializeField]
     private EnemySkillBase[] enemySkillBase;
     [Inject]
@@ -24,9 +24,9 @@ public class BossEnemyController : BossEnemy {
     /// </summary>
     private float elapsedTime;
     /// <summary>
-    /// 現在使用しているスキル
+    /// 現在使用しているスキル番号
     /// </summary>
-    EnemySkillBase currentSkill;
+    private int nowSkillNum = 0;
 
     public enum BossEnemyState
     {
@@ -46,7 +46,6 @@ public class BossEnemyController : BossEnemy {
         // iEnemyAttack = GetComponent<IEnemyAttack>();
         enemyDamage = GetComponent<EnemyDamage>();
         bossParameter = GetComponent<BossParameter>();
-        enemyAnimationController = GetComponent<EnemyAnimationController>();
     }
 
     private　void Start () {
@@ -58,52 +57,29 @@ public class BossEnemyController : BossEnemy {
 
         if (currentState == BossEnemyState.Attack)
         {
-            currentSkill = enemySkillBase[RandomSkillNum()];
-            Debug.Log("ボス：" + currentSkill.getSkillName);
-            currentSkill.setGameManager = gameManager;
+            nowSkillNum = RandomSkillNum();
+            Debug.Log("ボス攻撃");
+            enemySkillBase[nowSkillNum].setGameManager = gameManager;
             // 攻撃
-            currentSkill.ActivateSkill(transform);
-
-            if (currentSkill.getSkillAnimation != null)
-            {
-                // アニメーション再生
-                enemyAnimationController.ChangeBossSkillClip(currentSkill.getSkillAnimation);
-                enemyAnimationController.BossSkill();
-            }
-            else
-            {
-                Debug.LogWarning("スキルのアニメーションが設定されていません");
-            }
-
+            enemySkillBase[nowSkillNum].ActivateSkill(transform);
             ChangeState(BossEnemyState.Freeze);
         }
         else if (currentState == BossEnemyState.Freeze)
         {
-            if (currentSkill == null)
-            {
-                Debug.Log("currentSkillがNull");
-                ChangeState(BossEnemyState.Attack);
-                return;
-            }
-
             elapsedTime += Time.deltaTime;
-            Debug.Log("硬直中 時間：" + currentSkill.getSkillRecoveryTime);
-            if (elapsedTime < currentSkill.getSkillRecoveryTime) { return; }
+            Debug.Log("硬直中 時間：" + enemySkillBase[nowSkillNum].getSkillRecoveryTime);
+            if (elapsedTime < enemySkillBase[nowSkillNum].getSkillRecoveryTime) { return; }
             elapsedTime = 0;
             ChangeState(BossEnemyState.Attack);
         }else if(currentState == BossEnemyState.Death)
         {
             Debug.Log("しにました");
-            gameManager.EndGame();
         }
 	}
 
-    /// <summary>
-    /// ランダムにスキル番号を返す
-    /// </summary>
-    /// <returns></returns>
     private int RandomSkillNum()
     {
+        // ランダムにスキルを設定
         int randomSkillNum = UnityEngine.Random.Range(0, enemySkillBase.Length);
         return randomSkillNum;
     }

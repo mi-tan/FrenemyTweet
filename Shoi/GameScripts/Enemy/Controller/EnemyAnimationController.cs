@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
+
     private Animator enemyAnimator;
-
-
     /// <summary>
     /// フラグをオフにするまでのフレーム数
     /// </summary>
@@ -19,7 +18,6 @@ public class EnemyAnimationController : MonoBehaviour
     private const string PARAMETER_BOOL_RUN = "Run";
     private const string PARAMETER_BOOL_Walk = "Walk";
     private const string PARAMETER_BOOL_ATTACK = "Attack";
-    private const string PARAMETER_BOOL_SKILL = "Skill";
     private const string PARAMETER_INT_Type = "Type";
 
     private const string ANIMATION_DEATH_A = "Death_A";
@@ -29,46 +27,10 @@ public class EnemyAnimationController : MonoBehaviour
     private const string ANIMATION_DAMAGE_B = "Damage_B";
     private const string ANIMATION_DAMAGE_C = "Damage_C";
 
-
-    /// <summary>
-    /// 上書きするAnimationClip
-    /// </summary>
-    string overrideClipName = "BossSkill";
-    private AnimatorOverrideController overrideController;
-
     private void Awake()
     {
         // コンポーネントを取得
         enemyAnimator = GetComponent<Animator>();
-        overrideController = new AnimatorOverrideController();
-        overrideController.runtimeAnimatorController = enemyAnimator.runtimeAnimatorController;
-        enemyAnimator.runtimeAnimatorController = overrideController;
-    }
-
-    public void ChangeBossSkillClip(AnimationClip clip)
-    {
-        // ステートをキャッシュ
-        AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[enemyAnimator.layerCount];
-        for (int i = 0; i < enemyAnimator.layerCount; i++)
-        {
-            layerInfo[i] = enemyAnimator.GetCurrentAnimatorStateInfo(i);
-        }
-
-        // AnimationClipを差し替えて、強制的にアップデート
-        // ステートがリセットされる
-        overrideController[overrideClipName] = clip;
-        enemyAnimator.Update(0.0f);
-
-        // ステートを戻す
-        for (int i = 0; i < enemyAnimator.layerCount; i++)
-        {
-            enemyAnimator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
-        }
-    }
-
-    public void BossSkill()
-    {
-        Animate(PARAMETER_BOOL_SKILL);
     }
 
     /// <summary>

@@ -38,6 +38,8 @@ public class MainGameManager : MonoBehaviour
 
     public Subject<Unit> OnGameOver { get; } = new Subject<Unit>();
 
+    public Subject<Unit> OnGameEnd { get; } = new Subject<Unit>();
+
     [Inject]
     DiContainer container;
 
@@ -179,6 +181,16 @@ public class MainGameManager : MonoBehaviour
     public PlayerProvider[] GetPlayerArray()
     {
         return players;
+    }
+
+    public void EndGame()
+    {
+        //カーソル表示
+        Cursor.visible = true;
+        // マウスのロックを解除
+        Cursor.lockState = CursorLockMode.None;
+
+        OnGameEnd.OnNext(Unit.Default);
     }
 
     public void OnDeathPlayer(PlayerProvider player)

@@ -15,11 +15,23 @@ public class CrossAttack : EnemySkillBase
     /// </summary>
     private List<GameObject> attackPlayers = new List<GameObject>();
 
+    /// <summary>
+    /// 攻撃する角度
+    /// </summary>
+    private Quaternion[] attackCrossAngles = {
+        // 十字
+        new Quaternion(0.0f, 1.0f, 0.0f, 0.0f),
+        // Ⅹ字
+        new Quaternion(0.0f, 0.9f, 0.0f, 0.4f),
+    };
+
 
     public override void ActivateSkill(Transform thisTransform)
     {
+        int randNum = Random.Range(0, attackCrossAngles.Length);
+
         instantAreaObject = null;
-        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, thisTransform.rotation);
+        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, attackCrossAngles[randNum]);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>

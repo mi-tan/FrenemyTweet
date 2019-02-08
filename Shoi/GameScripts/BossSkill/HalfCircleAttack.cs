@@ -14,26 +14,6 @@ public class HalfCircleAttack : EnemySkillBase
     private List<GameObject> attackPlayers = new List<GameObject>();
 
     /// <summary>
-    /// 回転角度
-    /// </summary>
-    private int rotateAngle = 90;
-    private enum AttackAngle
-    {
-        FrontAttack = 0,
-        BackAttack  = 1,
-        RightAttack = 2,
-        LeftAttack  = 3
-    }
-
-    [SerializeField]
-    private AttackAngle attackState;
-
-    /// <summary>
-    /// エリア生成時のQuaternion
-    /// </summary>
-    private Quaternion instantQua;
-
-    /// <summary>
     /// 攻撃する角度
     /// </summary>
     private Quaternion[] attackAngles = {
@@ -44,7 +24,8 @@ public class HalfCircleAttack : EnemySkillBase
         // right
         new Quaternion(0.0f, 0.7f, 0.0f, -0.7f),
         // left
-        new Quaternion(0.0f, 0.7f, 0.0f, 0.7f)};
+        new Quaternion(0.0f, 0.7f, 0.0f, 0.7f)
+    };
 
     //private Quaternion front = new Quaternion(0.0f, 1.0f, 0.0f, 0.0f);
     //private Quaternion back = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);

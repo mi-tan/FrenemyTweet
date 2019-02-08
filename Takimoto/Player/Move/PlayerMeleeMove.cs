@@ -28,9 +28,9 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
     private bool isDodge = false;
     private Coroutine recoveryDodgeCoroutine;
     private float dodgeSpeed;
-    private float multiplyValue = 3.3f;
+    private float multiplyValue = 2.6f;
     private float moveSpeed;
-    const float SLOW_POWER = 13f;
+    const float SLOW_POWER = 50f;
     const float DODGE_TIME = 0.68f;
 
     private CharacterController characterController;
@@ -114,7 +114,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
-            moveSpeed = moveSpeed - Time.deltaTime * SLOW_POWER;
+            moveSpeed = moveSpeed - Time.deltaTime * dodgeSpeed * multiplyValue / 3;
             characterController.Move(transform.forward * moveSpeed * Time.deltaTime);
         }
 

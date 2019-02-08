@@ -60,6 +60,8 @@ public class PlayerBotInput : MonoBehaviour
 
     private float[] attackRange = new float[] { 0f, 2f, 10f };
 
+    private float disappearTime = 15f;
+
 
     void Awake()
     {
@@ -70,6 +72,23 @@ public class PlayerBotInput : MonoBehaviour
         playerSkill = GetComponent<PlayerSkill>();
 
         SetWeapon();
+    }
+
+    void Start()
+    {
+        StartCoroutine(Disappear(disappearTime));
+    }
+
+    private IEnumerator Disappear(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Disappear();
+    }
+
+    void Disappear()
+    {
+        Destroy(gameObject);
     }
 
     void SetWeapon()
@@ -167,17 +186,17 @@ public class PlayerBotInput : MonoBehaviour
         {
             //Debug.Log("壁に衝突");
             playerCamera.DestroyCamera();
-            Destroy(gameObject);
+            Disappear();
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if(target) { return; }
+        if (target) { return; }
 
         string layerName = LayerMask.LayerToName(other.gameObject.layer);
 
-        if(layerName == "Enemy")
+        if (layerName == "Enemy")
         {
             target = other.gameObject;
         }

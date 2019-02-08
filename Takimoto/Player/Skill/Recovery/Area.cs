@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Area : MonoBehaviour
 {
-    private List<PlayerProvider> players;
+    private List<PlayerProvider> players = new List<PlayerProvider>();
 
     private Collider col;
 
@@ -13,7 +13,7 @@ public class Area : MonoBehaviour
     private float startTime = 2.2f;
     private bool start = false;
 
-    private float destroyTime = 6f;
+    private float destroyTime = 9f;
 
     /// <summary>
     /// 回復間隔
@@ -23,6 +23,8 @@ public class Area : MonoBehaviour
     /// 回復量
     /// </summary>
     private int recoveryValue = 10;
+
+    private float radius = 3f;
 
 
     private void Awake()
@@ -54,6 +56,18 @@ public class Area : MonoBehaviour
     {
         yield return new WaitForSeconds(recoveryInterval);
 
+        int layerMask = LayerMask.GetMask(new string[] { "Player" });
+
+        RaycastHit[] hits;
+        hits = Physics.SphereCastAll(transform.position, radius, transform.up, 2f, layerMask);
+
+        players = new List<PlayerProvider>();
+
+        foreach (RaycastHit hit in hits)
+        {
+            players.Add(hit.transform.gameObject.GetComponent<PlayerProvider>());
+        }
+
         foreach (PlayerProvider player in players)
         {
             player.SetHp(player.GetHp() + recoveryValue);
@@ -63,53 +77,4 @@ public class Area : MonoBehaviour
 
         StartCoroutine(Recovery());
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    string layerName = LayerMask.LayerToName(other.gameObject.layer);
-
-    //    // レイヤーがEnemyではなかったら、この先の処理を行わない
-    //    if (layerName != "Player") { return; }
-
-    //    bool isOverlap = false;
-
-    //    if (players.Count > 0)
-    //    {
-    //        foreach (PlayerProvider target in players)
-    //        {
-    //            if (target == other.gameObject)
-    //            {
-    //                isOverlap = true;
-    //            }
-    //        }
-    //    }
-
-    //    // 既にリストに含まれていたら、この先の処理を行わない
-    //    if (isOverlap) { return; }
-
-    //    Debug.Log("プレイヤーを追加");
-    //    players.Add(other.gameObject.GetComponent<PlayerProvider>());
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    string layerName = LayerMask.LayerToName(other.gameObject.layer);
-
-    //    // レイヤーがEnemyではなかったら、この先の処理を行わない
-    //    if (layerName != "Player") { return; }
-
-    //    int num = -1;
-
-    //    for (int i = 0; i < players.Count; i++)
-    //    {
-    //        if (players[i] == other.gameObject)
-    //        {
-    //            num = i;
-    //        }
-    //    }
-
-    //    if (num < 0) { return; }
-
-    //    players.RemoveAt(num);
-    //}
 }

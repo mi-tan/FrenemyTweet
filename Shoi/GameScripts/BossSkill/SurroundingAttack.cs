@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 using UniRx;
 
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/SurroundingAttack")]
-public class SurroundingAttack : EnemySkillBase {
+public class SurroundingAttack : EnemySkillBase
+{
 
     private GameObject instantAreaObject;
     /// <summary>

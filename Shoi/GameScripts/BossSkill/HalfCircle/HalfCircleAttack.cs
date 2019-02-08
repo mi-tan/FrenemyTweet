@@ -4,11 +4,9 @@ using UnityEngine;
 using UniRx;
 using UnityEngine.EventSystems;
 
-
-[CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/CrossAttack")]
-public class CrossAttack : EnemySkillBase
+[CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/HalfCircleAttack")]
+public class HalfCircleAttack : EnemySkillBase
 {
-
     private GameObject instantAreaObject;
     /// <summary>
     /// 攻撃するプレイヤーを格納
@@ -18,20 +16,30 @@ public class CrossAttack : EnemySkillBase
     /// <summary>
     /// 攻撃する角度
     /// </summary>
-    private Quaternion[] attackCrossAngles = {
-        // 十字
+    private Quaternion[] attackAngles = {
+        // front
         new Quaternion(0.0f, 1.0f, 0.0f, 0.0f),
-        // Ⅹ字
-        new Quaternion(0.0f, 0.9f, 0.0f, 0.4f),
+        // back
+        new Quaternion(0.0f, 0.0f, 0.0f, 1.0f),
+        // right
+        new Quaternion(0.0f, 0.7f, 0.0f, -0.7f),
+        // left
+        new Quaternion(0.0f, 0.7f, 0.0f, 0.7f)
     };
+
+    //private Quaternion front = new Quaternion(0.0f, 1.0f, 0.0f, 0.0f);
+    //private Quaternion back = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+    //private Quaternion right = new Quaternion(0.0f, 0.7f, 0.0f, -0.7f);
+    //private Quaternion left =  new Quaternion(0.0f, 0.7f, 0.0f, 0.7f);
 
 
     public override void ActivateSkill(Transform thisTransform)
     {
-        int randNum = Random.Range(0, attackCrossAngles.Length);
+        //Quaternion attackRotate = AttackAngleSet(attackState);
+        int randNum = Random.Range(0, attackAngles.Length);
 
         instantAreaObject = null;
-        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, attackCrossAngles[randNum]);
+        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, attackAngles[randNum]);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
@@ -65,7 +73,7 @@ public class CrossAttack : EnemySkillBase
                 eventData: null,
                 functor: (iDamage, eventData) => iDamage.TakeDamage(getAtackPower)
             );
-            Debug.Log("十字攻撃：【" + attackPlayers[index].gameObject + "】へ【" + getAtackPower + "】ダメージ");
+            Debug.Log("半径攻撃：" + attackPlayers[index].gameObject + "へ" + getAtackPower + "ダメージ");
         }
     }
 }

@@ -26,7 +26,7 @@ public class PlayerType : ScriptableObject
     private int hp;
     [SerializeField,Range(minValue, maxValue)]
     private int attackValue;
-    [SerializeField, Range(1, 5)]
+    [SerializeField, Range(1, 50)]
     private float moveSpeed;
 
 

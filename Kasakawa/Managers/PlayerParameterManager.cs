@@ -8,10 +8,13 @@ public class PlayerParameterManager : SingletonMonoBehaviour<PlayerParameterMana
     private PlayerParameter playerParameter;
 
     
-
+    [SerializeField]
     private int playerHP = 50;
+
+    [SerializeField]
     private int attackPower = 50;
 
+    [SerializeField]
     private float moveSpeed = 3.5f;
 
     public int PlayerHP

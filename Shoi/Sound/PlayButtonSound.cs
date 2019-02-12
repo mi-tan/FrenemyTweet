@@ -6,7 +6,9 @@ using UnityEngine;
 public class PlayButtonSound : MonoBehaviour {
 
     [SerializeField]
-    private AudioClip useAudio;
+    private AudioClip clickAudio;
+    [SerializeField]
+    private AudioClip enterAudio;
 
     private SoundManager soundManager;
 
@@ -15,9 +17,14 @@ public class PlayButtonSound : MonoBehaviour {
         soundManager = GetComponent<SoundManager>();
     }
 
-    public void PlaySound()
+    public void PlayClickSound()
     {
-        soundManager.PlaySound(useAudio);
+        soundManager.PlaySound(clickAudio);
+    }
+
+    public void PlayEnterSound()
+    {
+        soundManager.PlaySound(enterAudio);
     }
 
 }

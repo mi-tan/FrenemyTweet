@@ -8,7 +8,7 @@ using SimpleJSON;
 public class TwitterComponent : MonoBehaviour {
 
     [SerializeField]
-    private AudioClip select;
+    private AudioClip selectSound;
     //public GameObject inputTweetField;
     //public GameObject TimeLineGet;
     [SerializeField,Tooltip("取得するツイートの数")]
@@ -78,7 +78,7 @@ public class TwitterComponent : MonoBehaviour {
     // ピンコードを認証
     public void AuthPINButon(string myPIN)
     {
-        GetComponent<SoundManager>().PlaySound(select);
+        GetComponent<SoundManager>().PlaySound(selectSound);
         if (m_RequestTokenResponse == null)
         {
             authenticationText.text = "認証ボタンが押されてませんが？";

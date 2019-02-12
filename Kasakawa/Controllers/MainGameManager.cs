@@ -6,6 +6,7 @@ using UniRx;
 using UniRx.Triggers;
 using UniRx.Async;
 using System;
+using Photon.Pun;
 
 /// <summary>
 /// ゲーム中の管理クラス
@@ -69,7 +70,9 @@ public class MainGameManager : MonoBehaviour
     private void Awake()
     {
         // プレイヤータイプに応じたプレハブを生成する
-        players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+        //players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+
+        players[0] = PhotonNetwork.Instantiate("SwordPlayer", Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
         container.InjectGameObject(players[0].gameObject);
 

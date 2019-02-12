@@ -65,14 +65,22 @@ public class PlayerBotInput : MonoBehaviour
 
     private float disappearTime = 15f;
 
+    [SerializeField]
+    private Camera botCamera;
+
 
     void Awake()
     {
+        Camera camera = Instantiate(
+            botCamera, transform.position + PlayerCamera.INITIAL_POSITION, transform.rotation);
+
         // コンポーネントを取得
         iPlayerMove = GetComponent<IPlayerMove>();
         iPlayerAttack = GetComponent<IPlayerAttack>();
         playerCamera = GetComponent<PlayerCamera>();
         playerSkill = GetComponent<PlayerSkill>();
+
+        playerCamera.SetMainCamera(camera);
 
         //SetWeapon();
     }

@@ -18,7 +18,7 @@ class BareHand : MeleeWeapon
     /// </summary>
     private bool isInput = false;
 
-    const float ATTACK_DELAY_TIME = 1.2f;
+    const float ATTACK_DELAY_TIME = 1.1f;
 
     private Coroutine attackDelayCoroutine;
 

@@ -88,7 +88,7 @@ public class PlayerCamera : MonoBehaviour
     private void Start()
     {
         // カメラの位置を初期化
-        mainCamera.transform.position = transform.position + INITIAL_POSITION;
+        //mainCamera.transform.position = transform.position + INITIAL_POSITION;
         // カメラの中心点を計算
         centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
         // カメラと中心点の距離を計算

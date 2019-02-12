@@ -20,7 +20,7 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// カメラの初期位置
     /// </summary>
-    static readonly Vector3 INITIAL_POSITION = new Vector3(0f, 1.6f, -4f);
+    public static readonly Vector3 INITIAL_POSITION = new Vector3(0f, 1.6f, -4f);
     /// <summary>
     /// カメラの中心点
     /// </summary>
@@ -87,6 +87,8 @@ public class PlayerCamera : MonoBehaviour
 
     private void Start()
     {
+        // カメラの位置を初期化
+        mainCamera.transform.position = transform.position + INITIAL_POSITION;
         // カメラの中心点を計算
         centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
         // カメラと中心点の距離を計算

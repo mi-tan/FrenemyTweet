@@ -13,6 +13,9 @@ using System;
 public class MainGameManager : MonoBehaviour
 {
 
+    [SerializeField]
+    private Camera playerCamera;
+
     // イベントを登録するインスタンス
     private Subject<Unit> startSubject = new Subject<Unit>();
 
@@ -74,6 +77,8 @@ public class MainGameManager : MonoBehaviour
         players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
 
         container.InjectGameObject(players[0].gameObject);
+
+        players[0].SetMainCamera(playerCamera);
 
         // プレイヤーのパラメータを設定する
         InitPlayerParameter();

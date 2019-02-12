@@ -14,6 +14,9 @@ using Photon.Pun;
 public class MainGameManager : MonoBehaviour
 {
 
+    [SerializeField]
+    private Camera playerCamera;
+
     // イベントを登録するインスタンス
     private Subject<Unit> startSubject = new Subject<Unit>();
 
@@ -75,6 +78,8 @@ public class MainGameManager : MonoBehaviour
         players[0] = PhotonNetwork.Instantiate(playerPrefabNames[(int)GameParameterManager.Instance.SpawnPlayerType], Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
         container.InjectGameObject(players[0].gameObject);
+
+        players[0].SetMainCamera(playerCamera);
 
         // プレイヤーのパラメータを設定する
         InitPlayerParameter();

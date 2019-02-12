@@ -13,18 +13,21 @@ public class Area : MonoBehaviour
     private float startTime = 2.2f;
     private bool start = false;
 
+    private float endTime = 8.5f;
+    private bool end = false;
+
     private float destroyTime = 9f;
 
     /// <summary>
     /// 回復間隔
     /// </summary>
-    private float recoveryInterval = 1f;
+    private float recoveryInterval = 0.3f;
     /// <summary>
     /// 回復量
     /// </summary>
-    private int recoveryValue = 10;
+    private int recoveryValue = 1;
 
-    private float radius = 3f;
+    private float radius = 2.4f;
 
 
     private void Awake()
@@ -50,6 +53,14 @@ public class Area : MonoBehaviour
                 StartCoroutine(Recovery());
             }
         }
+
+        if(time >= endTime)
+        {
+            if (!end)
+            {
+                end = true;
+            }
+        }
     }
 
     private IEnumerator Recovery()
@@ -70,11 +81,16 @@ public class Area : MonoBehaviour
 
         foreach (PlayerProvider player in players)
         {
+            if (player.GetHp() <= 0) { continue; }
+
             player.SetHp(player.GetHp() + recoveryValue);
         }
 
         yield return null;
 
-        StartCoroutine(Recovery());
+        if (!end)
+        {
+            StartCoroutine(Recovery());
+        }
     }
 }

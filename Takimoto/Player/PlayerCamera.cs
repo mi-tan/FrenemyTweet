@@ -7,9 +7,11 @@ using UnityEngine;
 /// </summary>
 public class PlayerCamera : MonoBehaviour
 {
-    [SerializeField]
-    private Camera mainCameraPrefab;
     private Camera mainCamera;
+    public void SetMainCamera(Camera camera)
+    {
+        mainCamera = camera;
+    }
     public Camera GetMainCamera()
     {
         return mainCamera;
@@ -18,7 +20,7 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// カメラの初期位置
     /// </summary>
-    static readonly Vector3 INITIAL_POSITION = new Vector3(0f, 1.6f, -4f);
+    public static readonly Vector3 INITIAL_POSITION = new Vector3(0f, 1.6f, -4f);
     /// <summary>
     /// カメラの中心点
     /// </summary>
@@ -75,18 +77,23 @@ public class PlayerCamera : MonoBehaviour
         skyBox = GetComponent<Skybox>();
 
         // カメラを生成
-        mainCamera = Instantiate(
-            mainCameraPrefab, transform.position + INITIAL_POSITION, transform.rotation);
+        //mainCamera = Instantiate(
+        //    mainCameraPrefab, transform.position + INITIAL_POSITION, transform.rotation);
 
+        // マウスを非表示
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Start()
+    {
+        // カメラの位置を初期化
+        mainCamera.transform.position = transform.position + INITIAL_POSITION;
         // カメラの中心点を計算
         centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
         // カメラと中心点の距離を計算
         initialDistance = Vector3.Distance(mainCamera.transform.position, centerPoint);
         distance = initialDistance;
-
-        // マウスを非表示
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetSkyBox(Material skyBoxMat)

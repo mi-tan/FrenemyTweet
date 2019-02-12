@@ -328,7 +328,7 @@ public class PlayerBotInput : MonoBehaviour
                 }
             }
 
-            if (targetDistance > attackRange)
+            if (targetDistance > 5)
             {
                 TransitionState(BotState.SEARCH_ENEMY);
             }
@@ -368,7 +368,7 @@ public class PlayerBotInput : MonoBehaviour
         inputAttack = 1f;
         yield return new WaitForSeconds(0.1f);
         inputAttack = 0f;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.4f);
 
         TransitionState(BotState.SEARCH_ENEMY);
 

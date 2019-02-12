@@ -30,10 +30,12 @@ public class MainGameManager : MonoBehaviour
     [Header("サブシーン名のリスト")]
     private string[] subSceneNames;
 
-    /// <summary>
-    /// 経過時間をカウントする
-    /// </summary>
-    public float TimeCount { get; private set; } = 0f;
+    ///// <summary>
+    ///// 経過時間をカウントする
+    ///// </summary>
+    //public float TimeCount { get; private set; } = 0f;
+
+    private GlobalGameParamaterManager globalParamaterManager;
 
     /// <summary>
     /// 必要なシーンがすべて読み込まれた時に呼ばれる
@@ -74,6 +76,9 @@ public class MainGameManager : MonoBehaviour
 
     private void Awake()
     {
+
+        globalParamaterManager = PhotonNetwork.Instantiate("GlobalGameParamaterManager", Vector3.zero, Quaternion.identity, 0, null)
+            .GetComponent<GlobalGameParamaterManager>();
 
         players[0] = PhotonNetwork.Instantiate(playerPrefabNames[(int)GameParameterManager.Instance.SpawnPlayerType], Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
@@ -126,7 +131,7 @@ public class MainGameManager : MonoBehaviour
 
                 // 時間をカウントする(毎フレーム)
                 (this).UpdateAsObservable()
-                .Subscribe(x => { TimeCount += Time.deltaTime; })
+                .Subscribe(x => { globalParamaterManager.TimeCount += Time.deltaTime; })
                 .AddTo(gameObject);
             })
             .AddTo(gameObject);

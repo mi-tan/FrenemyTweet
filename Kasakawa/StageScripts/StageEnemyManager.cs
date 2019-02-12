@@ -25,6 +25,17 @@ public sealed class StageEnemyManager : MonoBehaviour {
         }
     }
 
+    private void Start()
+    {
+        foreach(var enemyArray in enemyDataArray)
+        {
+            foreach(var enemy in enemyArray.EnemyArray)
+            {
+                GlobalGameParamaterManager.Instance.Enemys.Add(enemy);
+            }
+        }
+    }
+
     /// <summary>
     /// 開始時にいる敵を有効化
     /// </summary>

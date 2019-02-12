@@ -92,7 +92,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void InitCamera()
     {
-        if (distance < 0)
+        if (distance < 0 && mainCamera)
         {
             // カメラの位置を初期化
             mainCamera.transform.position = transform.position + INITIAL_POSITION;

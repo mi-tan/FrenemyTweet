@@ -75,8 +75,13 @@ public class PlayerSkill : MonoBehaviour
     {
         // 仮エフェクト設定
         if (testSkillHitEffect == null) { return; }
-        skillList[0].SetHitEffect(testSkillHitEffect);
-        skillList[1].SetHitEffect(testSkillHitEffect);
+
+        for (int i = 0; i < skillList.Length; i++)
+        {
+            if(skillList[i] == null) { continue; }
+
+            skillList[i].SetHitEffect(testSkillHitEffect);
+        }
     }
 
     public void UpdateSkill(float inputActivateSkill, bool inputSelectSkill1, bool inputSelectSkill2, bool inputSelectSkill3)

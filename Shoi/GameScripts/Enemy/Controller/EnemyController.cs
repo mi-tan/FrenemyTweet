@@ -10,7 +10,6 @@ using System;
 /// </summary>
 public sealed class EnemyController : NormalEnemy
 {
-
     private IEnemyMove iEnemyMove;
     private IEnemyAttack iEnemyAttack;
     private EnemyDamage enemyDamage;
@@ -84,6 +83,16 @@ public sealed class EnemyController : NormalEnemy
         enemyParameter.hp = enemyParameter.getMaxHP;
         // エフェクト設定
         enemyDamage.setDeathEffect = enemyParameter.deathEffect;
+
+        if (enemyParameter.spawnEffect == null)
+        {
+            Debug.LogWarning("スポーン時のエフェクトが設定されていません");
+        }
+        else
+        {
+            // スポーン時のエフェクト生成
+            Instantiate(enemyParameter.spawnEffect, transform.position, transform.rotation);
+        }
 
         // 武器のコライダー制御
         foreach (AttackCollision weapon in enemyParameter.useWeapon)

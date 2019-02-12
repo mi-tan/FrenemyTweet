@@ -20,6 +20,8 @@ public class EnemyParameter : MonoBehaviour {
     public float enemyRunSpeed = 4;
     [SerializeField, Tooltip("攻撃時のエフェクト")]
     public GameObject attackEffect;
+    [SerializeField, Tooltip("スポーン時のエフェクト")]
+    public GameObject spawnEffect;
     [SerializeField, Tooltip("死亡時のエフェクト")]
     public GameObject deathEffect;
     [SerializeField,Tooltip("使用する武器")]

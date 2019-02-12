@@ -33,12 +33,14 @@ public sealed class EnemyDamage :　MonoBehaviour {
 
     private int useAnimationNum;
 
-    private EnemyParameter enemyparameter;
+    private BossParameter bossParameter;
+    private EnemyParameter enemyParameter;
     private EnemyAnimationController enemyAnimationController;
 
     private void Awake()
     {
-        enemyparameter = GetComponent<EnemyParameter>();
+        bossParameter = GetComponent<BossParameter>();
+        enemyParameter = GetComponent<EnemyParameter>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
 
         // 使用するアニメーションを設定
@@ -47,9 +49,18 @@ public sealed class EnemyDamage :　MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        // HPを減らす
-        enemyparameter.hp -= damage;
-        Debug.Log($"受けたダメージ： {damage}");
+        if (bossParameter != null)
+        {
+            // ボスのHPを減らす
+            bossParameter.hp -= damage;
+        }
+        else if(enemyParameter != null)
+        {
+            // 雑魚のHPを減らす
+            enemyParameter.hp -= damage;
+        }
+
+        //Debug.Log($"受けたダメージ： {damage}");
     }
 
     /// <summary>

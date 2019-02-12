@@ -58,13 +58,4 @@ public class PlayerParameterManager : SingletonMonoBehaviour<PlayerParameterMana
     {
         moveSpeed = speed;
     }
-
-    //public void CalcStatus()
-    //{
-    //    // HPをランダムに決定する
-    //    playerHP = UnityEngine.Random.Range(0, 100);
-
-    //    // 攻撃力をランダムに決定する
-    //    attackPower = UnityEngine.Random.Range(0, 100);
-    //}
 }

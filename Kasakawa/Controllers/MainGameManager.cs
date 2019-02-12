@@ -6,6 +6,7 @@ using UniRx;
 using UniRx.Triggers;
 using UniRx.Async;
 using System;
+using Photon.Pun;
 
 /// <summary>
 /// ゲーム中の管理クラス
@@ -38,6 +39,8 @@ public class MainGameManager : MonoBehaviour
 
     public Subject<Unit> OnGameOver { get; } = new Subject<Unit>();
 
+    public Subject<Unit> OnGameEnd { get; } = new Subject<Unit>();
+
     [Inject]
     DiContainer container;
 
@@ -69,7 +72,9 @@ public class MainGameManager : MonoBehaviour
     private void Awake()
     {
         // プレイヤータイプに応じたプレハブを生成する
-        players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+        //players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
+
+        players[0] = PhotonNetwork.Instantiate("SwordPlayer", Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
         container.InjectGameObject(players[0].gameObject);
 
@@ -179,6 +184,16 @@ public class MainGameManager : MonoBehaviour
     public PlayerProvider[] GetPlayerArray()
     {
         return players;
+    }
+
+    public void EndGame()
+    {
+        //カーソル表示
+        Cursor.visible = true;
+        // マウスのロックを解除
+        Cursor.lockState = CursorLockMode.None;
+
+        OnGameEnd.OnNext(Unit.Default);
     }
 
     public void OnDeathPlayer(PlayerProvider player)

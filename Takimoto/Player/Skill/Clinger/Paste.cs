@@ -9,6 +9,9 @@ public class Paste : MonoBehaviour
     private Transform pasteObject;
     private Vector3 offset = Vector3.zero;
 
+    [SerializeField]
+    private GameObject explosion;
+
 
     private void Awake()
     {
@@ -35,10 +38,17 @@ public class Paste : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
+        GameObject e = Instantiate(explosion, transform.position, transform.rotation);
+
+        yield return new WaitForSeconds(0.2f);
+
+        e.GetComponent<Collider>().enabled = false;
+
+        Destroy(e, 1f);
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (isPaste) { return; }
 
@@ -48,12 +58,19 @@ public class Paste : MonoBehaviour
         offset = transform.position - pasteObject.transform.position;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        if(pasteObject == null) { return; }
+        if (!isPaste) { return; }
 
-        Vector3 newPos = transform.position;
-        newPos = pasteObject.transform.position + offset;
-        transform.position = newPos;
+        if (pasteObject != null)
+        {
+            Vector3 newPos = transform.position;
+            newPos = pasteObject.transform.position + offset;
+            transform.position = newPos;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

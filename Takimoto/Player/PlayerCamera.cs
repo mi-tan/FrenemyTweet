@@ -66,9 +66,14 @@ public class PlayerCamera : MonoBehaviour
     /// </summary>
     const float ANGLE_LOWER_LIMIT = 25f;
 
+    private Skybox skyBox;
+    private Material skyBoxMat;
+
 
     void Awake()
     {
+        skyBox = GetComponent<Skybox>();
+
         // カメラを生成
         mainCamera = Instantiate(
             mainCameraPrefab, transform.position + INITIAL_POSITION, transform.rotation);
@@ -82,6 +87,11 @@ public class PlayerCamera : MonoBehaviour
         // マウスを非表示
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void SetSkyBox(Material skyBoxMat)
+    {
+        skyBox.material = skyBoxMat;
     }
 
     public void UpdateCamera(float mouseX, float mouseY, float rotationHorizontal, float rotationVertical)

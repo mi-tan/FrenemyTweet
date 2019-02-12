@@ -27,9 +27,10 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
     private bool isDodge = false;
     private Coroutine recoveryDodgeCoroutine;
-    const float DODGE_SPEED = 13f;
-    private float dodgeSpeed = 13f;
-    const float SLOW_POWER = 15f;
+    private float dodgeSpeed;
+    private float multiplyValue = 2.6f;
+    private float moveSpeed;
+    const float SLOW_POWER = 50f;
     const float DODGE_TIME = 0.68f;
 
     private CharacterController characterController;
@@ -46,6 +47,12 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
 
         // 移動方向を初期化
         moveQuaternion = transform.rotation;
+    }
+
+    void Start()
+    {
+        dodgeSpeed = playerProvider.GetMoveSpeed() * multiplyValue;
+        moveSpeed = dodgeSpeed;
     }
 
     /// <summary>
@@ -107,8 +114,8 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
-            dodgeSpeed = dodgeSpeed - Time.deltaTime * SLOW_POWER;
-            characterController.Move(transform.forward * dodgeSpeed * Time.deltaTime);
+            moveSpeed = moveSpeed - Time.deltaTime * dodgeSpeed * multiplyValue / 3;
+            characterController.Move(transform.forward * moveSpeed * Time.deltaTime);
         }
 
         if (inputDodge)
@@ -139,7 +146,7 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
                 transform.rotation = Quaternion.LookRotation(moveDirection);
                 recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
 
-                dodgeSpeed = DODGE_SPEED;
+                moveSpeed = dodgeSpeed;
             }
 
             isDodge = true;

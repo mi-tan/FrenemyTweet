@@ -33,7 +33,7 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// カメラと中心点の距離
     /// </summary>
-    private float distance;
+    private float distance = -1f;
 
     /// <summary>
     /// カメラ水平マウス感度
@@ -85,17 +85,6 @@ public class PlayerCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Start()
-    {
-        // カメラの位置を初期化
-        //mainCamera.transform.position = transform.position + INITIAL_POSITION;
-        // カメラの中心点を計算
-        centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
-        // カメラと中心点の距離を計算
-        initialDistance = Vector3.Distance(mainCamera.transform.position, centerPoint);
-        distance = initialDistance;
-    }
-
     public void SetSkyBox(Material skyBoxMat)
     {
         skyBox.material = skyBoxMat;
@@ -103,6 +92,17 @@ public class PlayerCamera : MonoBehaviour
 
     public void UpdateCamera(float mouseX, float mouseY, float rotationHorizontal, float rotationVertical)
     {
+        if(distance < 0)
+        {
+            // カメラの位置を初期化
+            mainCamera.transform.position = transform.position + INITIAL_POSITION;
+            // カメラの中心点を計算
+            centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
+            // カメラと中心点の距離を計算
+            initialDistance = Vector3.Distance(mainCamera.transform.position, centerPoint);
+            distance = initialDistance;
+        }
+
         // カメラ回転
         RotateCamera(mouseX, mouseY, rotationHorizontal, rotationVertical);
 

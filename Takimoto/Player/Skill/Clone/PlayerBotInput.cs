@@ -120,7 +120,7 @@ public class PlayerBotInput : MonoBehaviour
     {
         if (botState == nextState) { return; }
 
-        Debug.Log(botState + " → " + nextState);
+        //Debug.Log(botState + " → " + nextState);
         botState = nextState;
 
         ResetInput();

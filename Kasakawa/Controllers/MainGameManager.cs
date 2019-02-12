@@ -52,9 +52,9 @@ public class MainGameManager : MonoBehaviour
 
     private PlayerProvider[] players = new PlayerProvider[MAX_PLAYER];
 
-    [Header("PlayerTypeに対応するプレハブを登録")]
+    [Header("PlayerTypeに対応するプレハブ名を登録")]
     [SerializeField]
-    private PlayerProvider[] playerPrefabs;
+    private string[] playerPrefabNames;
 
     [Header("PlayerTypeの確認用(処理には関係なし)")]
     [SerializeField]
@@ -71,10 +71,8 @@ public class MainGameManager : MonoBehaviour
 
     private void Awake()
     {
-        // プレイヤータイプに応じたプレハブを生成する
-        //players[0] = Instantiate(playerPrefabs[(int)GameParameterManager.Instance.SpawnPlayerType]);
 
-        players[0] = PhotonNetwork.Instantiate("SwordPlayer", Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
+        players[0] = PhotonNetwork.Instantiate(playerPrefabNames[(int)GameParameterManager.Instance.SpawnPlayerType], Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
         container.InjectGameObject(players[0].gameObject);
 

@@ -157,6 +157,11 @@ public class PlayerProvider : CharacterBase
         return playerCamera;
     }
 
+    public void SetMainCamera(Camera camera)
+    {
+        playerCamera.SetMainCamera(camera);
+    }
+
     public Camera GetMainCamera()
     {
         return playerCamera.GetMainCamera();

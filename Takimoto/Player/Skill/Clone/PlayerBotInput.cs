@@ -21,19 +21,19 @@ public class PlayerBotInput : MonoBehaviour
     }
     private BotState botState = BotState.SEARCH_ENEMY;
 
-    private enum Weapon
-    {
-        NONE = 0,
-        /// <summary>
-        /// 剣
-        /// </summary>
-        SWORD,
-        /// <summary>
-        /// 銃
-        /// </summary>
-        RIFLE,
-    }
-    private Weapon weapon = Weapon.NONE;
+    //private enum Weapon
+    //{
+    //    NONE = 0,
+    //    /// <summary>
+    //    /// 剣
+    //    /// </summary>
+    //    SWORD,
+    //    /// <summary>
+    //    /// 銃
+    //    /// </summary>
+    //    RIFLE,
+    //}
+    //private Weapon weapon = Weapon.NONE;
 
     private IPlayerMove iPlayerMove;
     private IPlayerAttack iPlayerAttack;
@@ -55,10 +55,13 @@ public class PlayerBotInput : MonoBehaviour
 
     private List<GameObject> targets = new List<GameObject>();
 
-    private Coroutine attackComboCoroutine;
-    private int comboNum = 3;
+    //private Coroutine attackComboCoroutine;
+    //private int comboNum = 3;
 
-    private float[] attackRange = new float[] { 0f, 2f, 10f };
+    private Coroutine attackCoroutine;
+
+    //private float[] attackRange = new float[] { 0f, 2f, 10f };
+    private float attackRange = 1f;
 
     private float disappearTime = 15f;
 
@@ -71,7 +74,7 @@ public class PlayerBotInput : MonoBehaviour
         playerCamera = GetComponent<PlayerCamera>();
         playerSkill = GetComponent<PlayerSkill>();
 
-        SetWeapon();
+        //SetWeapon();
     }
 
     void Start()
@@ -91,25 +94,25 @@ public class PlayerBotInput : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void SetWeapon()
-    {
-        if (iPlayerAttack is Sword)
-        {
-            //Debug.Log("剣");
-            weapon = Weapon.SWORD;
-        }
-        else if (iPlayerAttack is Rifle)
-        {
-            //Debug.Log("銃");
-            weapon = Weapon.RIFLE;
-        }
-    }
+    //void SetWeapon()
+    //{
+    //    if (iPlayerAttack is Sword)
+    //    {
+    //        //Debug.Log("剣");
+    //        weapon = Weapon.SWORD;
+    //    }
+    //    else if (iPlayerAttack is Rifle)
+    //    {
+    //        //Debug.Log("銃");
+    //        weapon = Weapon.RIFLE;
+    //    }
+    //}
 
     void TransitionState(BotState nextState)
     {
-        if(botState == nextState) { return; }
+        if (botState == nextState) { return; }
 
-        //Debug.Log(botState + " → " + nextState);
+        Debug.Log(botState + " → " + nextState);
         botState = nextState;
 
         ResetInput();
@@ -141,7 +144,6 @@ public class PlayerBotInput : MonoBehaviour
                 i--;
             }
         }
-
 
         SearchEnemy();
         Approach();
@@ -259,11 +261,10 @@ public class PlayerBotInput : MonoBehaviour
 
     void Approach()
     {
+        if (botState != BotState.APPROACH) { return; }
+
         if (targets.Count > 0)
         {
-            //Debug.Log("ターゲットに接近中");
-
-            int targetNum = 0;
             float targetDistance = 100f;
 
             // 一番近くにいる敵をリストの先頭にする
@@ -273,7 +274,6 @@ public class PlayerBotInput : MonoBehaviour
 
                 if (targetDistance > td)
                 {
-                    targetNum = i;
                     targetDistance = td;
 
                     GameObject temp = targets[0];
@@ -285,7 +285,7 @@ public class PlayerBotInput : MonoBehaviour
             inputMoveVertical = 1f;
             playerCamera.CaptureTarget(targets[0].transform);
 
-            if (targetDistance <= attackRange[(int)weapon])
+            if (targetDistance <= attackRange)
             {
                 TransitionState(BotState.BATTLE);
             }
@@ -303,7 +303,6 @@ public class PlayerBotInput : MonoBehaviour
             Attack();
             //Debug.Log("戦闘中");
 
-            int targetNum = 0;
             float targetDistance = 100f;
 
             // 一番近くにいる敵をリストの先頭にする
@@ -313,7 +312,6 @@ public class PlayerBotInput : MonoBehaviour
 
                 if (targetDistance > td)
                 {
-                    targetNum = i;
                     targetDistance = td;
 
                     GameObject temp = targets[0];
@@ -322,7 +320,7 @@ public class PlayerBotInput : MonoBehaviour
                 }
             }
 
-            if (targetDistance > attackRange[(int)weapon])
+            if (targetDistance > attackRange)
             {
                 TransitionState(BotState.SEARCH_ENEMY);
             }
@@ -335,35 +333,52 @@ public class PlayerBotInput : MonoBehaviour
 
     void Attack()
     {
-        switch ((int)weapon)
-        {
-            // 剣
-            case 1:
-                if (attackComboCoroutine == null)
-                {
-                    attackComboCoroutine = StartCoroutine(SwordAttackCombo());
-                }
-                break;
+        //switch ((int)weapon)
+        //{
+        //    // 剣
+        //    case 1:
+        //        if (attackComboCoroutine == null)
+        //        {
+        //            attackComboCoroutine = StartCoroutine(SwordAttackCombo());
+        //        }
+        //        break;
 
-            // 銃
-            case 2:
-                inputAttack = 1f;
-                break;
+        //    // 銃
+        //    case 2:
+        //        inputAttack = 1f;
+        //        break;
+        //}
+
+        if (attackCoroutine == null)
+        {
+            attackCoroutine = StartCoroutine(AttackCoroutine());
         }
     }
 
-    private IEnumerator SwordAttackCombo()
+    private IEnumerator AttackCoroutine()
     {
-        for (int i = 0; i < comboNum; i++)
-        {
-            inputAttack = 1f;
-            yield return new WaitForSeconds(0.1f);
-            inputAttack = 0f;
-            yield return new WaitForSeconds(0.4f);
-        }
+        inputAttack = 1f;
+        yield return new WaitForSeconds(0.1f);
+        inputAttack = 0f;
+        yield return new WaitForSeconds(1f);
 
         TransitionState(BotState.SEARCH_ENEMY);
 
-        attackComboCoroutine = null;
+        attackCoroutine = null;
     }
+
+    //private IEnumerator SwordAttackCombo()
+    //{
+    //    for (int i = 0; i < comboNum; i++)
+    //    {
+    //        inputAttack = 1f;
+    //        yield return new WaitForSeconds(0.1f);
+    //        inputAttack = 0f;
+    //        yield return new WaitForSeconds(0.4f);
+    //    }
+
+    //    TransitionState(BotState.SEARCH_ENEMY);
+
+    //    attackComboCoroutine = null;
+    //}
 }

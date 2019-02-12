@@ -263,7 +263,6 @@ public class PlayerBotInput : MonoBehaviour
         {
             //Debug.Log("ターゲットに接近中");
 
-            int targetNum = 0;
             float targetDistance = 100f;
 
             // 一番近くにいる敵をリストの先頭にする
@@ -273,7 +272,6 @@ public class PlayerBotInput : MonoBehaviour
 
                 if (targetDistance > td)
                 {
-                    targetNum = i;
                     targetDistance = td;
 
                     GameObject temp = targets[0];
@@ -303,7 +301,6 @@ public class PlayerBotInput : MonoBehaviour
             Attack();
             //Debug.Log("戦闘中");
 
-            int targetNum = 0;
             float targetDistance = 100f;
 
             // 一番近くにいる敵をリストの先頭にする
@@ -313,7 +310,6 @@ public class PlayerBotInput : MonoBehaviour
 
                 if (targetDistance > td)
                 {
-                    targetNum = i;
                     targetDistance = td;
 
                     GameObject temp = targets[0];

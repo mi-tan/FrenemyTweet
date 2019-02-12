@@ -20,6 +20,8 @@ public class Bullet : MonoBehaviour
         attackCollision.OnAttackCollision
             .Subscribe(_ => { CreateHitObject(); })
             .AddTo(gameObject);
+
+        attackCollision.SetAttackPower = 0;
     }
 
     private void Update()

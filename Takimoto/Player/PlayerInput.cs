@@ -90,6 +90,9 @@ public class PlayerInput : MonoBehaviour
         bool inputSelectSkill3 = Input.GetButtonDown(INPUT_SELECT_SKILL_3);
         bool inputDodge = Input.GetButtonDown(INPUT_DODGE);
 
+        // カメラ初期化
+        playerCamera.InitCamera();
+
         // 移動
         iPlayerMove.UpdateMove(
             inputMoveHorizontal, 
@@ -100,13 +103,6 @@ public class PlayerInput : MonoBehaviour
             inputAttack,
             inputMoveHorizontal,
             inputMoveVertical);
-
-        // カメラ
-        playerCamera.UpdateCamera(
-            inputMouseX, 
-            inputMouseY, 
-            inputRotationHorizontal, 
-            inputRotationVertical);
 
         // スキル発動、切り替え
         playerSkill.UpdateSkill(
@@ -120,5 +116,12 @@ public class PlayerInput : MonoBehaviour
             inputDodge,
             inputMoveHorizontal,
             inputMoveVertical);
+
+        // カメラ
+        playerCamera.UpdateCamera(
+            inputMouseX,
+            inputMouseY,
+            inputRotationHorizontal,
+            inputRotationVertical);
     }
 }

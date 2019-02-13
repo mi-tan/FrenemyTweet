@@ -60,6 +60,11 @@ class Rifle : RangeWeapon
     private float shakeX = 0.01f;
     private float shakeY = 0.02f;
 
+    //[SerializeField]
+    //private AudioClip shotSound;
+    //[SerializeField]
+    //private float shotVolume;
+
 
     void Awake()
     {

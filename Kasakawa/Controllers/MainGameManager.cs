@@ -89,9 +89,9 @@ public class MainGameManager : MonoBehaviour
 
         globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
 
-        if (PhotonNetwork.IsMasterClient)
+        if (!globalParamaterManager)
         {
-            // 全プレイヤーで共有するデータクラスのインスタンスを作成する
+            //全プレイヤーで共有するデータクラスのインスタンスを作成する
             globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
                 .GetComponent<GlobalGameParamaterManager>();
             Debug.Log("グローバルパラメータマネージャーが無いので作成します。");

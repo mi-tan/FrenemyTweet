@@ -17,7 +17,7 @@ public class MainGameTimerUIManager : MonoBehaviour
     [SerializeField]
     private Text decimalText;
 
-    void Awake()
+    void Start()
     {
 
         // 時間カウントが変化した場合、表示を更新する

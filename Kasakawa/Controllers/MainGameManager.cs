@@ -87,17 +87,19 @@ public class MainGameManager : MonoBehaviour
     private void Awake()
     {
 
-        GameObject globalParamObject = GameObject.Find(GLOBAL_PARAM_NAME);
+        globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
 
-        if (!globalParamObject)
+        if (!globalParamaterManager)
         {
+            Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
             // 全プレイヤーで共有するデータクラスのインスタンスを作成する
             globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
                 .GetComponent<GlobalGameParamaterManager>();
         }
         else
         {
-            globalParamaterManager = globalParamObject.GetComponent<GlobalGameParamaterManager>();
+            Debug.Log("グローバルパラメータマネージャーが既に存在します。");
+            //globalParamaterManager = globalParamObject.GetComponent<GlobalGameParamaterManager>();
         }
         
 

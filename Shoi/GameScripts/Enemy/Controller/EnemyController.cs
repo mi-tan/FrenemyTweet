@@ -17,6 +17,7 @@ public sealed class EnemyController : NormalEnemy
     private EnemyAttackListener enemyAttackListener;
     private EnemyAnimationController enemyAnimationController;
     private AttackCollision attackCollision;
+    private SoundManager soundManager;
 
     [Inject]
     private MainGameManager gameManager;
@@ -60,6 +61,7 @@ public sealed class EnemyController : NormalEnemy
         enemyParameter = GetComponent<EnemyParameter>();
         enemyAttackListener = GetComponent<EnemyAttackListener>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
+        soundManager = GetComponent<SoundManager>();
 
         // 使用する武器を設定
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
@@ -72,6 +74,7 @@ public sealed class EnemyController : NormalEnemy
                 weapon.SetHitEffect = enemyParameter.attackEffect;
             }
         }
+
     }
 
 
@@ -223,6 +226,7 @@ public sealed class EnemyController : NormalEnemy
         if (enemyParameter.hp <= 0)
         {
             enemyDamage.DeathEnemy();
+            soundManager.PlaySound(enemyParameter.deathSound);
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
 
             ChangeState(EnemyState.Death);

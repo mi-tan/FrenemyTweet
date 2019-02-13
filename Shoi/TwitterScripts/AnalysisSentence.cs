@@ -52,10 +52,7 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
             // カテゴリデータを取得
             dictionaly = categoryData[index].ReturnDictionary();
 
-            // 辞書にある文字数分配列を確保
-            //int[] count = new int[dictionaly.Length];
             int matchNum = 0;
-
             string sentence = "";
 
             // リプライをはじく正規表現を作成
@@ -67,7 +64,7 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
                 {
                     // 正規表現
                     sentence = regex.Replace(str[j], "");
-                   // Debug.Log($"@を消した後　= {sentence}");
+                    // Debug.Log($"@を消した後　= {sentence}");
                     
                     // 情報更新
                     str[j] = sentence;
@@ -78,8 +75,9 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
                     int count = 0;
                     foreach (Match m in matche)
                     {
-                        int tes = 0;
-                        Debug.Log("match");
+                        int matchCnt = 0;
+                        //Debug.Log("match");
+
                         string[] breakDictionaly = breakCategoryData.ReturnDictionary();
                         for (int b = 0; b < breakDictionaly.Length; b++)
                         {
@@ -88,11 +86,11 @@ public class AnalysisSentence : MonoBehaviour, IAnalysis
 
                             foreach (Match bm in breackWordMatche)
                             {
-                                tes++;
+                                matchCnt++;
                             }
                         }
 
-                        if (tes == 0)
+                        if (matchCnt == 0)
                         {
                             count++;
                         }

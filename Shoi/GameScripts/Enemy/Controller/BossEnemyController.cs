@@ -33,9 +33,10 @@ public class BossEnemyController : BossEnemy {
         // Walk = 0,   // 移動
         // Wait = 1,   // 到着していたら一定時間待つ
         // Chase = 2,  // 追いかける
-        Attack = 0, // 攻撃する
-        Freeze = 1, // 攻撃後のフリーズ状態
-        Death = 2   // 死亡
+        Spawn = 0,  // 出現時の処理
+        Attack = 1, // 攻撃する
+        Freeze = 2, // 攻撃後のフリーズ状態
+        Death = 3   // 死亡
     };
 
     public BossEnemyState currentState = BossEnemyState.Freeze;
@@ -51,7 +52,6 @@ public class BossEnemyController : BossEnemy {
 
     private　void Start () {
         currentState = BossEnemyState.Freeze;
-
     }
 
     private void Update () {
@@ -129,11 +129,20 @@ public class BossEnemyController : BossEnemy {
             enemyDamage.DeathEnemy();
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
 
+            DeathInstruction();
             ChangeState(BossEnemyState.Death);
         }
         else
         {
             enemyDamage.TakeDamageAnimation();
         }
+    }
+
+    /// <summary>
+    /// 死亡時の処理
+    /// </summary>
+    private void DeathInstruction()
+    {
+        // ゲームクリア時の演出諸々を呼び出す
     }
 }

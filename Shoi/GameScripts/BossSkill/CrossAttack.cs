@@ -65,7 +65,7 @@ public class CrossAttack : EnemySkillBase
                 eventData: null,
                 functor: (iDamage, eventData) => iDamage.TakeDamage(getAtackPower)
             );
-            Debug.Log("十字攻撃：【" + attackPlayers[index].gameObject + "】へ【" + getAtackPower + "】ダメージ");
+            Debug.Log("十字攻撃：【" + attackPlayers[index].gameObject.name + "】へ【" + getAtackPower + "】ダメージ");
         }
     }
 }

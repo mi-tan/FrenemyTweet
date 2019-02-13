@@ -20,6 +20,14 @@ public class ForewordCanvas : MonoBehaviour {
         soundManager = GetComponent<SoundManager>();
     }
 
+    private void Update()
+    {
+        if (Input.anyKeyDown)
+        {
+            NextCanvas();
+        }
+    }
+
     public void NextCanvas()
     {
         if (oneClickFlag) { return; }

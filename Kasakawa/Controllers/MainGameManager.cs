@@ -37,6 +37,14 @@ public class MainGameManager : MonoBehaviour
 
     private GlobalGameParamaterManager globalParamaterManager;
 
+    public GlobalGameParamaterManager GlobalParamaterManager
+    {
+        get
+        {
+            return globalParamaterManager;
+        }
+    }
+
     /// <summary>
     /// 必要なシーンがすべて読み込まれた時に呼ばれる
     /// </summary>
@@ -67,6 +75,8 @@ public class MainGameManager : MonoBehaviour
 
     private const string Start_Pos_Name = "PlayerStartPosition";
 
+    private const string GLOBAL_PARAM_NAME = "GlobalGameParamaterManager";
+
     private const int MAX_PLAYER = 1;
 
     [SerializeField]
@@ -77,8 +87,19 @@ public class MainGameManager : MonoBehaviour
     private void Awake()
     {
 
-        globalParamaterManager = PhotonNetwork.Instantiate("GlobalGameParamaterManager", Vector3.zero, Quaternion.identity, 0, null)
-            .GetComponent<GlobalGameParamaterManager>();
+        GameObject globalParamObject = GameObject.Find(GLOBAL_PARAM_NAME);
+
+        if (!globalParamObject)
+        {
+            // 全プレイヤーで共有するデータクラスのインスタンスを作成する
+            globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
+                .GetComponent<GlobalGameParamaterManager>();
+        }
+        else
+        {
+            globalParamaterManager = globalParamObject.GetComponent<GlobalGameParamaterManager>();
+        }
+        
 
         players[0] = PhotonNetwork.Instantiate(playerPrefabNames[(int)GameParameterManager.Instance.SpawnPlayerType], Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 

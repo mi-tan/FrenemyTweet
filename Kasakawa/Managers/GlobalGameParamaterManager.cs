@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlobalGameParamaterManager : SingletonMonoBehaviour<GlobalGameParamaterManager> {
+public class GlobalGameParamaterManager : MonoBehaviour {
 
     private float timeCount = 0;
 
@@ -34,11 +34,5 @@ public class GlobalGameParamaterManager : SingletonMonoBehaviour<GlobalGameParam
         {
             enemys = value;
         }
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        //DontDestroyOnLoad();
     }
 }

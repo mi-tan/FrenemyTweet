@@ -21,7 +21,7 @@ public class MainGameTimerUIManager : MonoBehaviour
     {
 
         // 時間カウントが変化した場合、表示を更新する
-        gameManager.ObserveEveryValueChanged(_ => GlobalGameParamaterManager.Instance.TimeCount)
+        gameManager.ObserveEveryValueChanged(_ => gameManager.GlobalParamaterManager.TimeCount)
             .Subscribe(time => { ShowTimeCount(time); });
     }
 

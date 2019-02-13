@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public sealed class StageEnemyManager : MonoBehaviour {
 
     [SerializeField]
     private EnemyRegion[] enemyDataArray;
+
+    [Inject]
+    private MainGameManager gameManager;
 
     [System.Serializable]
     public class EnemyRegion
@@ -31,7 +35,7 @@ public sealed class StageEnemyManager : MonoBehaviour {
         {
             foreach(var enemy in enemyArray.EnemyArray)
             {
-                GlobalGameParamaterManager.Instance.Enemys.Add(enemy);
+                gameManager.GlobalParamaterManager.Enemys.Add(enemy);
             }
         }
     }

@@ -89,19 +89,13 @@ public class MainGameManager : MonoBehaviour
 
         globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
 
-        if (!globalParamaterManager)
+        if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
             // 全プレイヤーで共有するデータクラスのインスタンスを作成する
             globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
                 .GetComponent<GlobalGameParamaterManager>();
+            Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
         }
-        else
-        {
-            Debug.Log("グローバルパラメータマネージャーが既に存在します。");
-            //globalParamaterManager = globalParamObject.GetComponent<GlobalGameParamaterManager>();
-        }
-        
 
         players[0] = PhotonNetwork.Instantiate(playerPrefabNames[(int)GameParameterManager.Instance.SpawnPlayerType], Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
@@ -138,9 +132,6 @@ public class MainGameManager : MonoBehaviour
 
         InitPlayerPosition();
 
-        //// 1フレーム待ってからプレイヤーを初期位置に移動する
-        //Observable.TimerFrame(2).Subscribe(_ => InitPlayerPosition());
-
 
         // ゲーム開始まで遅延処理する
         Observable.Timer(System.TimeSpan.FromSeconds(startWaitTime))
@@ -160,6 +151,25 @@ public class MainGameManager : MonoBehaviour
             .AddTo(gameObject);
 
     }
+
+    private void Update()
+    {
+
+        if (PhotonNetwork.IsMasterClient) { return; }
+
+
+        if (!globalParamaterManager)
+        {
+            globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
+            //Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
+            if (!globalParamaterManager) { Debug.LogWarning("グローバルパラメータがありません!!"); }
+        }
+        else
+        {
+            //Debug.Log("グローバルパラメータマネージャーが既に存在します。");
+        }
+    }
+
 
     private void InitPlayerParameter()
     {

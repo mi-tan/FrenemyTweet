@@ -7,9 +7,11 @@ using UnityEngine;
 /// </summary>
 public class PlayerCamera : MonoBehaviour
 {
+    [SerializeField]
     private Camera mainCamera;
     public void SetMainCamera(Camera camera)
     {
+        if (!camera) { Debug.LogError("MainGameManager.PlayerCamera → None(Camera)"); }
         mainCamera = camera;
     }
     public Camera GetMainCamera()
@@ -106,16 +108,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void UpdateCamera(float mouseX, float mouseY, float rotationHorizontal, float rotationVertical)
     {
-        if(distance < 0)
-        {
-            // カメラの位置を初期化
-            mainCamera.transform.position = transform.position + INITIAL_POSITION;
-            // カメラの中心点を計算
-            centerPoint = transform.position + transform.up * INITIAL_POSITION.y;
-            // カメラと中心点の距離を計算
-            initialDistance = Vector3.Distance(mainCamera.transform.position, centerPoint);
-            distance = initialDistance;
-        }
+        if (!mainCamera) { return; }
 
         // カメラ回転
         RotateCamera(mouseX, mouseY, rotationHorizontal, rotationVertical);

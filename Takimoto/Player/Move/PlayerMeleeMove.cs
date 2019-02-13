@@ -69,8 +69,14 @@ public class PlayerMeleeMove : MonoBehaviour, IPlayerMove
             characterController.Move(-transform.up * GRAVITY_POWER * Time.deltaTime);
         }
 
-        Vector3 cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveDirection = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
+        Vector3 cameraForward = Vector3.zero;
+        Vector3 moveDirection = Vector3.zero;
+
+        if (playerProvider.GetMainCamera() != null)
+        {
+            cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
+            moveDirection = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
+        }
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
 

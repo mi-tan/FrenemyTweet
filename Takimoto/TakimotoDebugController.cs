@@ -7,19 +7,19 @@ public class TakimotoDebugController : MonoBehaviour
 {
     //private bool stop = false;
 
-    public void LoadSwordPlayer()
-    {
-        GameParameterManager.Instance.SetPlayerType(GameParameterManager.PlayerType.Sword);
+    //public void LoadSwordPlayer()
+    //{
+    //    GameParameterManager.Instance.SetPlayerType(GameParameterManager.PlayerType.Sword);
 
-        SceneController.JumpSceneAsync("MainGameScene");
-    }
+    //    SceneController.JumpSceneAsync("MainGameScene");
+    //}
 
-    public void LoadRiflePlayer()
-    {
-        GameParameterManager.Instance.SetPlayerType(GameParameterManager.PlayerType.Rifle);
+    //public void LoadRiflePlayer()
+    //{
+    //    GameParameterManager.Instance.SetPlayerType(GameParameterManager.PlayerType.Rifle);
 
-        SceneController.JumpSceneAsync("MainGameScene");
-    }
+    //    SceneController.JumpSceneAsync("MainGameScene");
+    //}
 
     private void Update()
     {
@@ -29,7 +29,7 @@ public class TakimotoDebugController : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            SceneController.JumpSceneAsync("TestWeaponSelect");
+            SceneController.JumpSceneAsync("WeaponSelectScene");
         }
 
         //if (Input.GetKeyDown(KeyCode.Q))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/HalfCircleAttack")]
 public class HalfCircleAttack : EnemySkillBase
@@ -58,7 +59,8 @@ public class HalfCircleAttack : EnemySkillBase
         int randNum = Random.Range(0, attackAngles.Length);
 
         instantAreaObject = null;
-        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, attackAngles[randNum]);
+        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
+        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
@@ -76,7 +78,7 @@ public class HalfCircleAttack : EnemySkillBase
         // 攻撃するプレイヤーを取得
         attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
         Attack(attackPlayers);
-        Destroy(instantAreaObject);
+        PhotonNetwork.Destroy(instantAreaObject);
     }
 
     /// <summary>

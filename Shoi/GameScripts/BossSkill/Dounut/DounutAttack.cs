@@ -17,7 +17,8 @@ public class DounutAttack : EnemySkillBase {
     public override void ActivateSkill(Transform thisTransform)
     {
         instantAreaObject = null;
-        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, thisTransform.rotation);
+        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
+        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>

@@ -93,7 +93,6 @@ public class BossEnemyController : BossEnemy {
             ChangeState(BossEnemyState.Attack);
         }else if(currentState == BossEnemyState.Death)
         {
-            Debug.Log("しにました");
             gameManager.EndGame();
         }
 	}

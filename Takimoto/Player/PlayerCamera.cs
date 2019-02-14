@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerCamera : MonoBehaviour
 {
-    [SerializeField]
     private Camera mainCamera;
     public void SetMainCamera(Camera camera)
     {
@@ -235,5 +234,11 @@ public class PlayerCamera : MonoBehaviour
     public void DestroyCamera()
     {
         Destroy(mainCamera.gameObject);
+    }
+
+    public void ResetCameraRotation()
+    {
+        mainCamera.transform.eulerAngles = new Vector3(
+            mainCamera.transform.rotation.x, transform.eulerAngles.y, mainCamera.transform.rotation.z);
     }
 }

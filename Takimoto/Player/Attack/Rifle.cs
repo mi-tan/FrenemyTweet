@@ -35,7 +35,7 @@ class Rifle : RangeWeapon
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 1.2f;
+    const float RELOAD_TIME = 1.15f;
 
     private Coroutine cancelableCoroutine;
     const float CANCELABLE_TIME = 0.2f;
@@ -60,10 +60,12 @@ class Rifle : RangeWeapon
     private float shakeX = 0.01f;
     private float shakeY = 0.02f;
 
-    //[SerializeField]
-    //private AudioClip shotSound;
-    //[SerializeField]
-    //private float shotVolume;
+    private SoundManager soundManager;
+
+    [SerializeField]
+    private AudioClip shotSound;
+    [SerializeField]
+    private float shotVolume;
 
 
     void Awake()
@@ -74,6 +76,8 @@ class Rifle : RangeWeapon
         playerProvider = GetComponent<PlayerProvider>();
         characterController = GetComponent<CharacterController>();
         playerCamera = GetComponent<PlayerCamera>();
+
+        soundManager = GetComponent<SoundManager>();
     }
 
     private void Start()
@@ -228,6 +232,12 @@ class Rifle : RangeWeapon
                     // カメラを揺らす
                     playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
 
+                    if (soundManager && shotSound)
+                    {
+                        // 発射音再生
+                        soundManager.PlaySound(shotSound, shotVolume);
+                    }
+
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
                     Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);
                     RaycastHit hit;
@@ -259,7 +269,7 @@ class Rifle : RangeWeapon
         }
         else
         {
-            time = 0f;
+            time = -0.1f;
         }
     }
 

@@ -34,6 +34,10 @@ public class PlayerSkill : MonoBehaviour
     {
         return skillList[skillNumber];
     }
+    public void SetSkill(PlayerSkillBase skill, int num)
+    {
+        skillList[num] = skill;
+    }
 
     /// <summary>
     /// 攻撃中か

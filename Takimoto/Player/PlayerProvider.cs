@@ -131,6 +131,11 @@ public class PlayerProvider : CharacterBase
         return playerSkill.GetSkillCoolTimes();
     }
 
+    public void SetSkill(PlayerSkillBase skill, int num)
+    {
+        playerSkill.SetSkill(skill, num);
+    }
+
     public float[] GetSkillBaseCoolTimes()
     {
         float[] skillBaseCoolTimes = new float[PlayerParameter.SKILL_QUANTITY];
@@ -195,5 +200,10 @@ public class PlayerProvider : CharacterBase
     public void SetSkyBox(Material skyBoxMat)
     {
         playerCamera.SetSkyBox(skyBoxMat);
+    }
+
+    public void ResetCameraRotation()
+    {
+        playerCamera.ResetCameraRotation();
     }
 }

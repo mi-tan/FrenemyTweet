@@ -248,6 +248,8 @@ public class MainGameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         OnGameEnd.OnNext(Unit.Default);
+
+        GameParameterManager.Instance.JumpNextStage();
     }
 
     public void OnDeathPlayer(PlayerProvider player)

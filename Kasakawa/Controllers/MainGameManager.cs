@@ -154,7 +154,7 @@ public class MainGameManager : MonoBehaviour
                 {
                     Debug.LogWarning("パラメータマネージャーがありません。時間カウントはしません。");
                 }
-                
+
             })
             .AddTo(gameObject);
 
@@ -169,8 +169,9 @@ public class MainGameManager : MonoBehaviour
         if (!globalParamaterManager)
         {
             globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
-            
-            if (!globalParamaterManager) {
+
+            if (!globalParamaterManager)
+            {
                 //全プレイヤーで共有するデータクラスのインスタンスを作成する
                 globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
                     .GetComponent<GlobalGameParamaterManager>();

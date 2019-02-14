@@ -28,6 +28,7 @@ public class PlayerTypeAnalysis : MonoBehaviour {
         // 使用するデータ
         AnalysisContainer.CategoryRet useContainer = container.categoryRetList[ReturnMostLengthCategoryNum(container)];
 
+        Debug.Log(useContainer.categoryName);
         if (useContainer.thisNameNum < muiNum)
         {
             categoryName = "無為";

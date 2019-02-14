@@ -64,15 +64,15 @@ public abstract class EnemySkillBase : ScriptableObject
     }
 
 
-    [Header("アニメーション速度")]
+    [Header("スキル発動アニメーション再生までの待ち時間")]
     [SerializeField]
-    private float skillAnimationSpeed;
+    private float startSkillAnimationWaitTime;
     /// <summary>
-    /// スキル発動アニメーション速度
+    /// スキル発動アニメーション再生までの待ち時間
     /// </summary>
-    public float getSkillAnimationSpeed
+    public float getStartSkillAnimationWaitTime
     {
-        get { return skillAnimationSpeed; }
+        get { return startSkillAnimationWaitTime; }
     }
 
     [Header("エフェクトプレハブ")]

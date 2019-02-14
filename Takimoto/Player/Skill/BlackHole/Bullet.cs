@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private float bulletSpeed;
 
+    private bool hit = false;
+
 
     private void Awake()
     {
@@ -32,11 +34,11 @@ public class Bullet : MonoBehaviour
 
     void CreateHitObject()
     {
-        if (hitObject)
+        if (!hit && hitObject)
         {
+            hit = true;
             Instantiate(hitObject, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
-
-        Destroy(gameObject);
     }
 }

@@ -93,6 +93,13 @@ class Sword : MeleeWeapon
     private float shakeX = 0.05f;
     private float shakeY = 0.015f;
 
+    private SoundManager soundManager;
+
+    [SerializeField]
+    private AudioClip[] swingSounds;
+    [SerializeField]
+    private float[] swingVolumes;
+
 
     void Awake()
     {
@@ -103,6 +110,8 @@ class Sword : MeleeWeapon
         attackCollision = swordCollider.gameObject.GetComponent<AttackCollision>();
         characterController = GetComponent<CharacterController>();
         playerCamera = GetComponent<PlayerCamera>();
+
+        soundManager = GetComponent<SoundManager>();
 
         // 剣の当たり判定を初期化
         swordCollider.enabled = false;
@@ -349,6 +358,12 @@ class Sword : MeleeWeapon
     {
         // 攻撃力を変更、ダメージ計算
         attackCollision.SetAttackPower = swordAttackPower[combo] + playerProvider.GetPlayerAttackPower();
+
+        if (soundManager && swingSounds.Length > 0)
+        {
+            // 剣振り音再生
+            soundManager.PlaySound(swingSounds[combo], swingVolumes[combo]);
+        }
 
         //Debug.Log("当たり判定：有効");
         swordCollider.enabled = true;

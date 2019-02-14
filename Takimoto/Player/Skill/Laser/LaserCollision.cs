@@ -8,7 +8,7 @@ public class LaserCollision : MonoBehaviour
 
     private float time = 0f;
 
-    private float startTime = 0.3f;
+    private float startTime = 0.1f;
     private bool start = false;
 
     private float largeTime = 0.5f;
@@ -20,12 +20,15 @@ public class LaserCollision : MonoBehaviour
     private float destroyTime = 2.2f;
     private bool destroy = false;
 
-    private float intervalTime = 0.2f;
+    private float intervalTime = 0.1f;
+
+    private AudioSource audioSource;
 
 
     private void Awake()
     {
         col = GetComponent<BoxCollider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -65,6 +68,12 @@ public class LaserCollision : MonoBehaviour
     private IEnumerator Collider()
     {
         col.enabled = true;
+
+        if (audioSource)
+        {
+            //audioSource.Play();
+            audioSource.PlayOneShot(audioSource.clip);
+        }
 
         yield return new WaitForSeconds(intervalTime);
 

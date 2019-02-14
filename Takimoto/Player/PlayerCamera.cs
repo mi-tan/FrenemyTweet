@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerCamera : MonoBehaviour
 {
-    [SerializeField]
     private Camera mainCamera;
     public void SetMainCamera(Camera camera)
     {

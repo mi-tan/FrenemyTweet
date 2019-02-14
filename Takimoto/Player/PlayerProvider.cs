@@ -196,4 +196,9 @@ public class PlayerProvider : CharacterBase
     {
         playerCamera.SetSkyBox(skyBoxMat);
     }
+
+    public void ResetCameraRotation()
+    {
+        playerCamera.ResetCameraRotation();
+    }
 }

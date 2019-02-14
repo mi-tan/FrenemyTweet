@@ -235,4 +235,10 @@ public class PlayerCamera : MonoBehaviour
     {
         Destroy(mainCamera.gameObject);
     }
+
+    public void ResetCameraRotation()
+    {
+        mainCamera.transform.eulerAngles = new Vector3(
+            mainCamera.transform.rotation.x, transform.eulerAngles.y, mainCamera.transform.rotation.z);
+    }
 }

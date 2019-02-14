@@ -87,9 +87,9 @@ public class MainGameManager : MonoBehaviour
     private void Awake()
     {
 
-        globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
+        //globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
 
-        if (!globalParamaterManager)
+        if (PhotonNetwork.IsMasterClient)
         {
             //全プレイヤーで共有するデータクラスのインスタンスを作成する
             globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)

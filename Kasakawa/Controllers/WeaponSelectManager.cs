@@ -10,6 +10,9 @@ public class WeaponSelectManager : MonoBehaviour {
     [SerializeField]
     private GameObject[] characterArray;
 
+    [SerializeField]
+    private GameObject[] infoObjectArray;
+
     private int currentTypeNumber = 0;
 
     private const string SELECT_PARAM_NAME = "IsSelect";
@@ -41,7 +44,12 @@ public class WeaponSelectManager : MonoBehaviour {
         {
             characterArray[currentTypeNumber].SetActive(true);
         }
-        
+
+        if (currentTypeNumber < infoObjectArray.Length)
+        {
+            infoObjectArray[currentTypeNumber].SetActive(true);
+        }
+
     }
 
     public void ReActivateUI()
@@ -54,6 +62,11 @@ public class WeaponSelectManager : MonoBehaviour {
         foreach(var character in characterArray)
         {
             character.SetActive(false);
+        }
+
+        foreach(var info in infoObjectArray)
+        {
+            info.SetActive(false);
         }
     }
 	

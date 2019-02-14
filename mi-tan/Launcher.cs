@@ -21,7 +21,11 @@ namespace HCS.FrenemyTweet
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
 
+        [SerializeField]
         private string nextSceneName = "MainGameScene";
+
+        [SerializeField]
+        private GameObject loadCanvas;
 
         #endregion
 
@@ -48,6 +52,13 @@ namespace HCS.FrenemyTweet
         public void Connect()
         {
             isConnecting = true;
+
+            // ロード中のUIを表示
+            if (loadCanvas)
+            {
+                loadCanvas.SetActive(true);
+            }
+            
 
             if (PhotonNetwork.IsConnected)
             {

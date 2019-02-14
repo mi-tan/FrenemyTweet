@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 /// <summary>
 /// シーン遷移の管理クラス
@@ -15,6 +16,8 @@ public sealed class SceneController
 
     private static string nextSceneName = "Title";
 
+    private static bool photonFlag = false;
+
 
     private static AsyncOperation JumpLoadScene()
     {
@@ -25,9 +28,11 @@ public sealed class SceneController
     /// 指定したシーンに飛ぶ(非同期)
     /// </summary>
     /// <param name="sceneName"></param>
-	public static AsyncOperation JumpSceneAsync(string sceneName)
+	public static AsyncOperation JumpSceneAsync(string sceneName,bool isPhoton = false)
     {
         nextSceneName = sceneName;
+
+        photonFlag = isPhoton;
 
         //カーソル表示
         Cursor.visible = true;
@@ -43,6 +48,15 @@ public sealed class SceneController
     /// <returns></returns>
     public static AsyncOperation JumpNextScene()
     {
+        // Photon使用シーンの場合
+        if (photonFlag)
+        {
+            photonFlag = false;
+            PhotonNetwork.LoadLevel(nextSceneName);
+            return null;
+        }
+
+
         return SceneManager.LoadSceneAsync(nextSceneName);
     }
 
@@ -76,14 +90,10 @@ public sealed class SceneController
     /// <summary>
     /// 現在のシーンを読み直す(リトライ)
     /// </summary>
-    public static AsyncOperation ReloadSceneAsync()
+    public static AsyncOperation ReloadSceneAsync(bool isPhoton = false)
     {
+        photonFlag = isPhoton;
         return JumpSceneAsync(SceneManager.GetActiveScene().name);
     }
-
-    //public static void LoadPlaySceneAsync()
-    //{
-    //    JumpSceneAsync(playSceneName);
-    //}
 
 }

@@ -21,6 +21,8 @@ namespace HCS.FrenemyTweet
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
 
+        private string nextSceneName = "MainGameScene";
+
         #endregion
 
         #region Private Fields
@@ -94,9 +96,12 @@ namespace HCS.FrenemyTweet
             {
                 Debug.Log("We load the 'MainGameScene' ");
 
-                PhotonNetwork.LoadLevel("MainGameScene");
+                SceneController.JumpSceneAsync(nextSceneName, true);
+
+                //PhotonNetwork.LoadLevel(nextSceneName);
             }
         }
         #endregion
+
     }
 }

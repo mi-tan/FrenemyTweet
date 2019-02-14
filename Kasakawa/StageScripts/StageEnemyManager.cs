@@ -31,6 +31,7 @@ public sealed class StageEnemyManager : MonoBehaviour {
 
     private void Start()
     {
+        if (!gameManager.GlobalParamaterManager) { Debug.LogWarning("パラメータマネージャーがありません。"); return; }
         foreach(var enemyArray in enemyDataArray)
         {
             foreach(var enemy in enemyArray.EnemyArray)

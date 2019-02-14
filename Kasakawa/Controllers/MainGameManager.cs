@@ -143,10 +143,18 @@ public class MainGameManager : MonoBehaviour
 
                 startSubject.Dispose();
 
-                // 時間をカウントする(毎フレーム)
-                (this).UpdateAsObservable()
-                .Subscribe(x => { globalParamaterManager.TimeCount += Time.deltaTime; })
-                .AddTo(gameObject);
+                if (globalParamaterManager)
+                {
+                    // 時間をカウントする(毎フレーム)
+                    (this).UpdateAsObservable()
+                    .Subscribe(x => { globalParamaterManager.TimeCount += Time.deltaTime; })
+                    .AddTo(gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("パラメータマネージャーがありません。時間カウントはしません。");
+                }
+                
             })
             .AddTo(gameObject);
 
@@ -161,8 +169,13 @@ public class MainGameManager : MonoBehaviour
         if (!globalParamaterManager)
         {
             globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
-            //Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
-            if (!globalParamaterManager) { Debug.LogWarning("グローバルパラメータがありません!!"); }
+            
+            if (!globalParamaterManager) {
+                //全プレイヤーで共有するデータクラスのインスタンスを作成する
+                globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
+                    .GetComponent<GlobalGameParamaterManager>();
+                Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
+            }
         }
         else
         {

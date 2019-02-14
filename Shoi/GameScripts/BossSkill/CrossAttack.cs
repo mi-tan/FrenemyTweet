@@ -31,8 +31,9 @@ public class CrossAttack : EnemySkillBase
         int randNum = Random.Range(0, attackCrossAngles.Length);
 
         instantAreaObject = null;
-        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, attackCrossAngles[randNum]);
-
+        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
+        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
+   
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
             AttackPlayerSearch(thisTransform.position)

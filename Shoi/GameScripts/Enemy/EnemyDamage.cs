@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using Photon.Pun;
 
 /// <summary>
 /// ダメージを計算するクラス
@@ -87,15 +88,6 @@ public sealed class EnemyDamage :　MonoBehaviour {
     {
         // アニメーションを呼び出し
         enemyAnimationController.Death(useAnimationNum);
-
-        //enemyAnimationController.Type(Random.Range(0, deathAnimationNum));
-        
-        //// 呼び出したアニメーションを停止
-        //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
-        //{
-        //    enemyAnimationController.Death(false);
-        //}).AddTo(gameObject);
-
     }
 
     /// <summary>
@@ -110,8 +102,8 @@ public sealed class EnemyDamage :　MonoBehaviour {
         else
         {
             // 死亡エフェクト生成
-            Instantiate(deathEffect, transform.position, transform.rotation);
+            PhotonNetwork.Instantiate(deathEffect.name, transform.position, transform.rotation);
         }
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 }

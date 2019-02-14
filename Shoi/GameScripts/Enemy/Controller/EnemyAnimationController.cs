@@ -57,7 +57,6 @@ public class EnemyAnimationController : MonoBehaviour
         // AnimationClipを差し替えて、強制的にアップデート
         // ステートがリセットされる
         overrideController[overrideClipName] = clip;
-        enemyAnimator.Update(0.0f);
 
         // ステートを戻す
         for (int i = 0; i < enemyAnimator.layerCount; i++)

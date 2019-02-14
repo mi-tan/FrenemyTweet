@@ -19,9 +19,8 @@ public class SoundManager : MonoBehaviour {
             Debug.LogWarning("Soundの設定がされていません");
             return;
         }
-
+        Debug.Log("音："+sound.name);
         audioSource.PlayOneShot(sound);
-        Debug.Log("音再生①");
     }
 
     public void PlaySound(AudioClip sound, float volume)
@@ -38,6 +37,5 @@ public class SoundManager : MonoBehaviour {
         }
 
         audioSource.PlayOneShot(sound, volume);
-        Debug.Log("音再生①");
     }
 }

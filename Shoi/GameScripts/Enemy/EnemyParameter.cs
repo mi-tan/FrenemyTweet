@@ -25,9 +25,9 @@ public class EnemyParameter : MonoBehaviour {
     [SerializeField, Tooltip("死亡時のエフェクト")]
     public GameObject deathEffect;
     [SerializeField]
-    public AudioClip takeDamageSound;
+    public AudioClip spawnSound;
     [SerializeField]
-    public AudioClip deathSound;
+    public AudioClip takeDamageSound;
     [SerializeField,Tooltip("使用する武器")]
     public List<AttackCollision> useWeapon;
     [SerializeField,Tooltip("攻撃を開始する距離")]

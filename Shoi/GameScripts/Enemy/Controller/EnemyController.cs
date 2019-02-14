@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using Zenject;
 using System;
+using Photon.Pun;
 
 /// <summary>
 /// 敵（ボス以外）の動きを制御するクラス
@@ -94,7 +95,9 @@ public sealed class EnemyController : NormalEnemy
         else
         {
             // スポーン時のエフェクト生成
-            Instantiate(enemyParameter.spawnEffect, transform.position, transform.rotation);
+            PhotonNetwork.Instantiate(enemyParameter.spawnEffect.name, transform.position, transform.rotation);
+            soundManager.PlaySound(enemyParameter.spawnSound);
+            Debug.LogWarning("すぽん");
         }
 
         // 武器のコライダー制御
@@ -226,7 +229,6 @@ public sealed class EnemyController : NormalEnemy
         if (enemyParameter.hp <= 0)
         {
             enemyDamage.DeathEnemy();
-            soundManager.PlaySound(enemyParameter.deathSound);
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
 
             ChangeState(EnemyState.Death);

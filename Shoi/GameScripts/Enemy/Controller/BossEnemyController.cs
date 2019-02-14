@@ -87,7 +87,7 @@ public class BossEnemyController : BossEnemy {
             }
 
             elapsedTime += Time.deltaTime;
-            Debug.Log("硬直中 時間：" + currentSkill.getSkillRecoveryTime);
+
             if (elapsedTime < currentSkill.getSkillRecoveryTime) { return; }
             elapsedTime = 0;
             ChangeState(BossEnemyState.Attack);
@@ -143,6 +143,6 @@ public class BossEnemyController : BossEnemy {
     /// </summary>
     private void DeathInstruction()
     {
-        // ゲームクリア時の演出諸々を呼び出す
+        Debug.Log("ゲームクリア時の演出諸々を呼び出す");
     }
 }

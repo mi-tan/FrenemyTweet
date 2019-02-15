@@ -40,7 +40,8 @@ public class GlobalGameParamaterManager : SingletonMonoBehaviour<GlobalGameParam
     //protected override void Awake()
     //{
     //    base.Awake();
-    //    photonView = GetComponent<PhotonView>();
+    //    //photonView = GetComponent<PhotonView>();
+    //    DontDestroyOnLoad(gameObject);
     //}
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

@@ -13,6 +13,9 @@ public class WarpScript : MonoBehaviour {
         if(other.gameObject.layer == (int)LayerManager.Layer.Player)
         {
             other.transform.position = warpEndPoint.position;
+            other.transform.eulerAngles = warpEndPoint.eulerAngles;
+
+            other.GetComponent<PlayerProvider>().ResetCameraRotation();
         }
     }
 }

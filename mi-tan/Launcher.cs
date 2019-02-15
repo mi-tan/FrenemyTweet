@@ -31,7 +31,7 @@ namespace HCS.FrenemyTweet
 
         #region Private Fields
 
-        string GameVersion = "1";
+        string GameVersion = "1.1";
 
         bool isConnecting;
 

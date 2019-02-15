@@ -34,11 +34,18 @@ public sealed class SceneController
 
         photonFlag = isPhoton;
 
+        if (!isPhoton)
+        {
+            PhotonNetwork.Disconnect();
+        }
+
         //カーソル表示
         Cursor.visible = true;
         // マウスのロックを解除
         Cursor.lockState = CursorLockMode.None;
         //return SceneManager.LoadSceneAsync(sceneName);
+
+        Debug.Log($"ロードシーンに飛ぶ 次のシーン名　= {nextSceneName}");
         return JumpLoadScene();
     }
 
@@ -56,6 +63,7 @@ public sealed class SceneController
             return null;
         }
 
+        
 
         return SceneManager.LoadSceneAsync(nextSceneName);
     }

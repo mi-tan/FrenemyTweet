@@ -19,16 +19,6 @@ public class HalfCircleAttack : EnemySkillBase
     /// 回転角度
     /// </summary>
     private int rotateAngle = 90;
-    private enum AttackAngle
-    {
-        FrontAttack = 0,
-        BackAttack  = 1,
-        RightAttack = 2,
-        LeftAttack  = 3
-    }
-
-    [SerializeField]
-    private AttackAngle attackState;
 
     /// <summary>
     /// エリア生成時のQuaternion
@@ -56,17 +46,17 @@ public class HalfCircleAttack : EnemySkillBase
 
     public override void ActivateSkill(Transform thisTransform)
     {
-        //Quaternion attackRotate = AttackAngleSet(attackState);
         int randNum = Random.Range(0, attackAngles.Length);
+        Quaternion instantRotation = attackAngles[randNum];
 
         //instantAreaObject = null;
         Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
         // エリア生成
-        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, thisTransform.rotation);
+        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, instantRotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
-            AttackPlayerSearch(instantPos, thisTransform.rotation)
+            AttackPlayerSearch(instantPos, instantRotation)
         ).AddTo(thisTransform.gameObject);
     }
 
@@ -78,7 +68,7 @@ public class HalfCircleAttack : EnemySkillBase
     {
         PhotonNetwork.Destroy(instantAreaObject);
         // エフェクト生成
-        instantEffect = PhotonNetwork.Instantiate(useEffect.name, useEffect.transform.position, useEffect.transform.rotation);
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
 
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得

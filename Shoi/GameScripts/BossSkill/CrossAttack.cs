@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/CrossAttack")]
@@ -10,6 +11,7 @@ public class CrossAttack : EnemySkillBase
 {
 
     private GameObject instantAreaObject;
+    private GameObject instantEffect;
     /// <summary>
     /// 攻撃するプレイヤーを格納
     /// </summary>
@@ -29,28 +31,33 @@ public class CrossAttack : EnemySkillBase
     public override void ActivateSkill(Transform thisTransform)
     {
         int randNum = Random.Range(0, attackCrossAngles.Length);
+        Quaternion instantRotation = attackCrossAngles[randNum];
 
         instantAreaObject = null;
         Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
-        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
-   
+        instantAreaObject = Instantiate(useAreaObj, instantPos, instantRotation);
+
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
-            AttackPlayerSearch(thisTransform.position)
+            AttackPlayerSearch(instantPos, instantRotation)
         ).AddTo(thisTransform.gameObject);
     }
+
 
     /// <summary>
     /// 攻撃するプレイヤーを探す
     /// </summary>
     /// <param name="thisPosition"></param>
-    private void AttackPlayerSearch(Vector3 thisPosition)
+    private void AttackPlayerSearch(Vector3 instantPos, Quaternion instantRotate)
     {
+        PhotonNetwork.Destroy(instantAreaObject);
+        // エフェクト生成
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
+
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
         attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
         Attack(attackPlayers);
-        Destroy(instantAreaObject);
     }
 
     /// <summary>

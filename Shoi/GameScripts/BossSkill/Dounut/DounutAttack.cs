@@ -36,7 +36,7 @@ public class DounutAttack : EnemySkillBase {
     {
         PhotonNetwork.Destroy(instantAreaObject);
         // エフェクト生成
-        instantEffect = PhotonNetwork.Instantiate(useEffect.name, useEffect.transform.position, useEffect.transform.rotation);
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
 
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得

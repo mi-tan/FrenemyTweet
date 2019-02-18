@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UniRx;
 using System;
+using Photon.Pun;
 
 /// <summary>
 /// 衝突したオブジェクトにダメージを与えるクラス
@@ -11,6 +12,14 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
 public sealed class AttackCollision : MonoBehaviour {
+
+    [SerializeField]
+    private PhotonView photonview;
+
+    public PhotonView getPhotonView
+    {
+        get { return photonview; }
+    }
 
     /// <summary>
     /// 攻撃力
@@ -92,11 +101,22 @@ public sealed class AttackCollision : MonoBehaviour {
     /// <param name="targetObj"></param>
     private void CallTakeDamage(GameObject targetObj)
     {
-        ExecuteEvents.Execute<IDamage>(
-            target: targetObj.gameObject,
-            eventData: null,
-            functor: (iDamage, eventData) => iDamage.TakeDamage(attackPower)
-        );
+        if (photonview == null)
+        {
+            ExecuteEvents.Execute<IDamage>(
+                target: targetObj.gameObject,
+                eventData: null,
+                functor: (iDamage, eventData) => iDamage.TakeDamage(attackPower)
+            );
+        }
+        else
+        {
+            ExecuteEvents.Execute<IDamage>(
+                target: targetObj.gameObject,
+                eventData: null,
+                functor: (iDamage, eventData) => iDamage.TakeDamage(attackPower, photonview)
+            );
+        }
     }
 
     /// <summary>

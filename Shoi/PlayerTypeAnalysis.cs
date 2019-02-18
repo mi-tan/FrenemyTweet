@@ -46,19 +46,19 @@ public class PlayerTypeAnalysis : MonoBehaviour {
             {
                 // リア充
                 twitterSceneManager.SetPlayerType = playerType[0];
-                Debug.Log("リア充");
+                Debug.Log("神絵師");
             }
             else if (categoryName == "悪意")
             {
                 // ネット弁慶
                 twitterSceneManager.SetPlayerType = playerType[1];
-                Debug.Log("ネット弁慶");
+                Debug.Log("KY");
             }
             else if (categoryName == "無為")
             {
                 // サイコパス
                 twitterSceneManager.SetPlayerType = playerType[2];
-                Debug.Log("サイコパス");
+                Debug.Log("ヲタク");
             }
         }
         // 簡潔
@@ -74,13 +74,13 @@ public class PlayerTypeAnalysis : MonoBehaviour {
                 {
                     // 陰キャ
                     twitterSceneManager.SetPlayerType = playerType[4];
-                Debug.Log("陰キャ");
+                Debug.Log("ネット弁慶");
             }
             else if (categoryName == "無為")
                 {
                     // 怠け者
                     twitterSceneManager.SetPlayerType = playerType[5];
-                Debug.Log("怠け者");
+                Debug.Log("陰キャ");
             }
         }
     }

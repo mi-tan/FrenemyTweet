@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Photon.Pun;
+using Zenject;
 
 /// <summary>
 /// ダメージを計算するクラス
 /// </summary>
-public sealed class EnemyDamage :　MonoBehaviour {
+public sealed class EnemyDamage : MonoBehaviour {
 
     [SerializeField]
     private GameObject damageEffect;
@@ -41,18 +42,22 @@ public sealed class EnemyDamage :　MonoBehaviour {
     {
         set { deathEffect = value; }
     }
-
     private int useAnimationNum;
 
     private BossParameter bossParameter;
     private EnemyParameter enemyParameter;
     private EnemyAnimationController enemyAnimationController;
+    private PhotonView thisPhotonView;
+
+    [Inject]
+    private MainGameManager mainGameManager;
 
     private void Awake()
     {
         bossParameter = GetComponent<BossParameter>();
         enemyParameter = GetComponent<EnemyParameter>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
+        thisPhotonView = GetComponent<PhotonView>();
 
         // 使用するアニメーションを設定
         useAnimationNum = Random.Range(0, deathAnimationNum);
@@ -83,6 +88,32 @@ public sealed class EnemyDamage :　MonoBehaviour {
 
         //Debug.Log($"受けたダメージ： {damage}");
     }
+    public void TakeDamage(int damage, PhotonView photonView)
+    {
+        // 所有者変更
+        thisPhotonView.TransferOwnership(photonView.Owner);
+
+        offsetX = Random.Range(0f, MAX_OFFSET_X);
+        offsetY = Random.Range(0f, MAX_OFFSET_Y);
+        Vector3 createPos = new Vector3(
+            transform.position.x + effectPos.x + offsetX,
+            transform.position.y + effectPos.y + offsetX,
+            transform.position.z + effectPos.z);
+
+        DamageCanvas effect = Instantiate(damageEffect, createPos, transform.rotation).GetComponent<DamageCanvas>();
+        effect.SetDamageValue(damage);
+
+        if (bossParameter != null)
+        {
+            // ボスのHPを減らす
+            bossParameter.hp -= damage;
+        }
+        else if (enemyParameter != null)
+        {
+            // 雑魚のHPを減らす
+            enemyParameter.hp -= damage;
+        }
+    }
 
     /// <summary>
     /// 被ダメージ時のアニメーション再生
@@ -92,7 +123,6 @@ public sealed class EnemyDamage :　MonoBehaviour {
         int randNum = Random.Range(0, damageAnimationNum);
         // 被ダメージ時のアニメーション再生
         enemyAnimationController.TakeDamage(randNum);
-        //enemyAnimationController.Type(randNum);
         
         //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
         //{
@@ -124,6 +154,7 @@ public sealed class EnemyDamage :　MonoBehaviour {
             // 死亡エフェクト生成
             PhotonNetwork.Instantiate(deathEffect.name, transform.position, transform.rotation);
         }
+
         PhotonNetwork.Destroy(gameObject);
     }
 }

@@ -42,7 +42,7 @@ class Rifle : RangeWeapon
     const float CANCELABLE_TIME = 0.2f;
 
     private Coroutine muzzleFlashCoroutine;
-    const float MUZZLE_FLASH_TIME = 0.04f;
+    const float MUZZLE_FLASH_TIME = 0.02f;
 
     [SerializeField]
     private Transform muzzleTrans;
@@ -59,8 +59,8 @@ class Rifle : RangeWeapon
     private CharacterController characterController;
 
     private float shakeTime = 0.1f;
-    private float shakeX = 0.01f;
-    private float shakeY = 0.02f;
+    private float shakeX = 0.03f;
+    private float shakeY = 0.06f;
 
     private SoundManager soundManager;
 
@@ -215,7 +215,7 @@ class Rifle : RangeWeapon
             {
                 time += Time.deltaTime;
 
-                if (time >= shotInterval)
+                if (time >= shotInterval || !isFirstBullet)
                 {
                     if (!isFirstBullet)
                     {

@@ -19,4 +19,9 @@ public class Explosion : MonoBehaviour
         attackCollision.SetAttackPower = attackPower;
         attackCollision.SetHitEffect = hitEffect;
     }
+
+    private void Start()
+    {
+        Destroy(gameObject, 1f);
+    }
 }

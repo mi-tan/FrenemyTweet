@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/DounutAttack")]
 public class DounutAttack : EnemySkillBase {
 
     private GameObject instantAreaObject;
+    private GameObject instantEffect;
 
     /// <summary>
     /// 攻撃するプレイヤーを格納
@@ -18,11 +20,11 @@ public class DounutAttack : EnemySkillBase {
     {
         instantAreaObject = null;
         Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
-        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
+        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, thisTransform.rotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
-            AttackPlayerSearch(thisTransform.position)
+            AttackPlayerSearch(thisTransform.position, thisTransform.rotation)
         ).AddTo(thisTransform.gameObject);
     }
 
@@ -30,13 +32,16 @@ public class DounutAttack : EnemySkillBase {
     /// 攻撃するプレイヤーを探す
     /// </summary>
     /// <param name="thisPosition"></param>
-    private void AttackPlayerSearch(Vector3 thisPosition)
+    private void AttackPlayerSearch(Vector3 instantPos, Quaternion instantRotate)
     {
+        PhotonNetwork.Destroy(instantAreaObject);
+        // エフェクト生成
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, useEffect.transform.position, useEffect.transform.rotation);
+
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
         attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
         Attack(attackPlayers);
-        Destroy(instantAreaObject);
     }
 
     /// <summary>

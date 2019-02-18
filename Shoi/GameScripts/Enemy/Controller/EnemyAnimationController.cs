@@ -47,6 +47,8 @@ public class EnemyAnimationController : MonoBehaviour
 
     public void ChangeBossSkillClip(AnimationClip clip)
     {
+
+        Debug.Log("アニメーション：" + clip.name);
         // ステートをキャッシュ
         AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[enemyAnimator.layerCount];
         for (int i = 0; i < enemyAnimator.layerCount; i++)
@@ -118,6 +120,11 @@ public class EnemyAnimationController : MonoBehaviour
         if (value == 1) { enemyAnimator.CrossFade(ANIMATION_DEATH_B, 0.5f); }
         if (value == 2) { enemyAnimator.CrossFade(ANIMATION_DEATH_C, 0.5f); }
 
+    }
+
+    public void BossDeath()
+    {
+        enemyAnimator.CrossFade("Death", 0.5f);
     }
 
     /// <summary>

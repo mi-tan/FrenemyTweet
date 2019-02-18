@@ -36,7 +36,7 @@ public class BossEnemyController : BossEnemy {
         Spawn = 0,  // 出現時の処理
         Attack = 1, // 攻撃する
         Freeze = 2, // 攻撃後のフリーズ状態
-        Death = 3   // 死亡
+        Death = 3,   // 死亡
     };
 
     public BossEnemyState currentState = BossEnemyState.Freeze;
@@ -51,7 +51,7 @@ public class BossEnemyController : BossEnemy {
     }
 
     private　void Start () {
-        currentState = BossEnemyState.Freeze;
+        currentState = BossEnemyState.Spawn;
     }
 
     private void Update () {
@@ -81,21 +81,22 @@ public class BossEnemyController : BossEnemy {
         {
             if (currentSkill == null)
             {
-                Debug.Log("currentSkillがNull");
                 ChangeState(BossEnemyState.Attack);
                 return;
             }
+
+            Debug.Log("停止中");
 
             elapsedTime += Time.deltaTime;
 
             if (elapsedTime < currentSkill.getSkillRecoveryTime) { return; }
             elapsedTime = 0;
             ChangeState(BossEnemyState.Attack);
-        }else if(currentState == BossEnemyState.Death)
+        } else if (currentState == BossEnemyState.Death)
         {
-            gameManager.EndGame();
+            //gameManager.EndGame();
         }
-	}
+    }
 
     /// <summary>
     /// ランダムにスキル番号を返す
@@ -127,8 +128,14 @@ public class BossEnemyController : BossEnemy {
         {
             enemyDamage.DeathEnemy();
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
-
-            DeathInstruction();
+            if (bossParameter.deathAnimation == null)
+            {
+                Debug.LogWarning("死亡時のアニメーションが設定されていません");
+            }
+            else
+            {
+                enemyAnimationController.BossDeath();
+            }
             ChangeState(BossEnemyState.Death);
         }
         else
@@ -137,11 +144,8 @@ public class BossEnemyController : BossEnemy {
         }
     }
 
-    /// <summary>
-    /// 死亡時の処理
-    /// </summary>
-    private void DeathInstruction()
+    public void BossDeath()
     {
-        Debug.Log("ゲームクリア時の演出諸々を呼び出す");
+        gameManager.EndGame();
     }
 }

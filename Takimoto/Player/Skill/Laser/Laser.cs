@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+
 
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Laser")]
 public class Laser : PlayerSkillBase
@@ -16,6 +18,8 @@ public class Laser : PlayerSkillBase
     private float shakeTime = 2f;
     private float shakeX = 0.06f;
     private float shakeY = 0.06f;
+
+    const string PREFAB_NAME = "LaserPrefab";
 
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)
@@ -43,7 +47,11 @@ public class Laser : PlayerSkillBase
             Debug.LogWarning("Rayで照準位置が取得できていない(Laser)");
         }
 
-        AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
+        //AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
+
+        AttackCollision attackCollision =
+            PhotonNetwork.Instantiate(PREFAB_NAME, pos, qua).GetComponent<AttackCollision>();
+
         //AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerTrans.rotation);
         // ダメージ計算
         attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;

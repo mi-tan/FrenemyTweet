@@ -79,7 +79,7 @@ class Sword : MeleeWeapon
     /// <summary>
     /// 剣コンボごとの攻撃力
     /// </summary>
-    private int[] swordAttackPower = { 0, 30, 35, 40 };
+    private float[] swordAttackPower = { 0, 1f, 1.5f, 2f };
 
     [SerializeField]
     private RoundedUp roundedUp;
@@ -357,7 +357,7 @@ class Sword : MeleeWeapon
     public void StartAttack()
     {
         // 攻撃力を変更、ダメージ計算
-        attackCollision.SetAttackPower = swordAttackPower[combo] + playerProvider.GetPlayerAttackPower();
+        attackCollision.SetAttackPower = (int)(swordAttackPower[combo] * playerProvider.GetPlayerAttackPower());
 
         if (soundManager && swingSounds.Length > 0)
         {

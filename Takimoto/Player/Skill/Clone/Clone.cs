@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Clone")]
 public class Clone : PlayerSkillBase
@@ -17,6 +18,8 @@ public class Clone : PlayerSkillBase
     //private float shakeX = 0.06f;
     //private float shakeY = 0.06f;
 
+    const string PREFAB_NAME = "ClonePrefab";
+
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)
     {
@@ -27,7 +30,8 @@ public class Clone : PlayerSkillBase
             playerProvider.transform.up * skillCreationPos.y +
             playerProvider.transform.forward * skillCreationPos.z;
 
-        AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerProvider.transform.rotation);
+        AttackCollision attackCollision =
+            PhotonNetwork.Instantiate(PREFAB_NAME, pos, playerProvider.transform.rotation).GetComponent<AttackCollision>();
         CreateClone createClone = attackCollision.GetComponent<CreateClone>();
         createClone.Create((int)playerProvider.GetWeapon());
 

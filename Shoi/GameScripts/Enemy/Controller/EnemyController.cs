@@ -20,6 +20,8 @@ public sealed class EnemyController : NormalEnemy
     private AttackCollision attackCollision;
     private SoundManager soundManager;
 
+    private PhotonView photonView;
+
     [Inject]
     private MainGameManager gameManager;
 
@@ -63,6 +65,7 @@ public sealed class EnemyController : NormalEnemy
         enemyAttackListener = GetComponent<EnemyAttackListener>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
         soundManager = GetComponent<SoundManager>();
+        photonView = GetComponent<PhotonView>();
 
         // 使用する武器を設定
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
@@ -77,7 +80,6 @@ public sealed class EnemyController : NormalEnemy
         }
 
     }
-
 
     private void Start()
     {
@@ -97,7 +99,6 @@ public sealed class EnemyController : NormalEnemy
             // スポーン時のエフェクト生成
             PhotonNetwork.Instantiate(enemyParameter.spawnEffect.name, transform.position, transform.rotation);
             soundManager.PlaySound(enemyParameter.spawnSound);
-            Debug.LogWarning("すぽん");
         }
 
         // 武器のコライダー制御
@@ -230,6 +231,8 @@ public sealed class EnemyController : NormalEnemy
         {
             enemyDamage.DeathEnemy();
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
+
+            //photonView.TransferOwnership(PhotonNetwork.pla);
 
             ChangeState(EnemyState.Death);
         }

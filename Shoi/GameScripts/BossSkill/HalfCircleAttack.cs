@@ -8,7 +8,8 @@ using Photon.Pun;
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/HalfCircleAttack")]
 public class HalfCircleAttack : EnemySkillBase
 {
-    private GameObject instantAreaObject;
+    private GameObject instantAreaObject = null;
+    private GameObject instantEffect = null;
     /// <summary>
     /// 攻撃するプレイヤーを格納
     /// </summary>
@@ -58,13 +59,14 @@ public class HalfCircleAttack : EnemySkillBase
         //Quaternion attackRotate = AttackAngleSet(attackState);
         int randNum = Random.Range(0, attackAngles.Length);
 
-        instantAreaObject = null;
+        //instantAreaObject = null;
         Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
-        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
+        // エリア生成
+        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, thisTransform.rotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
-            AttackPlayerSearch(thisTransform.position)
+            AttackPlayerSearch(instantPos, thisTransform.rotation)
         ).AddTo(thisTransform.gameObject);
     }
 
@@ -72,14 +74,18 @@ public class HalfCircleAttack : EnemySkillBase
     /// 攻撃するプレイヤーを探す
     /// </summary>
     /// <param name="thisPosition"></param>
-    private void AttackPlayerSearch(Vector3 thisPosition)
+    private void AttackPlayerSearch(Vector3 instantPos ,Quaternion instantRotate)
     {
+        PhotonNetwork.Destroy(instantAreaObject);
+        // エフェクト生成
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, useEffect.transform.position, useEffect.transform.rotation);
+
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
         attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
         Attack(attackPlayers);
-        PhotonNetwork.Destroy(instantAreaObject);
     }
+
 
     /// <summary>
     /// 攻撃

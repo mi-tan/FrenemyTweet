@@ -248,8 +248,6 @@ class Rifle : RangeWeapon
 
                     if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
                     {
-                        // 壁に当たった処理
-
                         //Vector3 vec = (hit.point - muzzleTrans.position).normalized;
                         //qua = Quaternion.LookRotation(vec);
 

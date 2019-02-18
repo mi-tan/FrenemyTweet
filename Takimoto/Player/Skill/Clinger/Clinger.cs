@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Clinger")]
 public class Clinger : PlayerSkillBase
@@ -17,10 +18,11 @@ public class Clinger : PlayerSkillBase
     //private float shakeX = 0.06f;
     //private float shakeY = 0.06f;
 
+    const string PREFAB_NAME = "ClingerPrefab";
+
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)
     {
-        //Debug.Log("レーザー生成");
         Vector3 pos =
             playerProvider.transform.position +
             playerProvider.transform.right * skillCreationPos.x +
@@ -43,7 +45,8 @@ public class Clinger : PlayerSkillBase
             Debug.LogWarning("Rayで照準位置が取得できていない(Clinger)");
         }
 
-        AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
+        AttackCollision attackCollision =
+            PhotonNetwork.Instantiate(PREFAB_NAME, pos, qua).GetComponent<AttackCollision>();
         //AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerTrans.rotation);
         // ダメージ計算
         //attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;

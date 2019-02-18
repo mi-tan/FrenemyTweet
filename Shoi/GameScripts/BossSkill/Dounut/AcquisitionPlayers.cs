@@ -13,7 +13,7 @@ public class AcquisitionPlayers : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         PlayerProvider playerProvider = other.GetComponent<PlayerProvider>();
         // プレイヤー以外をここで除外
         if (playerProvider == null) { return; }

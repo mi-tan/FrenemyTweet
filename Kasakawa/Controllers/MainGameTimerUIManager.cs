@@ -17,11 +17,12 @@ public class MainGameTimerUIManager : MonoBehaviour
     [SerializeField]
     private Text decimalText;
 
-    void Awake()
+    void Start()
     {
-
+        
+        if (!gameManager.GlobalParamaterManager) { Debug.LogWarning("パラメーターマネージャーがありません。"); return; }
         // 時間カウントが変化した場合、表示を更新する
-        gameManager.ObserveEveryValueChanged(_ => gameManager.TimeCount)
+        gameManager.ObserveEveryValueChanged(_ => gameManager.GlobalParamaterManager.TimeCount)
             .Subscribe(time => { ShowTimeCount(time); });
     }
 

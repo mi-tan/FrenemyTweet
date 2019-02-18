@@ -18,7 +18,8 @@ public class SurroundingAttack : EnemySkillBase
     public override void ActivateSkill(Transform thisTransform)
     {
         instantAreaObject = null;
-        instantAreaObject = Instantiate(useAreaObj, thisTransform.position, thisTransform.rotation);
+        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
+        instantAreaObject = Instantiate(useAreaObj, instantPos, thisTransform.rotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
@@ -52,7 +53,7 @@ public class SurroundingAttack : EnemySkillBase
                 eventData: null,
                 functor: (iDamage, eventData) => iDamage.TakeDamage(getAtackPower)
             );
-            Debug.Log("周辺攻撃：【" + attackPlayers[index].gameObject + "】へ【" + getAtackPower + "】ダメージ");
+            Debug.Log("周辺攻撃：【" + attackPlayers[index].gameObject.name + "】へ【" + getAtackPower + "】ダメージ");
         }
     }
 }

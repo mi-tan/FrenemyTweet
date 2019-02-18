@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using Photon.Pun;
 
 /// <summary>
 /// ダメージを計算するクラス
 /// </summary>
 public sealed class EnemyDamage :　MonoBehaviour {
+
+    [SerializeField]
+    private GameObject damageEffect;
+    [SerializeField]
+    private Vector3 effectPos;
+
+    private float offsetX = 0f;
+    private float offsetY = 0f;
+    const float MAX_OFFSET_X = 0.2f;
+    const float MAX_OFFSET_Y = 0.2f;
 
     /// <summary>
     /// 防御力
@@ -49,6 +60,16 @@ public sealed class EnemyDamage :　MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
+        offsetX = Random.Range(0f, MAX_OFFSET_X);
+        offsetY = Random.Range(0f, MAX_OFFSET_Y);
+        Vector3 createPos = new Vector3(
+            transform.position.x + effectPos.x + offsetX,
+            transform.position.y + effectPos.y + offsetX,
+            transform.position.z + effectPos.z);
+
+        DamageCanvas effect = Instantiate(damageEffect, createPos, transform.rotation).GetComponent<DamageCanvas>();
+        effect.SetDamageValue(damage);
+
         if (bossParameter != null)
         {
             // ボスのHPを減らす
@@ -87,15 +108,6 @@ public sealed class EnemyDamage :　MonoBehaviour {
     {
         // アニメーションを呼び出し
         enemyAnimationController.Death(useAnimationNum);
-
-        //enemyAnimationController.Type(Random.Range(0, deathAnimationNum));
-        
-        //// 呼び出したアニメーションを停止
-        //Observable.TimerFrame(enemyAnimationController.GetFlagOffFrame).Subscribe(_ =>
-        //{
-        //    enemyAnimationController.Death(false);
-        //}).AddTo(gameObject);
-
     }
 
     /// <summary>
@@ -110,8 +122,8 @@ public sealed class EnemyDamage :　MonoBehaviour {
         else
         {
             // 死亡エフェクト生成
-            Instantiate(deathEffect, transform.position, transform.rotation);
+            PhotonNetwork.Instantiate(deathEffect.name, transform.position, transform.rotation);
         }
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 }

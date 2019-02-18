@@ -12,17 +12,23 @@ public class Inhole : MonoBehaviour
     [SerializeField]
     private float destroyTime = 2.5f;
 
+    private AudioSource[] audioSources;
+
+    private float time = 0f;
+    private float muteTime = 2f;
+
 
     void Awake()
     {
         Destroy(gameObject, destroyTime);
+        audioSources = GetComponents<AudioSource>();
     }
 
     void FixedUpdate()
     {
-        foreach(Rigidbody rb in enemys)
+        foreach (Rigidbody rb in enemys)
         {
-            if(!rb) { continue; }
+            if (!rb) { continue; }
 
             float distance = 0f;
             distance = Vector3.Distance(transform.position, rb.transform.position);
@@ -37,6 +43,21 @@ public class Inhole : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (audioSources.Length > 0)
+        {
+            time += Time.deltaTime;
+            if (time >= muteTime)
+            {
+                foreach (AudioSource audioSource in audioSources)
+                {
+                    audioSource.volume -= Time.deltaTime * 3f;
+                }
+            }
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         //Debug.Log("範囲内の敵を追加");
@@ -45,7 +66,7 @@ public class Inhole : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        for(int i = 0; i < enemys.Count; i++)
+        for (int i = 0; i < enemys.Count; i++)
         {
             if (enemys[i] == other.GetComponent<Rigidbody>())
             {

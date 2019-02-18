@@ -10,10 +10,10 @@ public class Area : MonoBehaviour
 
     private float time = 0f;
 
-    private float startTime = 2.2f;
+    private float startTime = 2.1f;
     private bool start = false;
 
-    private float endTime = 8.5f;
+    private float endTime = 8.1f;
     private bool end = false;
 
     private float destroyTime = 9f;
@@ -25,14 +25,18 @@ public class Area : MonoBehaviour
     /// <summary>
     /// 回復量
     /// </summary>
-    private int recoveryValue = 1;
+    private int recoveryValue = 2;
 
     private float radius = 2.4f;
+
+    private AudioSource audioSource;
 
 
     private void Awake()
     {
         col = GetComponent<Collider>();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -50,6 +54,10 @@ public class Area : MonoBehaviour
             if (!start)
             {
                 start = true;
+                if (audioSource)
+                {
+                    audioSource.Play();
+                }
                 StartCoroutine(Recovery());
             }
         }
@@ -59,6 +67,14 @@ public class Area : MonoBehaviour
             if (!end)
             {
                 end = true;
+            }
+        }
+
+        if (end)
+        {
+            if (audioSource)
+            {
+                audioSource.volume -= Time.deltaTime;
             }
         }
     }

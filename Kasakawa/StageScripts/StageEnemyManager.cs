@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public sealed class StageEnemyManager : MonoBehaviour {
 
     [SerializeField]
     private EnemyRegion[] enemyDataArray;
+
+    [Inject]
+    private MainGameManager gameManager;
 
     [System.Serializable]
     public class EnemyRegion
@@ -21,6 +25,18 @@ public sealed class StageEnemyManager : MonoBehaviour {
             get
             {
                 return enemyArray;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        if (!gameManager.GlobalParamaterManager) { Debug.LogWarning("パラメータマネージャーがありません。"); return; }
+        foreach(var enemyArray in enemyDataArray)
+        {
+            foreach(var enemy in enemyArray.EnemyArray)
+            {
+                gameManager.GlobalParamaterManager.Enemys.Add(enemy);
             }
         }
     }

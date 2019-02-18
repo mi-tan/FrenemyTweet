@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 /// <summary>
 /// 銃
@@ -35,7 +36,7 @@ class Rifle : RangeWeapon
     private float time = 0f;
 
     private Coroutine reloadCoroutine;
-    const float RELOAD_TIME = 1.2f;
+    const float RELOAD_TIME = 1.15f;
 
     private Coroutine cancelableCoroutine;
     const float CANCELABLE_TIME = 0.2f;
@@ -46,8 +47,9 @@ class Rifle : RangeWeapon
     [SerializeField]
     private Transform muzzleTrans;
 
-    [SerializeField]
-    private GameObject bulletHitPrefab;
+    //[SerializeField]
+    //private GameObject bulletHitPrefab;
+    const string BULLET_HIT_PREFAB_NAME = "BulletHitPrefab";
 
     [SerializeField]
     private GameObject muzzleFlash;
@@ -60,6 +62,13 @@ class Rifle : RangeWeapon
     private float shakeX = 0.01f;
     private float shakeY = 0.02f;
 
+    private SoundManager soundManager;
+
+    [SerializeField]
+    private AudioClip shotSound;
+    [SerializeField]
+    private float shotVolume;
+
 
     void Awake()
     {
@@ -69,6 +78,8 @@ class Rifle : RangeWeapon
         playerProvider = GetComponent<PlayerProvider>();
         characterController = GetComponent<CharacterController>();
         playerCamera = GetComponent<PlayerCamera>();
+
+        soundManager = GetComponent<SoundManager>();
     }
 
     private void Start()
@@ -223,6 +234,12 @@ class Rifle : RangeWeapon
                     // カメラを揺らす
                     playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
 
+                    if (soundManager && shotSound)
+                    {
+                        // 発射音再生
+                        soundManager.PlaySound(shotSound, shotVolume);
+                    }
+
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2);
                     Ray ray = playerProvider.GetMainCamera().ScreenPointToRay(center);
                     RaycastHit hit;
@@ -231,18 +248,16 @@ class Rifle : RangeWeapon
 
                     if (Physics.Raycast(ray, out hit, 1000.0f, LayerMask.GetMask(new string[] { "Field", "Enemy" })))
                     {
-                        // 壁に当たった処理
-
                         //Vector3 vec = (hit.point - muzzleTrans.position).normalized;
                         //qua = Quaternion.LookRotation(vec);
 
-                        GameObject g = Instantiate(bulletHitPrefab, hit.point, transform.rotation);
+                        GameObject g = PhotonNetwork.Instantiate(BULLET_HIT_PREFAB_NAME, hit.point, transform.rotation);
                         Destroy(g, 1f);
 
                         ExecuteEvents.Execute<IDamage>(
                             target: hit.collider.gameObject,
                             eventData: null,
-                            functor: (iDamage, eventData) => iDamage.TakeDamage(playerProvider.GetBasicAttackPower())
+                            functor: (iDamage, eventData) => iDamage.TakeDamage((int)(playerProvider.GetBasicAttackPower() * 0.5f))
                         );
                     }
                     else
@@ -254,7 +269,7 @@ class Rifle : RangeWeapon
         }
         else
         {
-            time = 0f;
+            time = -0.1f;
         }
     }
 

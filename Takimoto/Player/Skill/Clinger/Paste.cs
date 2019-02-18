@@ -9,8 +9,14 @@ public class Paste : MonoBehaviour
     private Transform pasteObject;
     private Vector3 offset = Vector3.zero;
 
+    private float explosionTime = 3f;
+
     [SerializeField]
     private GameObject explosion;
+
+    private AudioSource audioSource;
+
+    private bool explode = false;
 
 
     private void Awake()
@@ -18,6 +24,8 @@ public class Paste : MonoBehaviour
         pointLight = GetComponent<Light>();
         StartCoroutine(Blink());
         StartCoroutine(Explode());
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private IEnumerator Blink()
@@ -26,17 +34,33 @@ public class Paste : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        pointLight.enabled = true;
+        if (!explode)
+        {
+            pointLight.enabled = true;
+            if (audioSource)
+            {
+                audioSource.Play();
+            }
+        }
 
         yield return new WaitForSeconds(0.3f);
 
-        StartCoroutine(Blink());
+        if (!explode)
+        {
+            StartCoroutine(Blink());
+        }
     }
 
 
     private IEnumerator Explode()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(explosionTime);
+
+        explode = true;
+        if (audioSource)
+        {
+            audioSource.Stop();
+        }
 
         GameObject e = Instantiate(explosion, transform.position, transform.rotation);
 

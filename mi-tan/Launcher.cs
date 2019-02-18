@@ -20,11 +20,17 @@ namespace HCS.FrenemyTweet
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
 
+        [SerializeField]
+        private string nextSceneName = "MainGameScene";
+
+        [SerializeField]
+        private GameObject loadCanvas;
+
         #endregion
 
         #region Private Fields
 
-        string GameVersion = "1";
+        string GameVersion = "1.1";
 
         bool isConnecting;
 
@@ -45,6 +51,13 @@ namespace HCS.FrenemyTweet
         public void Connect()
         {
             isConnecting = true;
+
+            // ロード中のUIを表示
+            if (loadCanvas)
+            {
+                loadCanvas.SetActive(true);
+            }
+            
 
             if (PhotonNetwork.IsConnected)
             {
@@ -94,9 +107,12 @@ namespace HCS.FrenemyTweet
             {
                 Debug.Log("We load the 'MainGameScene' ");
 
-                PhotonNetwork.LoadLevel("MainGameScene");
+                SceneController.JumpSceneAsync(nextSceneName, true);
+
+                //PhotonNetwork.LoadLevel(nextSceneName);
             }
         }
         #endregion
+
     }
 }

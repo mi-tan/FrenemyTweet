@@ -30,10 +30,20 @@ public class MainGameManager : MonoBehaviour
     [Header("サブシーン名のリスト")]
     private string[] subSceneNames;
 
-    /// <summary>
-    /// 経過時間をカウントする
-    /// </summary>
-    public float TimeCount { get; private set; } = 0f;
+    ///// <summary>
+    ///// 経過時間をカウントする
+    ///// </summary>
+    //public float TimeCount { get; private set; } = 0f;
+
+    private GlobalGameParamaterManager globalParamaterManager;
+
+    public GlobalGameParamaterManager GlobalParamaterManager
+    {
+        get
+        {
+            return globalParamaterManager;
+        }
+    }
 
     /// <summary>
     /// 必要なシーンがすべて読み込まれた時に呼ばれる
@@ -65,6 +75,8 @@ public class MainGameManager : MonoBehaviour
 
     private const string Start_Pos_Name = "PlayerStartPosition";
 
+    private const string GLOBAL_PARAM_NAME = "GlobalGameParamaterManager";
+
     private const int MAX_PLAYER = 1;
 
     [SerializeField]
@@ -74,6 +86,16 @@ public class MainGameManager : MonoBehaviour
 
     private void Awake()
     {
+
+        //globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //全プレイヤーで共有するデータクラスのインスタンスを作成する
+            globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
+                .GetComponent<GlobalGameParamaterManager>();
+            Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
+        }
 
         players[0] = PhotonNetwork.Instantiate(playerPrefabNames[(int)GameParameterManager.Instance.SpawnPlayerType], Vector3.zero, Quaternion.identity, 0, null).GetComponent<PlayerProvider>();
 
@@ -110,9 +132,6 @@ public class MainGameManager : MonoBehaviour
 
         InitPlayerPosition();
 
-        //// 1フレーム待ってからプレイヤーを初期位置に移動する
-        //Observable.TimerFrame(2).Subscribe(_ => InitPlayerPosition());
-
 
         // ゲーム開始まで遅延処理する
         Observable.Timer(System.TimeSpan.FromSeconds(startWaitTime))
@@ -124,14 +143,47 @@ public class MainGameManager : MonoBehaviour
 
                 startSubject.Dispose();
 
-                // 時間をカウントする(毎フレーム)
-                (this).UpdateAsObservable()
-                .Subscribe(x => { TimeCount += Time.deltaTime; })
-                .AddTo(gameObject);
+                if (globalParamaterManager)
+                {
+                    // 時間をカウントする(毎フレーム)
+                    (this).UpdateAsObservable()
+                    .Subscribe(x => { globalParamaterManager.TimeCount += Time.deltaTime; })
+                    .AddTo(gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("パラメータマネージャーがありません。時間カウントはしません。");
+                }
+
             })
             .AddTo(gameObject);
 
     }
+
+    private void Update()
+    {
+
+        if (PhotonNetwork.IsMasterClient) { return; }
+
+
+        if (!globalParamaterManager)
+        {
+            globalParamaterManager = GameObject.FindObjectOfType<GlobalGameParamaterManager>();
+
+            if (!globalParamaterManager)
+            {
+                //全プレイヤーで共有するデータクラスのインスタンスを作成する
+                globalParamaterManager = PhotonNetwork.Instantiate(GLOBAL_PARAM_NAME, Vector3.zero, Quaternion.identity, 0, null)
+                    .GetComponent<GlobalGameParamaterManager>();
+                Debug.Log("グローバルパラメータマネージャーが無いので作成します。");
+            }
+        }
+        else
+        {
+            //Debug.Log("グローバルパラメータマネージャーが既に存在します。");
+        }
+    }
+
 
     private void InitPlayerParameter()
     {
@@ -197,6 +249,8 @@ public class MainGameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         OnGameEnd.OnNext(Unit.Default);
+
+        GameParameterManager.Instance.JumpNextStage();
     }
 
     public void OnDeathPlayer(PlayerProvider player)

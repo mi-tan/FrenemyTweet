@@ -28,7 +28,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
     private bool isDodge = false;
     private Coroutine recoveryDodgeCoroutine;
     private float dodgeSpeed;
-    private float multiplyValue = 3.3f;
+    //private float multiplyValue = 3.3f;
     private float moveSpeed;
     const float SLOW_POWER = 13f;
     const float DODGE_TIME = 0.68f;
@@ -51,8 +51,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
 
     void Start()
     {
-        dodgeSpeed = playerProvider.GetMoveSpeed() * multiplyValue;
-        moveSpeed = dodgeSpeed;
+        moveSpeed = playerProvider.GetMoveSpeed();
     }
 
     /// <summary>
@@ -69,8 +68,14 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
             characterController.Move(-transform.up * GRAVITY_POWER * Time.deltaTime);
         }
 
-        Vector3 cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveDirection = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
+        Vector3 cameraForward = Vector3.zero;
+        Vector3 moveDirection = Vector3.zero;
+
+        if (playerProvider.GetMainCamera() != null)
+        {
+            cameraForward = Vector3.Scale(playerProvider.GetMainCamera().transform.forward, new Vector3(1, 0, 1)).normalized;
+            moveDirection = cameraForward * inputMoveVertical + playerProvider.GetMainCamera().transform.right * inputMoveHorizontal;
+        }
 
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DEATH) { return; }
 
@@ -117,7 +122,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
-            moveSpeed = moveSpeed - Time.deltaTime * SLOW_POWER;
+            moveSpeed -= Time.deltaTime * 3f;
             characterController.Move(transform.forward * moveSpeed * Time.deltaTime);
         }
 
@@ -151,7 +156,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
                 transform.rotation = Quaternion.LookRotation(moveDirection);
                 recoveryDodgeCoroutine = StartCoroutine(RecoveryDodge());
 
-                moveSpeed = dodgeSpeed;
+                moveSpeed = playerProvider.GetMoveSpeed();
             }
 
             isDodge = true;

@@ -64,23 +64,16 @@ public abstract class EnemySkillBase : ScriptableObject
     }
 
 
-    [Header("アニメーション速度")]
+    [Header("スキル発動アニメーション再生までの待ち時間")]
     [SerializeField]
-    private float skillAnimationSpeed;
+    private float startSkillAnimationWaitTime;
     /// <summary>
-    /// スキル発動アニメーション速度
+    /// スキル発動アニメーション再生までの待ち時間
     /// </summary>
-    public float getSkillAnimationSpeed
+    public float getStartSkillAnimationWaitTime
     {
-        get { return skillAnimationSpeed; }
+        get { return startSkillAnimationWaitTime; }
     }
-
-    [Header("エフェクトプレハブ")]
-    /// <summary>
-    /// スキルプレハブ
-    /// </summary>
-    [SerializeField]
-    protected AttackCollision skillPrefab;
 
     [Header("スキル硬直解除時間")]
     [SerializeField]
@@ -96,6 +89,10 @@ public abstract class EnemySkillBase : ScriptableObject
     [Header("使用するエリア")]
     [SerializeField]
     protected GameObject useAreaObj;
+
+    [Header("使用するエフェクト")]
+    [SerializeField]
+    protected GameObject useEffect;
 
     /// <summary>
     /// スキル発動処理

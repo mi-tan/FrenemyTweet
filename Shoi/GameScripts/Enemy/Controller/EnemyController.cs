@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using Zenject;
 using System;
+using Photon.Pun;
 
 /// <summary>
 /// 敵（ボス以外）の動きを制御するクラス
@@ -17,6 +18,9 @@ public sealed class EnemyController : NormalEnemy
     private EnemyAttackListener enemyAttackListener;
     private EnemyAnimationController enemyAnimationController;
     private AttackCollision attackCollision;
+    private SoundManager soundManager;
+
+    private PhotonView photonView;
 
     [Inject]
     private MainGameManager gameManager;
@@ -60,6 +64,8 @@ public sealed class EnemyController : NormalEnemy
         enemyParameter = GetComponent<EnemyParameter>();
         enemyAttackListener = GetComponent<EnemyAttackListener>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
+        soundManager = GetComponent<SoundManager>();
+        photonView = GetComponent<PhotonView>();
 
         // 使用する武器を設定
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
@@ -72,8 +78,8 @@ public sealed class EnemyController : NormalEnemy
                 weapon.SetHitEffect = enemyParameter.attackEffect;
             }
         }
-    }
 
+    }
 
     private void Start()
     {
@@ -91,7 +97,8 @@ public sealed class EnemyController : NormalEnemy
         else
         {
             // スポーン時のエフェクト生成
-            Instantiate(enemyParameter.spawnEffect, transform.position, transform.rotation);
+            PhotonNetwork.Instantiate(enemyParameter.spawnEffect.name, transform.position, transform.rotation);
+            soundManager.PlaySound(enemyParameter.spawnSound);
         }
 
         // 武器のコライダー制御
@@ -224,6 +231,8 @@ public sealed class EnemyController : NormalEnemy
         {
             enemyDamage.DeathEnemy();
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
+
+            //photonView.TransferOwnership(PhotonNetwork.pla);
 
             ChangeState(EnemyState.Death);
         }

@@ -33,9 +33,10 @@ public class BossEnemyController : BossEnemy {
         // Walk = 0,   // 移動
         // Wait = 1,   // 到着していたら一定時間待つ
         // Chase = 2,  // 追いかける
-        Attack = 0, // 攻撃する
-        Freeze = 1, // 攻撃後のフリーズ状態
-        Death = 2   // 死亡
+        Spawn = 0,  // 出現時の処理
+        Attack = 1, // 攻撃する
+        Freeze = 2, // 攻撃後のフリーズ状態
+        Death = 3,   // 死亡
     };
 
     public BossEnemyState currentState = BossEnemyState.Freeze;
@@ -50,8 +51,7 @@ public class BossEnemyController : BossEnemy {
     }
 
     private　void Start () {
-        currentState = BossEnemyState.Freeze;
-
+        currentState = BossEnemyState.Spawn;
     }
 
     private void Update () {
@@ -81,22 +81,22 @@ public class BossEnemyController : BossEnemy {
         {
             if (currentSkill == null)
             {
-                Debug.Log("currentSkillがNull");
                 ChangeState(BossEnemyState.Attack);
                 return;
             }
 
+            Debug.Log("停止中");
+
             elapsedTime += Time.deltaTime;
-            Debug.Log("硬直中 時間：" + currentSkill.getSkillRecoveryTime);
+
             if (elapsedTime < currentSkill.getSkillRecoveryTime) { return; }
             elapsedTime = 0;
             ChangeState(BossEnemyState.Attack);
-        }else if(currentState == BossEnemyState.Death)
+        } else if (currentState == BossEnemyState.Death)
         {
-            Debug.Log("しにました");
-            gameManager.EndGame();
+            //gameManager.EndGame();
         }
-	}
+    }
 
     /// <summary>
     /// ランダムにスキル番号を返す
@@ -128,12 +128,24 @@ public class BossEnemyController : BossEnemy {
         {
             enemyDamage.DeathEnemy();
             gameObject.layer = (int)LayerManager.Layer.IgnoreRayCast;
-
+            if (bossParameter.deathAnimation == null)
+            {
+                Debug.LogWarning("死亡時のアニメーションが設定されていません");
+            }
+            else
+            {
+                enemyAnimationController.BossDeath();
+            }
             ChangeState(BossEnemyState.Death);
         }
         else
         {
             enemyDamage.TakeDamageAnimation();
         }
+    }
+
+    public void BossDeath()
+    {
+        gameManager.EndGame();
     }
 }

@@ -11,7 +11,6 @@ namespace HCS.FrenemyTweet
     {
 
 
-
         #region Private Serializable Fields
         /// <summary>
         /// 部屋当たりの最大プレイヤー数。
@@ -60,6 +59,7 @@ namespace HCS.FrenemyTweet
             PhotonNetwork.NickName = TwitterParameterManager.Instance.UserID;
             Debug.Log("ニックネーム" + PhotonNetwork.NickName);
         }
+        
 
         #endregion
 

@@ -4,14 +4,38 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class PhotonGameManager : MonoBehaviourPunCallbacks {
 
+    MultiPlayerGet multiplayerget;
+
+    MultiPlayerName _multiplayername;
+
     #region Photon CallBacks
-    // 入室
-    public override void OnPlayerEnteredRoom(Player enteredother)
+
+    void Start()
     {
-        Debug.LogFormat("OnPlayerEnteredRoom()" + enteredother.NickName);
+        _multiplayername = GameObject.Find("MultiPlayerName").GetComponent<MultiPlayerName>();
+        multiplayerget = GameObject.Find("MultiPlayerGet").GetComponent<MultiPlayerGet>();
+    }
+
+    // 入室
+    public override void OnPlayerEnteredRoom(Player other)
+    {
+        Debug.LogFormat("OnPlayerEnteredRoom()" + other.NickName);
+
+        // ユーザーアイコンをセットする
+        other.userIconTexture = TwitterParameterManager.Instance.IconTexture;
+        multiplayerget.multiIconTexture = other.userIconTexture;
+
+        _multiplayername.multinamespace[_multiplayername.multinamesacenumber] = other.NickName;
+        _multiplayername.multinamesacenumber++;
+
+        multiplayerget.OnText();
+
+        Debug.Log("アクターナンバー" + other.ActorNumber);
+        Debug.Log("ふぉとんねっとわーく" + PhotonNetwork.NickName);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -19,10 +43,11 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks {
         }
     }
 
+
     // 退室
-    public override void OnPlayerLeftRoom(Player leftother)
+    public override void OnPlayerLeftRoom(Player other)
     {
-        Debug.LogFormat("OnPlayerLeftRoom()" + leftother.NickName);
+        Debug.LogFormat("OnPlayerLeftRoom()" + other.NickName);
 
         if (PhotonNetwork.IsMasterClient)
         {

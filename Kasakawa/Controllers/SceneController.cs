@@ -36,7 +36,11 @@ public sealed class SceneController
 
         if (!isPhoton)
         {
-            PhotonNetwork.Disconnect();
+            if (PhotonNetwork.IsConnected)
+            {
+                PhotonNetwork.Disconnect();
+            }
+            
         }
 
         //カーソル表示

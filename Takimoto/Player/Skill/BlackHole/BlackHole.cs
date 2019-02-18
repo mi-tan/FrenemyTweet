@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/BlackHole")]
 public class BlackHole : PlayerSkillBase
@@ -8,6 +9,8 @@ public class BlackHole : PlayerSkillBase
     [Header("消去時間")]
     [SerializeField]
     private float destroyTime = 2.4f;
+
+    const string PREFAB_NAME = "BlackHolePrefab";
 
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)
@@ -35,7 +38,8 @@ public class BlackHole : PlayerSkillBase
             Debug.LogWarning("Rayで照準位置が取得できていない");
         }
 
-        AttackCollision attackCollision = Instantiate(skillPrefab, pos, qua);
+        AttackCollision attackCollision =
+            PhotonNetwork.Instantiate(PREFAB_NAME, pos, qua).GetComponent<AttackCollision>();
         Destroy(attackCollision.gameObject, destroyTime);
     }
 }

@@ -90,12 +90,12 @@ public abstract class PlayerSkillBase : ScriptableObject
         }
     }
 
-    [Header("スキルプレハブ")]
-    /// <summary>
-    /// スキルプレハブ
-    /// </summary>
-    [SerializeField]
-    protected AttackCollision skillPrefab;
+    //[Header("スキルプレハブ")]
+    ///// <summary>
+    ///// スキルプレハブ
+    ///// </summary>
+    //[SerializeField]
+    //protected AttackCollision skillPrefab;
 
     [Header("スキル硬直解除時間")]
     [SerializeField]

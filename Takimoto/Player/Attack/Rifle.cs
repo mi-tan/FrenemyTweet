@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 /// <summary>
 /// 銃
@@ -46,8 +47,9 @@ class Rifle : RangeWeapon
     [SerializeField]
     private Transform muzzleTrans;
 
-    [SerializeField]
-    private GameObject bulletHitPrefab;
+    //[SerializeField]
+    //private GameObject bulletHitPrefab;
+    const string BULLET_HIT_PREFAB_NAME = "BulletHitPrefab";
 
     [SerializeField]
     private GameObject muzzleFlash;
@@ -251,13 +253,13 @@ class Rifle : RangeWeapon
                         //Vector3 vec = (hit.point - muzzleTrans.position).normalized;
                         //qua = Quaternion.LookRotation(vec);
 
-                        GameObject g = Instantiate(bulletHitPrefab, hit.point, transform.rotation);
+                        GameObject g = PhotonNetwork.Instantiate(BULLET_HIT_PREFAB_NAME, hit.point, transform.rotation);
                         Destroy(g, 1f);
 
                         ExecuteEvents.Execute<IDamage>(
                             target: hit.collider.gameObject,
                             eventData: null,
-                            functor: (iDamage, eventData) => iDamage.TakeDamage(playerProvider.GetBasicAttackPower())
+                            functor: (iDamage, eventData) => iDamage.TakeDamage((int)(playerProvider.GetBasicAttackPower() * 0.5f))
                         );
                     }
                     else

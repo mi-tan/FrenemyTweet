@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Skill/Recovery")]
 public class Recovery : PlayerSkillBase
@@ -17,6 +18,8 @@ public class Recovery : PlayerSkillBase
     //private float shakeX = 0.06f;
     //private float shakeY = 0.06f;
 
+    const string PREFAB_NAME = "RecoveryPrefab";
+
 
     public override void ActivateSkill(PlayerProvider playerProvider, Vector3 skillCreationPos)
     {
@@ -27,7 +30,8 @@ public class Recovery : PlayerSkillBase
             playerProvider.transform.up * skillCreationPos.y +
             playerProvider.transform.forward * skillCreationPos.z;
 
-        Instantiate(skillPrefab, pos, playerProvider.transform.rotation);
+        AttackCollision attackCollision =
+            PhotonNetwork.Instantiate(PREFAB_NAME, pos, playerProvider.transform.rotation).GetComponent<AttackCollision>();
 
         // カメラを揺らす
         //playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);

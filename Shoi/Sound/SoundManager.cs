@@ -19,7 +19,6 @@ public class SoundManager : MonoBehaviour {
             Debug.LogWarning("Soundの設定がされていません");
             return;
         }
-        Debug.Log("音："+sound.name);
         audioSource.PlayOneShot(sound);
     }
 

@@ -75,13 +75,6 @@ public abstract class EnemySkillBase : ScriptableObject
         get { return startSkillAnimationWaitTime; }
     }
 
-    [Header("エフェクトプレハブ")]
-    /// <summary>
-    /// スキルプレハブ
-    /// </summary>
-    [SerializeField]
-    protected AttackCollision skillPrefab;
-
     [Header("スキル硬直解除時間")]
     [SerializeField]
     private float skillRecoveryTime;
@@ -96,6 +89,10 @@ public abstract class EnemySkillBase : ScriptableObject
     [Header("使用するエリア")]
     [SerializeField]
     protected GameObject useAreaObj;
+
+    [Header("使用するエフェクト")]
+    [SerializeField]
+    protected GameObject useEffect;
 
     /// <summary>
     /// スキル発動処理

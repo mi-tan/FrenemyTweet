@@ -10,10 +10,11 @@ public class BossParameter : MonoBehaviour {
     public int hp = 100;
     [SerializeField, Tooltip("攻撃力")]
     public int power = 10;
-    [SerializeField, Tooltip("攻撃時のエフェクト")]
-    public GameObject attackEffect;
-    [SerializeField, Tooltip("使用する武器")]
-    public List<AttackCollision> useWeapon;
+    [SerializeField, Tooltip("死亡時のアニメーション")]
+    public AnimationClip deathAnimation;
+
+    //[SerializeField, Tooltip("使用する武器")]
+    //public List<AttackCollision> useWeapon;
     //[SerializeField, Tooltip("攻撃後の硬直時間")]
     //public int freezeTime = 3;
 

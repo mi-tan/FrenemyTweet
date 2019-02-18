@@ -9,6 +9,16 @@ using Photon.Pun;
 /// </summary>
 public sealed class EnemyDamage :　MonoBehaviour {
 
+    [SerializeField]
+    private GameObject damageEffect;
+    [SerializeField]
+    private Vector3 effectPos;
+
+    private float offsetX = 0f;
+    private float offsetY = 0f;
+    const float MAX_OFFSET_X = 0.2f;
+    const float MAX_OFFSET_Y = 0.2f;
+
     /// <summary>
     /// 防御力
     /// </summary>
@@ -50,6 +60,16 @@ public sealed class EnemyDamage :　MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
+        offsetX = Random.Range(0f, MAX_OFFSET_X);
+        offsetY = Random.Range(0f, MAX_OFFSET_Y);
+        Vector3 createPos = new Vector3(
+            transform.position.x + effectPos.x + offsetX,
+            transform.position.y + effectPos.y + offsetX,
+            transform.position.z + effectPos.z);
+
+        DamageCanvas effect = Instantiate(damageEffect, createPos, transform.rotation).GetComponent<DamageCanvas>();
+        effect.SetDamageValue(damage);
+
         if (bossParameter != null)
         {
             // ボスのHPを減らす

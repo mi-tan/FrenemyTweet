@@ -45,6 +45,11 @@ public class DamageCanvas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(damageValue <= 0)
+        {
+            Destroy(gameObject);
+        }
+
         transform.LookAt(playerCamera);
 
         //damageText.transform.localScale = baseScale * GetDistance();

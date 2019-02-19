@@ -75,7 +75,7 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        if (!photonView.IsMine) { return; }
+        if (!photonView.IsMine && PhotonNetwork.InRoom) { return; }
         // 入力を取得
         float inputMoveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);
         float inputMoveVertical = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);

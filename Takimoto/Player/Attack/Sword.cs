@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using Photon.Pun;
 
 /// <summary>
 /// 剣
@@ -126,6 +127,11 @@ class Sword : MeleeWeapon
         {
             playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
         }).AddTo(gameObject);
+
+        if (PhotonNetwork.InRoom)
+        {
+            attackCollision.setPhotonView = playerProvider.GetPhotonView();
+        }
     }
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)

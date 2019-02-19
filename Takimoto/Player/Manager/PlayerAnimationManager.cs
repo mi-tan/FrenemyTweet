@@ -1,11 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+
+[RequireComponent(typeof(PhotonView))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerSkillBase))]
 
 /// <summary>
 /// プレイヤーのアニメーションを管理するクラス
 /// </summary>
-public class PlayerAnimationManager : MonoBehaviour
+public class PlayerAnimationManager : MonoBehaviour, IPunObservable
 {
     private Animator playerAnimator;
 
@@ -59,8 +65,8 @@ public class PlayerAnimationManager : MonoBehaviour
 
         // AnimationClipを差し替えて、強制的にアップデート
         // ステートがリセットされる
-        overrideController[OVERRIDE_CLIP_NAME] = overrideAnimationClip;
-        playerAnimator.Update(0.0f);
+            overrideController[OVERRIDE_CLIP_NAME] = overrideAnimationClip;
+            playerAnimator.Update(0.0f);
 
         // ステートを戻す
         for (int i = 0; i < playerAnimator.layerCount; i++)
@@ -124,5 +130,23 @@ public class PlayerAnimationManager : MonoBehaviour
     public void SetTriggerDeath()
     {
         playerAnimator.SetTrigger(PARAMETER_TRIGGER_DEATH);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 送信
+        if (stream.IsWriting)
+        {
+            PlayerSkillBase playerSkillBase = GetComponent<PlayerSkillBase>();
+            stream.SendNext(playerSkillBase.SkillAnimation);
+            stream.SendNext(playerSkillBase.SkillAnimationSpeed);
+        }
+        //　受信
+        else
+        {
+            PlayerSkillBase playerSkillBase = GetComponent<PlayerSkillBase>();
+            playerSkillBase.SkillAnimation = (AnimationClip)stream.ReceiveNext();
+            playerSkillBase.SkillAnimationSpeed = (float)stream.ReceiveNext();
+        }
     }
 }

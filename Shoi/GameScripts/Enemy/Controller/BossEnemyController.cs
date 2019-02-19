@@ -116,6 +116,8 @@ public class BossEnemyController : BossEnemy {
 
     public override void TakeDamage(int damage)
     {
+        if (bossParameter.hp <= 0) { return; }
+
         enemyDamage.TakeDamage(damage);
 
         if (attackWaitStream != null)

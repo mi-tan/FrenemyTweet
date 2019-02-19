@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossParameter : MonoBehaviour {
 
     [SerializeField, Tooltip("最大体力")]
-    private int maxHP = 100;
+    public int maxHP = 100;
     [SerializeField, Tooltip("体力")]
     public int hp = 100;
     [SerializeField, Tooltip("攻撃力")]

@@ -41,7 +41,10 @@ public class BlackHole : PlayerSkillBase
         AttackCollision attackCollision =
             PhotonNetwork.Instantiate(PREFAB_NAME, pos, qua).GetComponent<AttackCollision>();
 
-        attackCollision.setPhotonView = playerProvider.GetPhotonView();
+        if (PhotonNetwork.InRoom)
+        {
+            attackCollision.setPhotonView = playerProvider.GetPhotonView();
+        }
 
         Destroy(attackCollision.gameObject, destroyTime);
     }

@@ -117,7 +117,7 @@ class Rifle : RangeWeapon
             playerStateManager.SetIsCancelable(false);
         }
 
-        if(playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK)
+        if (playerStateManager.GetPlayerState() != PlayerStateManager.PlayerState.ATTACK)
         {
             isFirstBullet = false;
 
@@ -254,11 +254,24 @@ class Rifle : RangeWeapon
                         GameObject g = PhotonNetwork.Instantiate(BULLET_HIT_PREFAB_NAME, hit.point, transform.rotation);
                         Destroy(g, 1f);
 
-                        ExecuteEvents.Execute<IDamage>(
+                        int damageValue = (int)(playerProvider.GetBasicAttackPower() * 0.5f);
+
+                        if (PhotonNetwork.InRoom)
+                        {
+                            ExecuteEvents.Execute<IDamage>(
                             target: hit.collider.gameObject,
                             eventData: null,
-                            functor: (iDamage, eventData) => iDamage.TakeDamage((int)(playerProvider.GetBasicAttackPower() * 0.5f), playerProvider.GetPhotonView())
+                            functor: (iDamage, eventData) => iDamage.TakeDamage(damageValue, playerProvider.GetPhotonView())
                         );
+                        }
+                        else
+                        {
+                            ExecuteEvents.Execute<IDamage>(
+                            target: hit.collider.gameObject,
+                            eventData: null,
+                            functor: (iDamage, eventData) => iDamage.TakeDamage(damageValue)
+                        );
+                        }
                     }
                     else
                     {
@@ -277,7 +290,7 @@ class Rifle : RangeWeapon
     {
         if (reloadCoroutine != null) { yield break; }
 
-        cancelableCoroutine =  StartCoroutine(Cancelable());
+        cancelableCoroutine = StartCoroutine(Cancelable());
 
         yield return new WaitForSeconds(RELOAD_TIME);
 

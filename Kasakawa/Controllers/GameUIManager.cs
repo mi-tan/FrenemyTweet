@@ -73,6 +73,11 @@ public class GameUIManager : MonoBehaviour
         SceneController.ReloadSceneAsync();
     }
 
+    public void Retry(bool isPhoton)
+    {
+        SceneController.ReloadSceneAsync(true);
+    }
+
     public void BackTitle()
     {
         SceneController.JumpSceneAsync("Title");

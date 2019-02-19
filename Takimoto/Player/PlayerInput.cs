@@ -1,7 +1,7 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -69,13 +69,13 @@ public class PlayerInput : MonoBehaviour
         iPlayerAttack = GetComponent<IPlayerAttack>();
         playerCamera = GetComponent<PlayerCamera>();
         playerSkill = GetComponent<PlayerSkill>();
+
         photonView = GetComponent<PhotonView>();
     }
 
     void Update()
     {
-        if (!photonView.IsMine && PhotonNetwork.InRoom) { return; }
-
+        if (!photonView.IsMine) { return; }
         // 入力を取得
         float inputMoveHorizontal = Input.GetAxisRaw(INPUT_MOVE_HORIZONTAL);
         float inputMoveVertical = Input.GetAxisRaw(INPUT_MOVE_VERTICAL);

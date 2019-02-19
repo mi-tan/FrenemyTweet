@@ -58,6 +58,7 @@ public class ImageDownloder : MonoBehaviour
         var UserName = TwitterParameterManager.Instance.UserID;
         text.text = "@" + UserName;
 
+        Debug.Log(rawImageIcon);
 
         twitterSceneManager.CalcParameter();
     }

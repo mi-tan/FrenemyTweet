@@ -35,7 +35,7 @@ public class CrossAttack : EnemySkillBase
 
         instantAreaObject = null;
         Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
-        instantAreaObject = Instantiate(useAreaObj, instantPos, instantRotation);
+        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, instantRotation);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>

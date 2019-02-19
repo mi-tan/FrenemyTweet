@@ -59,7 +59,7 @@ public class BossEnemyController : BossEnemy {
         if (currentState == BossEnemyState.Attack)
         {
             currentSkill = enemySkillBase[RandomSkillNum()];
-            Debug.Log("ボス：" + currentSkill.getSkillName);
+            // Debug.Log("ボス：" + currentSkill.getSkillName);
             currentSkill.setGameManager = gameManager;
             // 攻撃
             currentSkill.ActivateSkill(transform);

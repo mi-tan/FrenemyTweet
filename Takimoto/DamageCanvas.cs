@@ -17,13 +17,15 @@ public class DamageCanvas : MonoBehaviour
     }
 
     private float time = 0f;
-    private float alphaTime = 0.1f;
+    private float alphaTime = 0.2f;
 
     private Color color = Color.red;
     private float alpha = 0.8f;
     private float alphaSpeed = 2f;
 
     Vector3 baseScale = Vector3.zero;
+
+    private float magnification = 2f;
 
 
     // Use this for initialization
@@ -56,11 +58,18 @@ public class DamageCanvas : MonoBehaviour
             damageText.color = new Color(color.r, color.g, color.b, alpha);
 
             damageText.rectTransform.localScale = baseScale * GetDistance();
+
+            if (magnification > 1f)
+            {
+                magnification -= Time.deltaTime * 3f;
+            }
+            else
+            {
+                magnification = 1f;
+            }
         }
-        else
-        {
-            damageText.rectTransform.localScale = baseScale * GetDistance() * 1.5f;
-        }
+
+        damageText.rectTransform.localScale = baseScale * GetDistance() * magnification;
     }
 
     private float GetDistance()

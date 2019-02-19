@@ -27,9 +27,9 @@ class Sword : MeleeWeapon
     /// </summary>
     const int MAX_COMBO = 3;
 
-    const float ATTACK_DELAY_TIME = 0.35f;
-    const float STOP_COMBO_TIME = 0.65f;
-    const float MAX_COMBO_TIME = 1.1f;
+    const float ATTACK_DELAY_TIME = 0.35f * 0.77f;
+    const float STOP_COMBO_TIME = 0.65f * 0.7f;
+    const float MAX_COMBO_TIME = 1.1f * 0.7f;
 
     private Coroutine attackDelayCoroutine;
     private Coroutine stopComboCoroutine;
@@ -79,19 +79,19 @@ class Sword : MeleeWeapon
     /// <summary>
     /// 剣コンボごとの攻撃力
     /// </summary>
-    private float[] swordAttackPower = { 0, 1f, 1.5f, 2f };
+    private float[] swordAttackPower = { 0, 0.8f, 0.9f, 1f };
 
     [SerializeField]
     private RoundedUp roundedUp;
 
     private Coroutine cancelableCoroutine;
-    static readonly float[] CANCELABLE_TIME = { 0f, 0.4f, 0.4f, 0.6f };
+    static readonly float[] CANCELABLE_TIME = { 0f, 0.4f * 0.77f, 0.4f * 0.77f, 0.6f * 0.77f };
 
     private CharacterController characterController;
 
     private float shakeTime = 0.15f;
-    private float shakeX = 0.05f;
-    private float shakeY = 0.015f;
+    private float shakeX = 0.05f * 2f;
+    private float shakeY = 0.015f * 2f;
 
     private SoundManager soundManager;
 

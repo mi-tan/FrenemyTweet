@@ -72,8 +72,17 @@ public sealed class EnemyDamage : MonoBehaviour {
             transform.position.y + effectPos.y + offsetX,
             transform.position.z + effectPos.z);
 
-        DamageCanvas effect = Instantiate(damageEffect, createPos, transform.rotation).GetComponent<DamageCanvas>();
-        effect.SetDamageValue(damage);
+        GameObject effect = Instantiate(damageEffect, createPos, transform.rotation);
+        DamageCanvas damageCanvas = effect.GetComponent<DamageCanvas>();
+
+        if (damageCanvas != null)
+        {
+            damageCanvas.SetDamageValue(damage);
+        }
+        else
+        {
+            Debug.LogWarning("だめーじきゃんばすない！");
+        }
 
         if (bossParameter != null)
         {

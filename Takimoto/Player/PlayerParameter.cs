@@ -43,7 +43,7 @@ public class PlayerParameter : MonoBehaviour
     /// <summary>
     /// プレイヤーの移動速度
     /// </summary>
-    public float MoveSpeed { get; private set; } = 4f;
+    public float MoveSpeed { get; private set; } = 7f;
     public void SetMoveSpeed(float value)
     {
         MoveSpeed = value;

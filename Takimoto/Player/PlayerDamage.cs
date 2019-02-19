@@ -8,12 +8,16 @@ public class PlayerDamage : MonoBehaviour
     private PlayerStateManager playerStateManager;
     private PlayerAnimationManager playerAnimationManager;
     private PlayerCamera playerCamera;
+    private SoundManager soundManager;
 
     //private CharacterController characterController;
 
     private float shakeTime = 0.1f;
     private float shakeX = 0.1f;
     private float shakeY = 0.1f;
+
+    [SerializeField]
+    private AudioClip audioClip;
 
 
 
@@ -23,6 +27,7 @@ public class PlayerDamage : MonoBehaviour
         playerStateManager = GetComponent<PlayerStateManager>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerCamera = GetComponent<PlayerCamera>();
+        soundManager = GetComponent<SoundManager>();
 
         //characterController = GetComponent<CharacterController>();
     }
@@ -46,5 +51,7 @@ public class PlayerDamage : MonoBehaviour
 
         //Debug.Log("プレイヤーに" + damage + "ダメージ");
         //Debug.Log("残りHP："+ playerParameter.Hp);
+
+        soundManager.PlaySound(audioClip, 1f);
     }
 }

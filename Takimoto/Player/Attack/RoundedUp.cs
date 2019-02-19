@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class RoundedUp : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     [SerializeField]
     private float power = 12f;
 
     private Vector3 pos;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -19,5 +26,7 @@ public class RoundedUp : MonoBehaviour
 
         rb.AddForce(transform.forward * power, ForceMode.VelocityChange);
         //Debug.Log("飛ばす");
+
+        audioSource.PlayOneShot(audioSource.clip);
     }
 }

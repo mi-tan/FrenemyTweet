@@ -12,12 +12,15 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks {
 
     MultiPlayerName _multiplayername;
 
+    public GameObject playerCanvas;
+
     #region Photon CallBacks
 
     void Start()
     {
         _multiplayername = GameObject.Find("MultiPlayerName").GetComponent<MultiPlayerName>();
         multiplayerget = GameObject.Find("MultiPlayerGet").GetComponent<MultiPlayerGet>();
+        playerCanvas.SetActive(false);
     }
 
     // 入室
@@ -25,6 +28,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks {
     {
         Debug.LogFormat("OnPlayerEnteredRoom()" + other.NickName);
 
+        playerCanvas.SetActive(true);
         // ユーザーアイコンをセットする
         other.userIconTexture = TwitterParameterManager.Instance.IconTexture;
         multiplayerget.multiIconTexture = other.userIconTexture;
@@ -36,7 +40,14 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks {
 
         Debug.Log("アクターナンバー" + other.ActorNumber);
         Debug.Log("ふぉとんねっとわーく" + PhotonNetwork.NickName);
+        Debug.Log("ぷれいやーりすとー : " + PhotonNetwork.PlayerList[0]);
 
+        int testlist = 0;
+        string aplayertest = PhotonNetwork.PlayerList[testlist].ToString();
+        testlist++;
+        Debug.Log("プレイヤーリストの０番目" + aplayertest);
+        string aaplayertest = PhotonNetwork.PlayerList[testlist].ToString();
+        Debug.Log("プレイヤーリストの１番目" + aaplayertest);
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.LogFormat("OnPlayerEnteredRoom() {0}", PhotonNetwork.IsMasterClient);
@@ -48,6 +59,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks {
     public override void OnPlayerLeftRoom(Player other)
     {
         Debug.LogFormat("OnPlayerLeftRoom()" + other.NickName);
+        playerCanvas.SetActive(false);
 
         if (PhotonNetwork.IsMasterClient)
         {

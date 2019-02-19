@@ -33,7 +33,7 @@ public class DounutAttack : EnemySkillBase {
     private void AttackPlayerSearch(Vector3 instantPos, Quaternion instantRotate)
     {
         // エフェクト生成
-        //instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
         useAreaObj.SetActive(true);
 
         attackPlayers.Clear();

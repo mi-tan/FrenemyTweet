@@ -20,7 +20,7 @@ public sealed class EnemyController : NormalEnemy
     private AttackCollision attackCollision;
     private SoundManager soundManager;
 
-    private PhotonView photonView;
+    private PhotonView thisPhotonView;
 
     [Inject]
     private MainGameManager gameManager;
@@ -65,7 +65,7 @@ public sealed class EnemyController : NormalEnemy
         enemyAttackListener = GetComponent<EnemyAttackListener>();
         enemyAnimationController = GetComponent<EnemyAnimationController>();
         soundManager = GetComponent<SoundManager>();
-        photonView = GetComponent<PhotonView>();
+        thisPhotonView = GetComponent<PhotonView>();
 
         // 使用する武器を設定
         foreach (AttackCollision weapon in enemyParameter.useWeapon)
@@ -241,6 +241,13 @@ public sealed class EnemyController : NormalEnemy
             enemyDamage.TakeDamageAnimation();
         }
     }
+    public void TakeDamage(int damage, PhotonView photonView)
+    {
+        // 所有者変更
+        thisPhotonView.TransferOwnership(photonView.Owner);
+        TakeDamage(damage);
+    }
+
 
     private void ChangeState(EnemyState state)
     {

@@ -88,31 +88,12 @@ public sealed class EnemyDamage : MonoBehaviour {
 
         //Debug.Log($"受けたダメージ： {damage}");
     }
+
     public void TakeDamage(int damage, PhotonView photonView)
     {
         // 所有者変更
         thisPhotonView.TransferOwnership(photonView.Owner);
-
-        offsetX = Random.Range(0f, MAX_OFFSET_X);
-        offsetY = Random.Range(0f, MAX_OFFSET_Y);
-        Vector3 createPos = new Vector3(
-            transform.position.x + effectPos.x + offsetX,
-            transform.position.y + effectPos.y + offsetX,
-            transform.position.z + effectPos.z);
-
-        DamageCanvas effect = PhotonNetwork.Instantiate(damageEffect.name, createPos, transform.rotation).GetComponent<DamageCanvas>();
-        effect.SetDamageValue(damage);
-
-        if (bossParameter != null)
-        {
-            // ボスのHPを減らす
-            bossParameter.hp -= damage;
-        }
-        else if (enemyParameter != null)
-        {
-            // 雑魚のHPを減らす
-            enemyParameter.hp -= damage;
-        }
+        TakeDamage(damage);
     }
 
     /// <summary>

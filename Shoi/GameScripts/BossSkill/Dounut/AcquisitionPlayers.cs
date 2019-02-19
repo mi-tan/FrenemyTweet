@@ -6,10 +6,18 @@ public class AcquisitionPlayers : MonoBehaviour {
 
     private AttackArea attackArea;
 
-    private void Start()
+    private AttackArea getAttackArea
     {
-        attackArea = transform.parent.GetComponent<AttackArea>();
+        get
+        {
+            if (attackArea == null)
+            {
+                attackArea = transform.parent.GetComponent<AttackArea>();
+            }
+            return attackArea;
+        }
     }
+
 
     private void OnTriggerStay(Collider other)
     {
@@ -19,10 +27,10 @@ public class AcquisitionPlayers : MonoBehaviour {
         if (playerProvider == null) { return; }
         bool playerAddFlag = true;
 
-        for (int i = 0; attackArea.GetAcquisitionPlayerList.Count > i; i++)
+        for (int i = 0; getAttackArea.GetAcquisitionPlayerList.Count > i; i++)
         {
             // もうすでに取得しているプレイヤーであれば除外
-            if (attackArea.GetAcquisitionPlayerList[i].gameObject == other.gameObject)
+            if (getAttackArea.GetAcquisitionPlayerList[i].gameObject == other.gameObject)
             {
                 playerAddFlag = false;
                 break;
@@ -32,7 +40,7 @@ public class AcquisitionPlayers : MonoBehaviour {
         if (playerAddFlag)
         {
             // 追加
-            attackArea.AddAcquisitonPlayerList = other.gameObject;
+            getAttackArea.AddAcquisitonPlayerList = other.gameObject;
         }
     }
 
@@ -42,7 +50,7 @@ public class AcquisitionPlayers : MonoBehaviour {
         // プレイヤー以外をここで除外
         if (playerProvider != null)
         {
-            attackArea.RemoveAcquisitonPlayerList = other.gameObject;
+            getAttackArea.RemoveAcquisitonPlayerList = other.gameObject;
         }
     }
 }

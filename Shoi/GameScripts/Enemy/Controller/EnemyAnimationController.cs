@@ -48,7 +48,7 @@ public class EnemyAnimationController : MonoBehaviour
     public void ChangeBossSkillClip(AnimationClip clip)
     {
 
-        Debug.Log("アニメーション：" + clip.name);
+        // Debug.Log("アニメーション：" + clip.name);
         // ステートをキャッシュ
         AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[enemyAnimator.layerCount];
         for (int i = 0; i < enemyAnimator.layerCount; i++)

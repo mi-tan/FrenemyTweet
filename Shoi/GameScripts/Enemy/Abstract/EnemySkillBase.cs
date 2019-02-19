@@ -105,5 +105,17 @@ public abstract class EnemySkillBase : ScriptableObject
     {
         hitEffect = effect;
     }
+    public GameObject setAreaObject
+    {
+        set { useAreaObj = value; }
+    }
+
+    [SerializeField]
+    int skillNum;
+
+    public int getSkillNum
+    {
+        get { return skillNum; }
+    }
 }
 

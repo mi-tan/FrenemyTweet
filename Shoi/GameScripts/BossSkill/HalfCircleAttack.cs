@@ -8,7 +8,6 @@ using Photon.Pun;
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/HalfCircleAttack")]
 public class HalfCircleAttack : EnemySkillBase
 {
-    private GameObject instantAreaObject = null;
     private GameObject instantEffect = null;
     /// <summary>
     /// 攻撃するプレイヤーを格納
@@ -46,17 +45,15 @@ public class HalfCircleAttack : EnemySkillBase
 
     public override void ActivateSkill(Transform thisTransform)
     {
-        int randNum = Random.Range(0, attackAngles.Length);
-        Quaternion instantRotation = attackAngles[randNum];
-
-        //instantAreaObject = null;
-        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
         // エリア生成
-        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, instantRotation);
+        useAreaObj.SetActive(true);
+        int randNum = Random.Range(0, attackAngles.Length);
+        Quaternion useAngle = attackAngles[randNum];
 
+        useAreaObj.transform.rotation = useAngle;
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
-            AttackPlayerSearch(instantPos, instantRotation)
+            AttackPlayerSearch(useAngle)
         ).AddTo(thisTransform.gameObject);
     }
 
@@ -64,17 +61,17 @@ public class HalfCircleAttack : EnemySkillBase
     /// 攻撃するプレイヤーを探す
     /// </summary>
     /// <param name="thisPosition"></param>
-    private void AttackPlayerSearch(Vector3 instantPos ,Quaternion instantRotate)
+    private void AttackPlayerSearch(Quaternion instantRotate)
     {
         
         // エフェクト生成
-        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, useAreaObj.transform.position, instantRotate);
 
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
-        attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
+        attackPlayers = useAreaObj.GetComponent<AttackArea>().GetAcquisitionPlayerList;
 
-        PhotonNetwork.Destroy(instantAreaObject);
+        useAreaObj.SetActive(false);
         Attack(attackPlayers);
     }
 

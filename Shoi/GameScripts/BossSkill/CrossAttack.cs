@@ -10,7 +10,6 @@ using Photon.Pun;
 public class CrossAttack : EnemySkillBase
 {
 
-    private GameObject instantAreaObject;
     private GameObject instantEffect;
     /// <summary>
     /// 攻撃するプレイヤーを格納
@@ -30,16 +29,15 @@ public class CrossAttack : EnemySkillBase
 
     public override void ActivateSkill(Transform thisTransform)
     {
+        // エリア生成
+        useAreaObj.SetActive(true);
         int randNum = Random.Range(0, attackCrossAngles.Length);
-        Quaternion instantRotation = attackCrossAngles[randNum];
+        Quaternion useAngle = attackCrossAngles[randNum];
 
-        instantAreaObject = null;
-        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
-        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, instantRotation);
-
+        useAreaObj.transform.rotation = useAngle;
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
-            AttackPlayerSearch(instantPos, instantRotation)
+            AttackPlayerSearch(useAngle)
         ).AddTo(thisTransform.gameObject);
     }
 
@@ -48,16 +46,17 @@ public class CrossAttack : EnemySkillBase
     /// 攻撃するプレイヤーを探す
     /// </summary>
     /// <param name="thisPosition"></param>
-    private void AttackPlayerSearch(Vector3 instantPos, Quaternion instantRotate)
+    private void AttackPlayerSearch(Quaternion useAngle)
     {
+
         // エフェクト生成
-        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
+        instantEffect = PhotonNetwork.Instantiate(useEffect.name, useAreaObj.transform.position, useAngle);
 
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
-        attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
+        attackPlayers = useAreaObj.GetComponent<AttackArea>().GetAcquisitionPlayerList;
 
-        PhotonNetwork.Destroy(instantAreaObject);
+        useAreaObj.SetActive(false);
         Attack(attackPlayers);
     }
 

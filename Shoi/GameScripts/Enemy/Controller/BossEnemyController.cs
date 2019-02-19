@@ -19,6 +19,13 @@ public class BossEnemyController : BossEnemy {
     [Inject]
     MainGameManager gameManager;
 
+    [SerializeField]
+    private GameObject cross;
+    [SerializeField]
+    private GameObject half;
+    [SerializeField]
+    private GameObject donut;
+
     /// <summary>
     /// 経過時間
     /// </summary>
@@ -57,9 +64,23 @@ public class BossEnemyController : BossEnemy {
 
     private void Update () {
 
+        currentSkill = enemySkillBase[RandomSkillNum()];
+
         if (currentState == BossEnemyState.Attack)
         {
-            currentSkill = enemySkillBase[RandomSkillNum()];
+            if (currentSkill.getSkillNum == 0) 
+            {
+                currentSkill.setAreaObject = cross;
+            }
+            else if (currentSkill.getSkillNum == 1)
+            {
+                currentSkill.setAreaObject = half;
+            }
+            else if(currentSkill.getSkillNum == 2)
+            {
+                currentSkill.setAreaObject = donut;
+            }
+
             // Debug.Log("ボス：" + currentSkill.getSkillName);
             currentSkill.setGameManager = gameManager;
             // 攻撃

@@ -8,7 +8,6 @@ using Photon.Pun;
 [CreateAssetMenu(menuName = "ScriptableObject/EnemySkill/DounutAttack")]
 public class DounutAttack : EnemySkillBase {
 
-    private GameObject instantAreaObject;
     private GameObject instantEffect;
 
     /// <summary>
@@ -18,9 +17,8 @@ public class DounutAttack : EnemySkillBase {
 
     public override void ActivateSkill(Transform thisTransform)
     {
-        instantAreaObject = null;
-        Vector3 instantPos = new Vector3(thisTransform.position.x, thisTransform.position.y + useAreaObj.transform.position.y, thisTransform.position.z);
-        instantAreaObject = PhotonNetwork.Instantiate(useAreaObj.name, instantPos, thisTransform.rotation);
+        // エリア生成
+        useAreaObj.SetActive(true);
 
         // 詠唱
         Observable.TimerFrame(getSkillChantFrame).Subscribe(_ =>
@@ -35,13 +33,14 @@ public class DounutAttack : EnemySkillBase {
     private void AttackPlayerSearch(Vector3 instantPos, Quaternion instantRotate)
     {
         // エフェクト生成
-        instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
+        //instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
+        useAreaObj.SetActive(true);
 
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
-        attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
+        attackPlayers = useAreaObj.GetComponent<AttackArea>().GetAcquisitionPlayerList;
 
-        PhotonNetwork.Destroy(instantAreaObject);
+        useAreaObj.SetActive(false);
         Attack(attackPlayers);
     }
 

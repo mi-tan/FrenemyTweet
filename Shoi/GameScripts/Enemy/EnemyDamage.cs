@@ -72,6 +72,17 @@ public sealed class EnemyDamage : MonoBehaviour {
             transform.position.y + effectPos.y + offsetX,
             transform.position.z + effectPos.z);
 
+        if (bossParameter != null)
+        {
+            // ボスのHPを減らす
+            bossParameter.hp -= damage;
+        }
+        else if(enemyParameter != null)
+        {
+            // 雑魚のHPを減らす
+            enemyParameter.hp -= damage;
+        }
+
         GameObject effect = Instantiate(damageEffect, createPos, transform.rotation);
         DamageCanvas damageCanvas = effect.GetComponent<DamageCanvas>();
 
@@ -82,17 +93,6 @@ public sealed class EnemyDamage : MonoBehaviour {
         else
         {
             Debug.LogWarning("だめーじきゃんばすない！");
-        }
-
-        if (bossParameter != null)
-        {
-            // ボスのHPを減らす
-            bossParameter.hp -= damage;
-        }
-        else if(enemyParameter != null)
-        {
-            // 雑魚のHPを減らす
-            enemyParameter.hp -= damage;
         }
 
         //Debug.Log($"受けたダメージ： {damage}");

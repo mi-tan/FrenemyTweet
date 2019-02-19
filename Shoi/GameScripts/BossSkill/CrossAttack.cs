@@ -50,13 +50,14 @@ public class CrossAttack : EnemySkillBase
     /// <param name="thisPosition"></param>
     private void AttackPlayerSearch(Vector3 instantPos, Quaternion instantRotate)
     {
-        PhotonNetwork.Destroy(instantAreaObject);
         // エフェクト生成
         instantEffect = PhotonNetwork.Instantiate(useEffect.name, instantPos, instantRotate);
 
         attackPlayers.Clear();
         // 攻撃するプレイヤーを取得
         attackPlayers = instantAreaObject.GetComponent<AttackArea>().GetAcquisitionPlayerList;
+
+        PhotonNetwork.Destroy(instantAreaObject);
         Attack(attackPlayers);
     }
 

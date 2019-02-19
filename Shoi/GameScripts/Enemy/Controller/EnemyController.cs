@@ -241,7 +241,8 @@ public sealed class EnemyController : NormalEnemy
             enemyDamage.TakeDamageAnimation();
         }
     }
-    public void TakeDamage(int damage, PhotonView photonView)
+
+    public override void TakeDamage(int damage, PhotonView photonView)
     {
         // 所有者変更
         thisPhotonView.TransferOwnership(photonView.Owner);

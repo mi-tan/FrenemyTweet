@@ -45,6 +45,10 @@ public abstract class PlayerSkillBase : ScriptableObject
         {
             return skillAnimation;
         }
+        set
+        {
+            skillAnimation = value;
+        }
     }
 
 
@@ -59,6 +63,10 @@ public abstract class PlayerSkillBase : ScriptableObject
         get
         {
             return skillAnimationSpeed;
+        }
+        set
+        {
+            skillAnimationSpeed = value;
         }
     }
 

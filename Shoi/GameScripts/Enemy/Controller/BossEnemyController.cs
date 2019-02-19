@@ -39,7 +39,8 @@ public class BossEnemyController : BossEnemy {
         Death = 3,   // 死亡
     };
 
-    public BossEnemyState currentState = BossEnemyState.Freeze;
+    public BossEnemyState currentState = BossEnemyState.Spawn;
+    private float spawnWaitTime = 3f;
 
 
     private void Awake()
@@ -85,16 +86,25 @@ public class BossEnemyController : BossEnemy {
                 return;
             }
 
-            Debug.Log("停止中");
-
             elapsedTime += Time.deltaTime;
 
             if (elapsedTime < currentSkill.getSkillRecoveryTime) { return; }
             elapsedTime = 0;
             ChangeState(BossEnemyState.Attack);
-        } else if (currentState == BossEnemyState.Death)
+        }
+        else if (currentState == BossEnemyState.Death)
         {
             //gameManager.EndGame();
+        }
+        else if (currentState == BossEnemyState.Spawn)
+        {
+
+            elapsedTime += Time.deltaTime;
+            Debug.Log("スポーン待機中");
+
+            if (elapsedTime < spawnWaitTime) { return; }
+            elapsedTime = 0;
+            ChangeState(BossEnemyState.Attack);
         }
     }
 

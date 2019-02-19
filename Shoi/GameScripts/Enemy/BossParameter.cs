@@ -12,6 +12,8 @@ public class BossParameter : MonoBehaviour {
     public int power = 10;
     [SerializeField, Tooltip("死亡時のアニメーション")]
     public AnimationClip deathAnimation;
+    [SerializeField]
+    public GameObject destroyObject;
 
     //[SerializeField, Tooltip("使用する武器")]
     //public List<AttackCollision> useWeapon;

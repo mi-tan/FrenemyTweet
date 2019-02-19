@@ -27,10 +27,10 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
 
     private bool isDodge = false;
     private Coroutine recoveryDodgeCoroutine;
-    private float dodgeSpeed;
+    //private float dodgeSpeed;
     //private float multiplyValue = 3.3f;
     private float moveSpeed;
-    const float SLOW_POWER = 13f;
+    const float SLOW_POWER = 10f;
     const float DODGE_TIME = 0.68f;
 
     private CharacterController characterController;
@@ -122,7 +122,7 @@ public class PlayerRangeMove : MonoBehaviour, IPlayerMove
         if (playerStateManager.GetPlayerState() == PlayerStateManager.PlayerState.DODGE)
         {
             // 移動位置に徐々に移動
-            moveSpeed -= Time.deltaTime * 3f;
+            moveSpeed = playerProvider.GetMoveSpeed() * 1.1f;
             characterController.Move(transform.forward * moveSpeed * Time.deltaTime);
         }
 

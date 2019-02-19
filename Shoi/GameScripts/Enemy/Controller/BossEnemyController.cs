@@ -51,7 +51,7 @@ public class BossEnemyController : BossEnemy {
     }
 
     private　void Start () {
-        currentState = BossEnemyState.Spawn;
+        currentState = BossEnemyState.Freeze;
     }
 
     private void Update () {

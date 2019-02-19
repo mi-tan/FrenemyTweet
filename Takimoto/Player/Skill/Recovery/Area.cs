@@ -25,7 +25,7 @@ public class Area : MonoBehaviour
     /// <summary>
     /// 回復量
     /// </summary>
-    private int recoveryValue = 2;
+    private int recoveryValue = 4;
 
     private float radius = 2.4f;
 

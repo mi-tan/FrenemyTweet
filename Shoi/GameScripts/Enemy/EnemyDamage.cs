@@ -17,8 +17,8 @@ public sealed class EnemyDamage : MonoBehaviour {
 
     private float offsetX = 0f;
     private float offsetY = 0f;
-    const float MAX_OFFSET_X = 0.2f;
-    const float MAX_OFFSET_Y = 0.2f;
+    const float MAX_OFFSET_X = 1f;
+    const float MAX_OFFSET_Y = 1f;
 
     /// <summary>
     /// 防御力

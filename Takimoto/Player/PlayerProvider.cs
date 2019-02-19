@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using Photon.Pun;
+
 public class PlayerProvider : CharacterBase
 {
     private PlayerDamage playerDamage;
@@ -32,6 +34,8 @@ public class PlayerProvider : CharacterBase
     }
     private Weapon weapon = Weapon.NONE;
 
+    private PhotonView photonView;
+
 
     void Awake()
     {
@@ -43,6 +47,7 @@ public class PlayerProvider : CharacterBase
         weaponBase = GetComponent<WeaponBase>();
 
         iPlayerAttack = GetComponent<IPlayerAttack>();
+        photonView = GetComponent<PhotonView>();
     }
 
     private void Start()
@@ -205,5 +210,10 @@ public class PlayerProvider : CharacterBase
     public void ResetCameraRotation()
     {
         playerCamera.ResetCameraRotation();
+    }
+
+    public PhotonView GetPhotonView()
+    {
+        return photonView;
     }
 }

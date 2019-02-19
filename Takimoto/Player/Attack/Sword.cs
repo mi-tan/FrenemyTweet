@@ -126,6 +126,8 @@ class Sword : MeleeWeapon
         {
             playerCamera.ShakeCamera(shakeTime, shakeX, shakeY);
         }).AddTo(gameObject);
+
+        attackCollision.setPhotonView = playerProvider.GetPhotonView();
     }
 
     public override void UpdateAttack(float inputAttack, float inputMoveHorizontal, float inputMoveVertical)

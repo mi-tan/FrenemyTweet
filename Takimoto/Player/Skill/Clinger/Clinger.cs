@@ -47,6 +47,7 @@ public class Clinger : PlayerSkillBase
 
         AttackCollision attackCollision =
             PhotonNetwork.Instantiate(PREFAB_NAME, pos, qua).GetComponent<AttackCollision>();
+        attackCollision.setPhotonView = playerProvider.GetPhotonView();
         //AttackCollision attackCollision = Instantiate(skillPrefab, pos, playerTrans.rotation);
         // ダメージ計算
         //attackCollision.SetAttackPower = skillAttackPower + playerAttackPower;

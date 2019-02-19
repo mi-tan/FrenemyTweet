@@ -257,7 +257,7 @@ class Rifle : RangeWeapon
                         ExecuteEvents.Execute<IDamage>(
                             target: hit.collider.gameObject,
                             eventData: null,
-                            functor: (iDamage, eventData) => iDamage.TakeDamage((int)(playerProvider.GetBasicAttackPower() * 0.5f))
+                            functor: (iDamage, eventData) => iDamage.TakeDamage((int)(playerProvider.GetBasicAttackPower() * 0.5f), playerProvider.GetPhotonView())
                         );
                     }
                     else

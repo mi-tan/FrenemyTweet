@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using System;
+using Photon.Pun;
 
 /// <summary>
 /// ボスの動きを制御するクラス
@@ -179,6 +180,7 @@ public class BossEnemyController : BossEnemy {
 
     public void BossDeath()
     {
-        gameManager.EndGame();
+        PhotonNetwork.Instantiate(bossParameter.destroyObject.name, transform.position, transform.rotation);
+        PhotonNetwork.Destroy(gameObject);
     }
 }

@@ -109,7 +109,7 @@ public sealed class EnemyDamage : MonoBehaviour {
             transform.position.y + effectPos.y + offsetX,
             transform.position.z + effectPos.z);
 
-        DamageCanvas effect = Instantiate(damageEffect, createPos, transform.rotation).GetComponent<DamageCanvas>();
+        DamageCanvas effect = PhotonNetwork.Instantiate(damageEffect.name, createPos, transform.rotation).GetComponent<DamageCanvas>();
         effect.SetDamageValue(damage);
 
         if (bossParameter != null)

@@ -21,6 +21,11 @@ public sealed class AttackCollision : MonoBehaviour {
         get { return photonview; }
     }
 
+    public PhotonView setPhotonView
+    {
+        set { photonview = value; }
+    }
+
     /// <summary>
     /// 攻撃力
     /// </summary>

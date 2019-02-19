@@ -4,16 +4,18 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-[RequireComponent(typeof(PhotonView))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(PlayerSkillBase))]
+//[RequireComponent(typeof(PhotonView))]
+//[RequireComponent(typeof(Animator))]
+//[RequireComponent(typeof(PlayerSkillBase))]
 
 /// <summary>
 /// プレイヤーのアニメーションを管理するクラス
 /// </summary>
-public class PlayerAnimationManager : MonoBehaviour, IPunObservable
+public class PlayerAnimationManager : MonoBehaviour//, IPunObservable
 {
     private Animator playerAnimator;
+
+    //private PlayerProvider playerProvider;
 
     /// <summary>
     /// 走るパラメータ
@@ -52,6 +54,7 @@ public class PlayerAnimationManager : MonoBehaviour, IPunObservable
         overrideController = new AnimatorOverrideController();
         overrideController.runtimeAnimatorController = playerAnimator.runtimeAnimatorController;
         playerAnimator.runtimeAnimatorController = overrideController;
+        //playerProvider = GetComponent<PlayerProvider>();
     }
 
     public void ChangeSkillClip(AnimationClip overrideAnimationClip, float skillAnimationSpeed)
@@ -132,21 +135,21 @@ public class PlayerAnimationManager : MonoBehaviour, IPunObservable
         playerAnimator.SetTrigger(PARAMETER_TRIGGER_DEATH);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        // 送信
-        if (stream.IsWriting)
-        {
-            PlayerSkillBase playerSkillBase = GetComponent<PlayerSkillBase>();
-            stream.SendNext(playerSkillBase.SkillAnimation);
-            stream.SendNext(playerSkillBase.SkillAnimationSpeed);
-        }
-        //　受信
-        else
-        {
-            PlayerSkillBase playerSkillBase = GetComponent<PlayerSkillBase>();
-            playerSkillBase.SkillAnimation = (AnimationClip)stream.ReceiveNext();
-            playerSkillBase.SkillAnimationSpeed = (float)stream.ReceiveNext();
-        }
-    }
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    // 送信
+    //    if (stream.IsWriting)
+    //    {
+    //        PlayerSkillBase playerSkillBase = playerProvider.GetSelectSkill();
+    //        stream.SendNext(playerSkillBase.SkillAnimation);
+    //        stream.SendNext(playerSkillBase.SkillAnimationSpeed);
+    //    }
+    //    //　受信
+    //    else
+    //    {
+    //        PlayerSkillBase playerSkillBase = playerProvider.GetSelectSkill();
+    //        playerSkillBase.SkillAnimation = (AnimationClip)stream.ReceiveNext();
+    //        playerSkillBase.SkillAnimationSpeed = (float)stream.ReceiveNext();
+    //    }
+    //}
 }

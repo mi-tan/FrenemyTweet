@@ -205,6 +205,8 @@ public class PlayerCamera : MonoBehaviour
 
     private IEnumerator DoShake(float shakeTime, float shakeX, float shakeY)
     {
+        if (!mainCamera) { yield break; }
+
         float time = 0f;
 
         while (shakeTime > time)

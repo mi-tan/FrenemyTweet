@@ -45,10 +45,10 @@ public abstract class PlayerSkillBase : ScriptableObject
         {
             return skillAnimation;
         }
-        set
-        {
-            skillAnimation = value;
-        }
+        //set
+        //{
+        //    skillAnimation = value;
+        //}
     }
 
 
@@ -64,10 +64,10 @@ public abstract class PlayerSkillBase : ScriptableObject
         {
             return skillAnimationSpeed;
         }
-        set
-        {
-            skillAnimationSpeed = value;
-        }
+        //set
+        //{
+        //    skillAnimationSpeed = value;
+        //}
     }
 
     [Header("スキル生成時間")]
